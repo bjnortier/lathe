@@ -1,0 +1,12 @@
+{ 
+    "name" : "lathe",
+    "version" : "0.1.0",
+    "main" : "./lib/lathe.js",
+    "dependencies": {
+        "requirejs": ">= 2.1.2"
+    },  
+    "devDependencies": {
+        "mocha": ">= 1.7.4",
+        "chai": ">= 1.4.2",
+    }
+}
