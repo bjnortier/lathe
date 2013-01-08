@@ -22,10 +22,10 @@ define(['lib/plane', 'lib/polygon'], function(Plane, Polygon) {
                 xmin1 = {a:1,b:0,c:0,d:-1},
                 ymin1 = {a:0,b:1,c:0,d:-1};
 
-            assert.deepEqual(vertices[0], [xy, ymin1,    x1]);
-            assert.deepEqual(vertices[1], [xy,    x1,    y1]);
-            assert.deepEqual(vertices[2], [xy,    y1, xmin1]);
-            assert.deepEqual(vertices[3], [xy, xmin1, ymin1]);
+            assert.deepEqual(vertices[0], {p:xy, q:ymin1, r:x1});
+            assert.deepEqual(vertices[1], {p:xy, q:x1,    r:y1});
+            assert.deepEqual(vertices[2], {p:xy, q:y1,    r:xmin1});
+            assert.deepEqual(vertices[3], {p:xy, q:xmin1, r:ymin1});
 
         });
 
