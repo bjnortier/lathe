@@ -78,7 +78,29 @@ define(['lib/plane', 'lib/polygon'], function(Plane, Polygon) {
                 boundingPlanes: [yplus, zplus, ymin, zmin]
             });
 
-        })
+        });
+
+        it('can bes plit by a plane', function() {
+
+            var h = new Plane(0,0,1,0);
+            var bounding = [
+                new Plane(1,0,0,1),
+                new Plane(0,1,0,1),
+                new Plane(1,0,0,-1),
+                new Plane(0,1,0,-1)
+            ];
+            var polygon = new Polygon(h, bounding);
+
+            var result1 = polygon.splitBy(new Plane(0,0,1,0));
+            var result2 = polygon.splitBy(new Plane(0,0,-1,0));
+            // var result2 = polygon.splitBy(new Plane(1,0,0,0));
+            // var result3 = polygon.splitBy(new Plane(1,0,0,0));
+
+            // Coincident and same orientation
+            assert.deepEqual(result1, polygon);
+            // Coincident and different orientation
+            assert.isUndefined(result2);
+        });
 
     });
 

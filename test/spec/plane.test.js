@@ -26,7 +26,7 @@ define(['lib/plane'], function(Plane) {
 
         });
 
-        it('can be tested for coincidence', function() {
+        it('can be tested for coincidence and orientation', function() {
 
             var a = new Plane(0,0,1,0);
             var b = new Plane(0,0,1,0);
@@ -37,8 +37,8 @@ define(['lib/plane'], function(Plane) {
             assert.isFalse(a.isCoincident(c));
             assert.isTrue(c.isCoincident(d));
 
-            assert.isTrue(a.isCoincidentAndSameOrientation(b));
-            assert.isFalse(c.isCoincidentAndSameOrientation(d));
+            assert.isTrue(a.isSameOrientation(b));
+            assert.isFalse(c.isSameOrientation(d));
 
         })
 
