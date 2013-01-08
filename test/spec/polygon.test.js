@@ -4,14 +4,14 @@ define(['lib/plane', 'lib/polygon'], function(Plane, Polygon) {
 
         it('can be constructed from a plane and bounding planes', function() {
 
-            var h = new Plane(0,0,1,0);
+            var s = new Plane(0,0,1,0);
             var bounding = [
                 new Plane(1,0,0,1),
                 new Plane(0,1,0,1),
                 new Plane(1,0,0,-1),
                 new Plane(0,1,0,-1)
             ];
-            var polygon = new Polygon(h, bounding);
+            var polygon = new Polygon(s, bounding);
 
             var vertices = polygon.toVertices();
             assert.equal(vertices.length, 4);
@@ -80,26 +80,35 @@ define(['lib/plane', 'lib/polygon'], function(Plane, Polygon) {
 
         });
 
-        it('can bes plit by a plane', function() {
+        it('can be split by a plane', function() {
 
-            var h = new Plane(0,0,1,0);
+            var s = new Plane(0,0,1,0);
             var bounding = [
                 new Plane(1,0,0,1),
                 new Plane(0,1,0,1),
-                new Plane(1,0,0,-1),
-                new Plane(0,1,0,-1)
+                new Plane(-1,0,0,1),
+                new Plane(0,-1,0,1)
             ];
-            var polygon = new Polygon(h, bounding);
+            var polygon = new Polygon(s, bounding);
 
             var result1 = polygon.splitBy(new Plane(0,0,1,0));
             var result2 = polygon.splitBy(new Plane(0,0,-1,0));
-            // var result2 = polygon.splitBy(new Plane(1,0,0,0));
-            // var result3 = polygon.splitBy(new Plane(1,0,0,0));
+            var result3 = polygon.splitBy(new Plane(1,0,0,0));
 
             // Coincident and same orientation
             assert.deepEqual(result1, polygon);
             // Coincident and different orientation
             assert.isUndefined(result2);
+            // Square split by ZY plane
+            assert.deepEqual(result3, {
+                s: {a: 0, b: 0, c: 1, d: 0},
+                boundingPlanes: [
+                    {a: 1, b: 0, c: 0, d: 1},
+                    {a: 0, b: 1, c: 0, d: 1},
+                    {a: 1, b: 0, c: 0, d: 0},
+                    {a: 0, b:-1, c: 0, d: 1}
+                ]
+            });
         });
 
     });
