@@ -12,6 +12,20 @@ define(['lib/plane'], function(Plane) {
 
         });
 
+        it('is immutable', function() {
+
+            var plane1 = new Plane(1,2,3,4);
+            plane1.a = 5;
+            plane1.b = 6;
+            plane1.c = 7;
+            plane1.d = 8;
+            assert.equal(1, plane1.a);
+            assert.equal(2, plane1.b);
+            assert.equal(3, plane1.c);
+            assert.equal(4, plane1.d);
+
+        });
+
         it('can be tested for coincidence', function() {
 
             var a = new Plane(0,0,1,0);
