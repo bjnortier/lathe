@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>three.js webgl - draggable cubes</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        <style>
+            body {
+                font-family: Monospace;
+                background-color: #f0f0f0;
+                margin: 0px;
+                overflow: hidden;
+            }
+        </style>
+    </head>
+    <body>
+
+        <script src="js/three.min.js"></script>
+        <script src="js/TrackballControls.js"></script>
+
+        <script>
+
+            var container, stats;
+            var camera, controls, scene, projector, renderer;
+            var plane, light;
+
+            var mouse = new THREE.Vector2(),
+                offset = new THREE.Vector3();
+
+            init();
+            animate();
+
+            function init() {
+
+                container = document.createElement('div');
+                document.body.appendChild( container );
+
+                camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 10000 );
+                camera.position.z = 100;
+
+                controls = new THREE.TrackballControls( camera );
+                controls.rotateSpeed = 2.0;
+                controls.zoomSpeed = 1.2;
+                controls.panSpeed = 0.8;
+                controls.noZoom = false;
+                controls.noPan = false;
+                controls.staticMoving = true;
+                controls.dynamicDampingFactor = 0.3;
+
+                scene = new THREE.Scene();
+
+                scene.add( new THREE.AmbientLight( 0x505050 ) );
+
+                light = new THREE.SpotLight( 0xffffff, 1.5 );
+                light.position.set( 0, 500, 2000 );
+                light.castShadow = true;
+
+                light.shadowCameraNear = 200;
+                light.shadowCameraFar = camera.far;
+                light.shadowCameraFov = 50;
+
+                light.shadowBias = -0.00022;
+                light.shadowDarkness = 0.5;
+
+                light.shadowMapWidth = 2048;
+                light.shadowMapHeight = 2048;
+
+                scene.add( light );
+
+                var geometry = new THREE.CubeGeometry( 40, 40, 40 );
+                var i = 0;
+
+                var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: Math.random() * 0xffffff } ) );
+
+                object.material.ambient = object.material.color;
+
+                object.castShadow = true;
+                object.receiveShadow = true;
+
+                scene.add( object );
+
+                renderer = new THREE.WebGLRenderer( { antialias: true } );
+                renderer.sortObjects = false;
+                renderer.setSize( window.innerWidth, window.innerHeight );
+
+
+                container.appendChild( renderer.domElement );
+
+                renderer.domElement.addEventListener( 'mousemove', mouseMove, false);
+                renderer.domElement.addEventListener( 'mouseup', mousUp, false);
+
+                window.addEventListener('resize', onWindowResize, false);
+
+            }
+
+            function onWindowResize() {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize( window.innerWidth, window.innerHeight );
+            }
+
+            function mouseMove(event) {
+                event.preventDefault();
+                mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+                mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+            }
+
+            function mousUp(event) {
+                event.preventDefault();
+                controls.enabled = true;
+            }
+
+            function animate() {
+                requestAnimationFrame( animate );
+                render();
+            }
+
+            function render() {
+                controls.update();
+                // light.position.set(camera.position);
+                renderer.render( scene, camera );
+            }
+
+        </script>
+
+    </body>
+</html>

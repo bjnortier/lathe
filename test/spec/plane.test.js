@@ -12,7 +12,7 @@ define(['lib/plane'], function(Plane) {
 
         });
 
-        it('is immutable', function() {
+        it('are immutable', function() {
 
             var plane1 = new Plane(1,2,3,4);
             plane1.a = 5;
