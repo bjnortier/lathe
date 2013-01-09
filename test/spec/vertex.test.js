@@ -37,23 +37,23 @@ define(['lib/plane', 'lib/vertex'], function(Plane, Vertex) {
 
         it('can generate coordinates', function() {
             assert.deepEqual(
-                new Vertex(new Plane(1,0,0,1), new Plane(0,1,0,1), new Plane(0,0,1,1)).toCoordinates(), 
+                new Vertex(new Plane(1,0,0,1), new Plane(0,1,0,1), new Plane(0,0,1,1)).toCoordinate(), 
                 {x:1, y:1, z:1});
 
             assert.deepEqual(
-                new Vertex(new Plane(-1,0,0,2), new Plane(0,1,0,1), new Plane(0,0,1,1)).toCoordinates(), 
+                new Vertex(new Plane(-1,0,0,2), new Plane(0,1,0,1), new Plane(0,0,1,1)).toCoordinate(), 
                 {x:-2, y:1, z:1});
 
             assert.deepEqual(
-                new Vertex(new Plane(1,1,1,1), new Plane(0,1,0,0), new Plane(0,0,1,0)).toCoordinates(), 
+                new Vertex(new Plane(1,1,1,1), new Plane(0,1,0,0), new Plane(0,0,1,0)).toCoordinate(), 
                 {x:1, y:0, z:0});
 
             assert.deepEqual(
-                new Vertex(new Plane(1,1,1,1), new Plane(0,1,0,0.5), new Plane(0,0,1,0.5)).toCoordinates(), 
+                new Vertex(new Plane(1,1,1,1), new Plane(0,1,0,0.5), new Plane(0,0,1,0.5)).toCoordinate(), 
                 {x:0, y:0.5, z:0.5});
 
             assert.deepEqual(
-                new Vertex(new Plane(1,1,1,1), new Plane(0,1,0,0.5), new Plane(0,0,1,0.5)).toCoordinates(), 
+                new Vertex(new Plane(1,1,1,1), new Plane(0,1,0,0.5), new Plane(0,0,1,0.5)).toCoordinate(), 
                 {x:0, y:0.5, z:0.5});
         })
         
