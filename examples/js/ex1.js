@@ -14,7 +14,7 @@ define(['examples/js/viewport', 'lib/plane', 'lib/polygon'], function(Viewport, 
             }
         });
         if (coordinates.length === 3) {
-            geometry.faces.push(new THREE.Face4(0,1,2));
+            geometry.faces.push(new THREE.Face3(0,1,2));
         } else if (coordinates.length === 4) {
             geometry.faces.push(new THREE.Face4(0,1,2,3));
         } else {
@@ -34,24 +34,27 @@ define(['examples/js/viewport', 'lib/plane', 'lib/polygon'], function(Viewport, 
     }
 
     var Example = function() {
+        var exampleContainer = document.createElement('div');
+        exampleContainer.classList.add('example');
         var beforeContainer = document.createElement('div');
         var afterContainer = document.createElement('div');
         beforeContainer.classList.add('viewport');
         afterContainer.classList.add('viewport');
-        document.body.appendChild(beforeContainer);
-        document.body.appendChild(afterContainer);
+        document.body.appendChild(exampleContainer);
+        exampleContainer.appendChild(beforeContainer);
+        exampleContainer.appendChild(afterContainer);
         var beforeViewport = new Viewport(beforeContainer);
         var afterViewport  = new Viewport(afterContainer);
 
-        var p1 = new Polygon().fromPlane(new Plane(0,0,1,0));
-        var h = new Polygon().fromPlane(new Plane(1,0,0,0));
+        var p1 = new Polygon(new Plane(0,0,1,0), [new Plane(1,0,0,-1), new Plane(0,1,0,-1), new Plane(1,1,0,10)]);
+        var h = new Polygon().fromPlane(new Plane(0,1,0,0));
         var p2 = p1.splitBy(new Plane(1,0,0,0)); 
         
         addPolygon(beforeViewport, p1, 0x00ff00);
         addPolygon(beforeViewport, h, 0xff0000);
 
-        addPolygon(afterViewport, h, 0xff0000);
         addPolygon(afterViewport, p2, 0x0000ff);
+        addPolygon(afterViewport, h, 0xff0000);
     }
 
     return Example;

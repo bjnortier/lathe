@@ -8,4 +8,6 @@ body {
 .viewport {
     background-color: white;
     border: solid thin #ccc;
+    display: inline-block;
 }
+
