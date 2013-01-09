@@ -19,11 +19,11 @@ define([], function() {
             container.style.height = containerHeight + 'px';
 
             camera = new THREE.PerspectiveCamera(70, containerWidth / containerHeight, 1, 10000 );
-            camera.position.z = 100;
+            camera.position.z = 20;
 
             controls = new THREE.TrackballControls(camera, container);
             controls.rotateSpeed = 1.0;
-            controls.zoomSpeed = 1.2;
+            controls.zoomSpeed = 5;
             controls.panSpeed = 0.8;
             controls.noZoom = false;
             controls.noPan = false;
@@ -31,20 +31,18 @@ define([], function() {
             controls.dynamicDampingFactor = 0.3;
 
             that.scene = new THREE.Scene();
-            that.scene.add( new THREE.AmbientLight( 0x505050 ) );
+            that.scene.add( new THREE.AmbientLight(0x505050) );
 
-            light = new THREE.SpotLight( 0xffffff, 1.5 );
-            light.position.set( 0, 500, 2000 );
+            light = new THREE.PointLight( 0xffffff, 1.5 );
+            light.position.set(0, 0, 2000);
             that.scene.add( light );
 
             var geometry = new THREE.CubeGeometry( 40, 40, 40 );
             var i = 0;
 
-            var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: Math.random() * 0xffffff } ) );
-            object.material.ambient = object.material.color;
-
-
-            that.scene.add( object );
+            // var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: Math.random() * 0xffffff } ) );
+            // object.material.ambient = object.material.color;
+            // that.scene.add( object );
 
             renderer = new THREE.WebGLRenderer( { antialias: true } );
             renderer.sortObjects = false;
