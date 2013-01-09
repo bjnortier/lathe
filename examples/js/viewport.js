@@ -19,7 +19,11 @@ define([], function() {
             container.style.height = containerHeight + 'px';
 
             camera = new THREE.PerspectiveCamera(70, containerWidth / containerHeight, 1, 10000 );
-            camera.position.z = 20;
+            camera.position.z = 10;
+            camera.position.x = 20;
+            camera.position.y = 20;
+            camera.up = new THREE.Vector3(0,0,1);
+            camera.lookAt(new THREE.Vector3(0,0,0));
 
             controls = new THREE.TrackballControls(camera, container);
             controls.rotateSpeed = 1.0;
@@ -39,10 +43,6 @@ define([], function() {
 
             var geometry = new THREE.CubeGeometry( 40, 40, 40 );
             var i = 0;
-
-            // var object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: Math.random() * 0xffffff } ) );
-            // object.material.ambient = object.material.color;
-            // that.scene.add( object );
 
             renderer = new THREE.WebGLRenderer( { antialias: true } );
             renderer.sortObjects = false;
