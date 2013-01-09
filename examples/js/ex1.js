@@ -33,6 +33,11 @@ define(['examples/js/viewport', 'lib/plane', 'lib/polygon'], function(Viewport, 
         viewport.scene.add(object);
     }
 
+    var addPlane = function(viewport, plane, color) {
+        var polygon = new Polygon().fromPlane(plane);
+        addPolygon(viewport, polygon, color);
+    }
+
     var Example = function() {
         var exampleContainer = document.createElement('div');
         exampleContainer.classList.add('example');
@@ -46,15 +51,15 @@ define(['examples/js/viewport', 'lib/plane', 'lib/polygon'], function(Viewport, 
         var beforeViewport = new Viewport(beforeContainer);
         var afterViewport  = new Viewport(afterContainer);
 
-        var p1 = new Polygon(new Plane(0,0,1,0), [new Plane(1,0,0,-1), new Plane(0,1,0,-1), new Plane(1,1,0,10)]);
-        var h = new Polygon().fromPlane(new Plane(0,1,0,0));
-        var p2 = p1.splitBy(new Plane(1,0,0,0)); 
+        var p1 = new Polygon(new Plane(0,0,1,0), [new Plane(1,0,0,-1), new Plane(0,1,0,-1), new Plane(1,1,0,5)]);
+        var h = new Plane(0,100000,0,0);
+        var p2 = p1.splitBy(h); 
         
         addPolygon(beforeViewport, p1, 0x00ff00);
-        addPolygon(beforeViewport, h, 0xff0000);
+        addPlane(beforeViewport, h, 0xff0000);
 
         addPolygon(afterViewport, p2, 0x0000ff);
-        addPolygon(afterViewport, h, 0xff0000);
+        addPlane(afterViewport, h, 0xff0000);
     }
 
     return Example;
