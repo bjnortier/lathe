@@ -21,18 +21,17 @@ define(['lib/plane', 'lib/vertex'], function(Plane, Vertex) {
             var vertex000 = new Vertex(new Plane(1,0,0,0), new Plane(0,1,0,0), new Plane(0,0,1,0));
             var vertex111 = new Vertex(new Plane(1,0,0,1), new Plane(0,1,0,1), new Plane(0,0,1,1));
             
-            assert.equal(vertex000.orientationToPlane(new Plane(0,0,1,-1)), 1);
-            assert.equal(vertex000.orientationToPlane(new Plane(0,0,1,1)), -1);
+            assert.equal(vertex000.orientationToPlane(new Plane(0,0,1,-1)), '+');
+            assert.equal(vertex000.orientationToPlane(new Plane(0,0,1,1)), '-');
 
-            assert.equal(vertex111.orientationToPlane(new Plane(1,0,0,0)), 1);
-            assert.equal(vertex111.orientationToPlane(new Plane(0,1,0,0)), 1);
-            assert.equal(vertex111.orientationToPlane(new Plane(0,0,1,0)), 1);
-
-            assert.equal(vertex111.orientationToPlane(new Plane(1,1,1,0)), 1);
-            assert.equal(vertex111.orientationToPlane(new Plane(1,1,1,1)), 1);
-            assert.equal(vertex111.orientationToPlane(new Plane(1,1,1,3)), 0);
-            assert.equal(vertex111.orientationToPlane(new Plane(1,1,1,4)), -1);
-            assert.equal(vertex111.orientationToPlane(new Plane(1,1,1,5)), -1);
+            assert.equal(vertex111.orientationToPlane(new Plane(1,0,0,0)), '+');
+            assert.equal(vertex111.orientationToPlane(new Plane(0,1,0,0)), '+');
+            assert.equal(vertex111.orientationToPlane(new Plane(0,0,1,0)), '+');
+            assert.equal(vertex111.orientationToPlane(new Plane(1,1,1,0)), '+');
+            assert.equal(vertex111.orientationToPlane(new Plane(1,1,1,1)), '+');
+            assert.equal(vertex111.orientationToPlane(new Plane(1,1,1,3)), '0');
+            assert.equal(vertex111.orientationToPlane(new Plane(1,1,1,4)), '-');
+            assert.equal(vertex111.orientationToPlane(new Plane(1,1,1,5)), '-');
 
         })
 
