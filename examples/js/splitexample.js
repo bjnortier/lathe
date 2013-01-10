@@ -1,4 +1,9 @@
-define(['examples/js/viewport', 'lib/plane', 'lib/polygon'], function(Viewport, Plane, Polygon) {
+define([
+        'lib/plane',
+        'lib/polygon',
+        'examples/js/viewport',
+        'examples/js/trackball',
+    ], function(Plane, Polygon, Viewport, Trackball) {
 
     var polygonToMesh = function(polygon) {
         var geometry = new THREE.Geometry();
@@ -62,23 +67,12 @@ define(['examples/js/viewport', 'lib/plane', 'lib/polygon'], function(Viewport, 
         exampleContainer.appendChild(splitContainer);
         var beforeViewport = new Viewport(beforeContainer);
         var splitViewport  = new Viewport(splitContainer);
-
-        splitViewport.controls.addEventListener('change', function(event) {
-            beforeViewport.camera.position.copy(event.position);
-            beforeViewport.camera.lookAt(event.cameraTarget);
-            beforeViewport.controls.target = event.cameraTarget;
-        })
-        beforeViewport.controls.addEventListener('change', function(event) {
-            splitViewport.camera.position.copy(event.position);
-            splitViewport.camera.lookAt(event.cameraTarget);
-            splitViewport.controls.target = event.cameraTarget;
-        })
-
-        var splits = p1.splitBy(h); 
+        new Trackball([beforeViewport, splitViewport]);
 
         addPolygon(beforeViewport, p1, 0x00ffff);
         addPlane(beforeViewport, h, 0xff0000);
 
+        var splits = p1.splitBy(h); 
         splits.front && addPolygon(splitViewport, splits.front, 0x0000ff);
         splits.back && addPolygon(splitViewport, splits.back, 0x00ff00);
         addPlane(splitViewport, h, 0xff0000);

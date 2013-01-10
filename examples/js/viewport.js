@@ -3,12 +3,11 @@ define([], function() {
     var Viewport = function(container) {
 
 
-        var container, camera, controls, renderer, plane, light;
-        var mouse = new THREE.Vector2(),
-            offset = new THREE.Vector3();
+        var camera, renderer, light;
         var containerWidth = 300, containerHeight = 300;
 
         var that = this;
+        that.container = container;
         init();
         animate();
 
@@ -24,16 +23,6 @@ define([], function() {
             camera.position.y = 20;
             camera.up = new THREE.Vector3(0,0,1);
             camera.lookAt(new THREE.Vector3(0,0,0));
-
-            controls = new THREE.TrackballControls(camera, container);
-            that.controls = controls;
-            controls.rotateSpeed = 1.0;
-            controls.zoomSpeed = 5;
-            controls.panSpeed = 0.8;
-            controls.noZoom = false;
-            controls.noPan = false;
-            controls.staticMoving = true;
-            controls.dynamicDampingFactor = 0.3;
 
             that.scene = new THREE.Scene();
             that.scene.add( new THREE.AmbientLight(0x505050) );
@@ -65,9 +54,6 @@ define([], function() {
             renderer.setSize(containerWidth, containerHeight);
             container.appendChild(renderer.domElement);
 
-            renderer.domElement.addEventListener( 'mousemove', mouseMove, false);
-            renderer.domElement.addEventListener( 'mouseup', mousUp, false);
-
             window.addEventListener('resize', onWindowResize, false);
 
         }
@@ -78,24 +64,12 @@ define([], function() {
             renderer.setSize(containerWidth, containerHeight);
         }
 
-        function mouseMove(event) {
-            event.preventDefault();
-            mouse.x =  (event.clientX/containerWidth)*2-1;
-            mouse.y = -(event.clientY/containerHeight)*2+1;
-        }
-
-        function mousUp(event) {
-            event.preventDefault();
-            controls.enabled = true;
-        }
-
         function animate() {
             requestAnimationFrame(animate);
             render();
         }
 
         function render() {
-            controls.update();
             light.position = camera.position;
             renderer.render(that.scene, camera);
         }
