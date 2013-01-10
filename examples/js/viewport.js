@@ -12,13 +12,13 @@ define([], function() {
         init();
         animate();
 
-
         function init() {
 
             container.style.width  = containerWidth + 'px';
             container.style.height = containerHeight + 'px';
 
             camera = new THREE.PerspectiveCamera(70, containerWidth / containerHeight, 1, 10000 );
+            that.camera = camera;
             camera.position.z = 10;
             camera.position.x = 20;
             camera.position.y = 20;
@@ -26,6 +26,7 @@ define([], function() {
             camera.lookAt(new THREE.Vector3(0,0,0));
 
             controls = new THREE.TrackballControls(camera, container);
+            that.controls = controls;
             controls.rotateSpeed = 1.0;
             controls.zoomSpeed = 5;
             controls.panSpeed = 0.8;
@@ -41,14 +42,9 @@ define([], function() {
             light.position.set(0, 0, 2000);
             that.scene.add( light );
 
-            var geometry = new THREE.CubeGeometry( 40, 40, 40 );
-            var i = 0;
-
             renderer = new THREE.WebGLRenderer( { antialias: true } );
             renderer.sortObjects = false;
             renderer.setSize(containerWidth, containerHeight);
-
-
             container.appendChild(renderer.domElement);
 
             renderer.domElement.addEventListener( 'mousemove', mouseMove, false);

@@ -189,7 +189,11 @@ THREE.TrackballControls = function(object, domElement ) {
         _this.checkDistances();
         _this.object.lookAt( _this.target );
         if ( lastPosition.distanceToSquared( _this.object.position ) > 0 ) {
-            _this.dispatchEvent( changeEvent );
+            _this.dispatchEvent({ 
+                type: 'change', 
+                position: _this.object.position.clone(),
+                cameraTarget: _this.target.clone()
+            });
             lastPosition.copy( _this.object.position );
         }
 

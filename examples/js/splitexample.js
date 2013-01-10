@@ -58,6 +58,16 @@ define(['examples/js/viewport', 'lib/plane', 'lib/polygon'], function(Viewport, 
         var beforeViewport = new Viewport(beforeContainer);
         var splitViewport  = new Viewport(splitContainer);
 
+        splitViewport.controls.addEventListener('change', function(event) {
+            beforeViewport.camera.position.copy(event.position);
+            beforeViewport.camera.lookAt(event.cameraTarget);
+            beforeViewport.controls.target = event.cameraTarget;
+        })
+        beforeViewport.controls.addEventListener('change', function(event) {
+            splitViewport.camera.position.copy(event.position);
+            splitViewport.camera.lookAt(event.cameraTarget);
+            splitViewport.controls.target = event.cameraTarget;
+        })
 
         var splits = p1.splitBy(h); 
 
