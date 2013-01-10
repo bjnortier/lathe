@@ -48,34 +48,41 @@ define(['lib/plane', 'lib/polygon'], function(Plane, Polygon) {
 
             assert.deepEqual(p1a, {
                 s: {a:5, b:-2, c:1, d:0},
-                boundingPlanes: [yplus, zplus, ymin, zmin]
+                boundingPlanes: [yplus, zplus, ymin, zmin],
+                bigNumber: 1000000
             });
             assert.deepEqual(p1b, {
                 s: {a:-6, b:2, c:-1, d:0},
-                boundingPlanes: [yplus, zmin, ymin, zplus]
+                boundingPlanes: [yplus, zmin, ymin, zplus],
+                bigNumber: 1000000,
             });
 
             assert.deepEqual(p2a, {
                 s: {a:-6, b:7, c:2, d:0},
-                boundingPlanes: [zplus, xplus, zmin, xmin]
+                boundingPlanes: [zplus, xplus, zmin, xmin],
+                bigNumber: 1000000,
             });
             assert.deepEqual(p2b, {
                 s: {a:0, b:-8, c:3, d:0},
-                boundingPlanes: [zplus, xmin, zmin, xplus]
+                boundingPlanes: [zplus, xmin, zmin, xplus],
+                bigNumber: 1000000,
             });
 
             assert.deepEqual(p3a, {
                 s: {a:2, b:1, c:9, d:0},
-                boundingPlanes: [xplus, yplus, xmin, ymin]
+                boundingPlanes: [xplus, yplus, xmin, ymin],
+                bigNumber: 1000000,
             });
             assert.deepEqual(p3b, {
                 s: {a:0, b:1, c:-2, d:0},
-                boundingPlanes: [xplus, ymin, xmin, yplus]
+                boundingPlanes: [xplus, ymin, xmin, yplus],
+                bigNumber: 1000000,
             });
 
             assert.deepEqual(p4, {
                 s: {a:1, b:1, c:1, d:0},
-                boundingPlanes: [yplus, zplus, ymin, zmin]
+                boundingPlanes: [yplus, zplus, ymin, zmin],
+                bigNumber: 1000000,
             });
 
         });

@@ -39,7 +39,7 @@ define([
 
         coordinates.forEach(function(coordinate) {
             var i = geometry.vertices.push(new THREE.Vector3(coordinate.x, coordinate.y, coordinate.z)) - 1;
-            // Is a big-space coordinate - scale it down
+            // Is a big-space coordinate? - scale it down
             if (polygon.bigNumber) {
                 ['x', 'y', 'z'].forEach(function(dim) {
                     if (geometry.vertices[i][dim] === polygon.bigNumber) {
