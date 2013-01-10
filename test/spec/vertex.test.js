@@ -55,6 +55,10 @@ define(['lib/plane', 'lib/vertex'], function(Plane, Vertex) {
             assert.deepEqual(
                 new Vertex(new Plane(1,1,1,1), new Plane(0,1,0,0.5), new Plane(0,0,1,0.5)).toCoordinate(), 
                 {x:0, y:0.5, z:0.5});
+
+            assert.deepEqual(
+                new Vertex(new Plane(0,1,0,5), new Plane(0,0,1,100), new Plane(1,0,0,100)).toCoordinate(), 
+                {x:100, y:5, z:100});
         })
         
 

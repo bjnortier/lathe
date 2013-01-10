@@ -96,11 +96,13 @@ define(['lib/plane', 'lib/polygon'], function(Plane, Polygon) {
             var result3 = polygon.splitBy(new Plane(1,0,0,0));
 
             // Coincident and same orientation
-            assert.deepEqual(result1, polygon);
+            assert.deepEqual(result1.front, polygon);
+            assert.isUndefined(result1.back);
             // Coincident and different orientation
-            assert.isUndefined(result2);
+            assert.isUndefined(result2.front);
+            assert.deepEqual(result2.back, polygon);
             // Square split by ZY plane
-            assert.deepEqual(result3, {
+            assert.deepEqual(result3.front, {
                 s: {a: 0, b: 0, c: 1, d: 0},
                 boundingPlanes: [
                     {a: 1, b: 0, c: 0, d: 1},

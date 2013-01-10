@@ -2,12 +2,13 @@ body {
     font-family: Monospace;
     background-color: #f0f0f0;
     margin: 0px;
-    overflow: hidden;
 }
 
 .viewport {
     background-color: white;
     border: solid thin #ccc;
     display: inline-block;
+    margin-left: 20px;
+    margin-top: 20px;
 }
 

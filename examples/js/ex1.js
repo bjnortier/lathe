@@ -8,9 +8,16 @@ define(['examples/js/viewport', 'lib/plane', 'lib/polygon'], function(Viewport, 
         });
 
         coordinates.forEach(function(coordinate) {
-            var i = geometry.vertices.push(new THREE.Vector3(coordinate.x, coordinate.y, coordinate.z));
-            if (geometry.vertices[i-1].length() > 100000) {
-                geometry.vertices[i-1].divideScalar(100000);
+            var i = geometry.vertices.push(new THREE.Vector3(coordinate.x, coordinate.y, coordinate.z)) - 1;
+            // Is a big-space coordinate - scale it down
+            if (polygon.bigNumber) {
+                ['x', 'y', 'z'].forEach(function(dim) {
+                    if (geometry.vertices[i][dim] === polygon.bigNumber) {
+                        geometry.vertices[i][dim] = 10;
+                    } else if(geometry.vertices[i][dim] === -polygon.bigNumber) {
+                        geometry.vertices[i][dim] = -10;
+                    }
+                });
             }
         });
         if (coordinates.length === 3) {
@@ -38,37 +45,29 @@ define(['examples/js/viewport', 'lib/plane', 'lib/polygon'], function(Viewport, 
         addPolygon(viewport, polygon, color);
     }
 
-    var Example = function() {
+    var Example = function(p1, h) {
         var exampleContainer = document.createElement('div');
         exampleContainer.classList.add('example');
         var beforeContainer = document.createElement('div');
-        var frontContainer = document.createElement('div');
-        var backContainer = document.createElement('div');
+        var splitContainer = document.createElement('div');
         beforeContainer.classList.add('viewport');
-        frontContainer.classList.add('viewport');
-        backContainer.classList.add('viewport');
+        splitContainer.classList.add('viewport');
         document.body.appendChild(exampleContainer);
         exampleContainer.appendChild(beforeContainer);
-        exampleContainer.appendChild(frontContainer);
-        exampleContainer.appendChild(backContainer);
+        exampleContainer.appendChild(splitContainer);
         var beforeViewport = new Viewport(beforeContainer);
-        var frontViewport  = new Viewport(frontContainer);
-        var backViewport  = new Viewport(backContainer);
+        var splitViewport  = new Viewport(splitContainer);
 
-        var p1 = new Polygon(new Plane(0,0,1,0), [new Plane(1,0,0,-1), new Plane(0,1,0,-1), new Plane(1,1,0,5)]);
-        var hplus = new Plane(0,1,0,0);
-        var hminus = new Plane(0,-1,0,0);
-        var pfront = p1.splitBy(hplus); 
-        var pback = p1.splitBy(hminus); 
-        
-        addPolygon(beforeViewport, p1, 0x00ff00);
-        addPlane(beforeViewport, hplus, 0xff0000);
 
-        addPolygon(frontViewport, pfront, 0x0000ff);
-        addPlane(frontViewport, hplus, 0xff0000);
+        var splits = p1.splitBy(h); 
 
-        addPolygon(backViewport, pback, 0x0000ff);
-        addPlane(backViewport, hminus, 0xff0000);
+        addPolygon(beforeViewport, p1, 0x00ffff);
+        addPlane(beforeViewport, h, 0xff0000);
+
+        splits.front && addPolygon(splitViewport, splits.front, 0x0000ff);
+        splits.back && addPolygon(splitViewport, splits.back, 0x00ff00);
+        addPlane(splitViewport, h, 0xff0000);
+
     }
 
     return Example;
