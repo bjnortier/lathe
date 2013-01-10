@@ -6,17 +6,17 @@ requirejs.config({
     },
 });
 
-requirejs(['lib/plane', 'lib/polygon', 'examples/js/ex1'], function(Plane, Polygon, Ex1) {
+requirejs(['lib/plane', 'lib/polygon', 'examples/js/splitexample'], function(Plane, Polygon, SplitExample) {
 
-    // new Ex1(
-    //     new Polygon(new Plane(0,0,1,0), [new Plane(1,0,0,-1), new Plane(0,1,0,-1), new Plane(1,1,0,5)]),
-    //     new Plane(0,1,0,0));
+    new SplitExample(
+        new Polygon(new Plane(0,0,1,0), [new Plane(1,0,0,-1), new Plane(0,1,0,-1), new Plane(1,1,0,5)]),
+        new Plane(0,1,0,0));
 
-    // new Ex1(
-    //     new Polygon(new Plane(0,0,1,0), [new Plane(1,0,0,-1), new Plane(0,1,0,-1), new Plane(1,1,0,5)]),
-    //     new Plane(0,0,1,0));
+    new SplitExample(
+        new Polygon(new Plane(0,0,1,0), [new Plane(1,0,0,-1), new Plane(0,1,0,-1), new Plane(1,1,0,5)]),
+        new Plane(0,0,1,0));
 
-  new Ex1(
+    new SplitExample(
         new Polygon(new Plane(0,0,1,0), [new Plane(1,0,0,-1), new Plane(0,1,0,-1), new Plane(1,1,0,5)]),
         new Plane(0,1,0,5));
   
