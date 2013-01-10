@@ -42,6 +42,24 @@ define([], function() {
             light.position.set(0, 0, 2000);
             that.scene.add( light );
 
+            var xMaterial = new THREE.LineBasicMaterial({color: 0x00ff00, opacity: 0.5});
+            var yMaterial = new THREE.LineBasicMaterial({color: 0x0000ff, opacity: 0.5});
+            var zMaterial = new THREE.LineBasicMaterial({color: 0xff0000, opacity: 0.5});
+
+            var xGeom = new THREE.Geometry();
+            xGeom.vertices.push(new THREE.Vector3(0, 0, 0));
+            xGeom.vertices.push(new THREE.Vector3(1000, 0, 0));
+            var yGeom = new THREE.Geometry();
+            yGeom.vertices.push(new THREE.Vector3(0,0, 0));
+            yGeom.vertices.push(new THREE.Vector3(0, 1000, 0));
+            var zGeom = new THREE.Geometry();
+            zGeom.vertices.push(new THREE.Vector3(0, 0, 0));
+            zGeom.vertices.push(new THREE.Vector3(0, 0, 1000));
+
+            that.scene.add(new THREE.Line(xGeom, xMaterial));
+            that.scene.add(new THREE.Line(yGeom, yMaterial));
+            that.scene.add(new THREE.Line(zGeom, zMaterial));
+
             renderer = new THREE.WebGLRenderer( { antialias: true } );
             renderer.sortObjects = false;
             renderer.setSize(containerWidth, containerHeight);

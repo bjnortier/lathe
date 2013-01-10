@@ -20,12 +20,17 @@ define(['examples/js/viewport', 'lib/plane', 'lib/polygon'], function(Viewport, 
                 });
             }
         });
-        if (coordinates.length === 3) {
+        if (coordinates.length < 3) {
+            throw Error('invalid polygon');
+        } else if (coordinates.length === 3) {
             geometry.faces.push(new THREE.Face3(0,1,2));
         } else if (coordinates.length === 4) {
             geometry.faces.push(new THREE.Face4(0,1,2,3));
         } else {
-            throw Error('not implemented');
+            geometry.faces.push(new THREE.Face3(0,1,2));
+            for (var i = 2; i < coordinates.length -1; ++i) {
+                geometry.faces.push(new THREE.Face3(0,i,i+1));
+            }
         }
         geometry.computeFaceNormals();
         return geometry;
