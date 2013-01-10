@@ -5,6 +5,7 @@ define([], function() {
         './spec/vertex.test.js',
         './spec/polygon.test.js',
         './spec/bsp.test.js',
+        './spec/bsptree.test.js',
     ];
 
 });
