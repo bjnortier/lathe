@@ -92,7 +92,6 @@ define([] , function() {
 
                 viewport.camera.up = new THREE.Vector3(0,0,1);
                 viewport.camera.lookAt(new THREE.Vector3(0,0,0));
-                // viewport.camera.position.addSelf(scene.position);
             });
 
 

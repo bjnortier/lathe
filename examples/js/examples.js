@@ -17,8 +17,8 @@ requirejs(['lib/plane', 'lib/polygon', 'examples/js/splitexample'], function(Pla
         new Plane(0,0,1,0));
 
     new SplitExample(
-        new Polygon(new Plane(0,0,1,0), [new Plane(1,0,0,1), new Plane(0,1,0,1), new Plane(1,1,0,5)]),
-        new Plane(0,1,0,4));
+        new Polygon(new Plane(0,0,1,0), [new Plane(-1,1,0,0), new Plane(0,1,0,5), new Plane(1,0,0,1)]),
+        new Plane(0,1,0,1));
 
     new SplitExample(
         new Polygon(new Plane(0,0,1,0), [
@@ -29,7 +29,7 @@ requirejs(['lib/plane', 'lib/polygon', 'examples/js/splitexample'], function(Pla
             new Plane(-1,1,0,10),
             new Plane(-1,-1,0,10),
         ]),
-        new Plane(0,1,0,0));
+        new Plane(-1,0,0,1));
   
 
 
