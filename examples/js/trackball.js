@@ -23,7 +23,7 @@ define([] , function() {
         };
 
         this.mousemove = function(event) {
-            if (mouseDownPosition) {
+            if (mouseDownPosition && lastMousePosition) {
                 var eventPosition = eventToPosition(event);
                 var dMouseFromDown = {
                     x: eventPosition.x - mouseDownPosition.x,
