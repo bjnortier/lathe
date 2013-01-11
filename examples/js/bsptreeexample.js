@@ -1,9 +1,11 @@
 define([
         'lib/plane',
         'lib/polygon',
+        'lib/bsptree',
+        'lib/bsp',
         'examples/js/viewport',
         'examples/js/trackball',
-    ], function(Plane, Polygon, Viewport, Trackball) {
+    ], function(Plane, Polygon, BSPTree, BSP, Viewport, Trackball) {
 
 
     var Example = function(mesh1, mesh2) {
@@ -28,6 +30,25 @@ define([
             addPolygon(beforeViewport, p, 0x0000ff);
         })
 
+        var t1 = BSPTree.fromPolygons(mesh1);
+        var t2 = BSPTree.fromPolygons(mesh2);
+
+        t1.front.boundary.forEach(function(polygon) {
+            addPolygon(bspTreeViewport, polygon, 0x00ff00);
+        });
+        t1.back.boundary.forEach(function(polygon) {
+            addPolygon(bspTreeViewport, polygon, 0x0000ff);
+        });
+
+        // var merged = new BSP.Merger().mergeTrees(t1, t2);
+
+        // var addNode = function(node) {
+        //     addPolygon(bspTreeViewport, node.polygon, 0xff0000);
+        //     node.front && addNode(node.front);
+        //     node.back && addNode(node.back);
+        // }
+        // addNode(merged);
+
     }
 
     var polygonToMesh = function(polygon) {
@@ -39,16 +60,13 @@ define([
 
         coordinates.forEach(function(coordinate) {
             var i = geometry.vertices.push(new THREE.Vector3(coordinate.x, coordinate.y, coordinate.z)) - 1;
-            // Is a big-space coordinate? - scale it down
-            if (polygon.bigNumber) {
-                ['x', 'y', 'z'].forEach(function(dim) {
-                    if (geometry.vertices[i][dim] === polygon.bigNumber) {
-                        geometry.vertices[i][dim] = 10;
-                    } else if(geometry.vertices[i][dim] === -polygon.bigNumber) {
-                        geometry.vertices[i][dim] = -10;
-                    }
-                });
-            }
+            ['x', 'y', 'z'].forEach(function(dim) {
+                if (geometry.vertices[i][dim] === 1000000) {
+                    geometry.vertices[i][dim] = 10;
+                } else if(geometry.vertices[i][dim] === -1000000) {
+                    geometry.vertices[i][dim] = -10;
+                }
+            });
         });
         if (coordinates.length < 3) {
             throw Error('invalid polygon');

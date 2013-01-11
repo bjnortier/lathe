@@ -40,7 +40,7 @@ define(['lib/plane'], function(Plane) {
             assert.isTrue(a.isSameOrientation(b));
             assert.isFalse(c.isSameOrientation(d));
 
-        })
+        });
 
     })
 

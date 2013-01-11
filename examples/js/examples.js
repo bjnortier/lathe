@@ -49,13 +49,13 @@ requirejs([
     ];
     var mesh2 = [
         new Polygon(
-            new Plane(0,0,-1,0), [new Plane(0,-1,0,-2),new Plane(-1,0,0,-2),new Plane(1,1,1,14)]),
-        new Polygon(
-            new Plane(0,-1,0,-2), [new Plane(0,0,-1,0),new Plane(1,1,1,14),new Plane(-1,0,0,-2)]),
-        new Polygon(
-            new Plane(-1,0,0,-2), [new Plane(0,-1,0,-2),new Plane(1,1,1,14),new Plane(0,0,-1,0)]),
-        new Polygon(
-            new Plane(1,1,1,14), [new Plane(0,-1,0,-2),new Plane(0,0,-1,0),new Plane(-1,0,0,-2)]),
+            new Plane(0,0,-1,-2), [new Plane(0,-1,0,-2),new Plane(-1,0,0,-2),new Plane(1,1,1,14)]),
+        // new Polygon(
+        //     new Plane(0,-1,0,-2), [new Plane(0,0,-1,0),new Plane(1,1,1,14),new Plane(-1,0,0,-2)]),
+        // new Polygon(
+        //     new Plane(-1,0,0,-2), [new Plane(0,-1,0,-2),new Plane(1,1,1,14),new Plane(0,0,-1,0)]),
+        // new Polygon(
+        //     new Plane(1,1,1,14), [new Plane(0,-1,0,-2),new Plane(0,0,-1,0),new Plane(-1,0,0,-2)]),
     ];
 
     new BSPTreeExample(mesh1, mesh2);
