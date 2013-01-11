@@ -4,7 +4,7 @@ define([], function() {
 
 
         var camera, renderer, light;
-        var containerWidth = 300, containerHeight = 300;
+        var containerWidth = 400, containerHeight = 400;
 
         var that = this;
         that.container = container;
@@ -16,7 +16,7 @@ define([], function() {
             container.style.width  = containerWidth + 'px';
             container.style.height = containerHeight + 'px';
 
-            camera = new THREE.PerspectiveCamera(70, containerWidth / containerHeight, 1, 10000 );
+            camera = new THREE.PerspectiveCamera(70, containerWidth / containerHeight, 0.1, 10000 );
             that.camera = camera;
             camera.position.z = 10;
             camera.position.x = 20;
