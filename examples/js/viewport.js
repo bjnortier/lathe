@@ -1,4 +1,4 @@
-define([], function() {
+define(['lib/world', 'lib/Polygon'], function(world, Polygon) {
 
     var Viewport = function(container) {
 
@@ -85,9 +85,9 @@ define([], function() {
             coordinates.forEach(function(coordinate) {
                 var i = geometry.vertices.push(new THREE.Vector3(coordinate.x, coordinate.y, coordinate.z)) - 1;
                 ['x', 'y', 'z'].forEach(function(dim) {
-                    if (geometry.vertices[i][dim] === 1000000) {
+                    if (geometry.vertices[i][dim] === world.bigNumber) {
                         geometry.vertices[i][dim] = 10;
-                    } else if(geometry.vertices[i][dim] === -1000000) {
+                    } else if(geometry.vertices[i][dim] === -world.bigNumber) {
                         geometry.vertices[i][dim] = -10;
                     }
                 });
@@ -112,7 +112,7 @@ define([], function() {
         this.addPolygon = function(polygon, color) {
             var faceGeometry = polygonToMesh(polygon);
             var meshObject = THREE.SceneUtils.createMultiMaterialObject(faceGeometry, [
-                new THREE.MeshLambertMaterial({color: color, opacity: 0.5, transparent: true}),
+                new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide, opacity: 0.5, transparent: true}),
             ]);
             this.scene.add(meshObject);
 

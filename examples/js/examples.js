@@ -68,5 +68,5 @@ requirejs([
 
     // new BSPTreeExample(mesh1, mesh2);
 
-    new RegionExample(new Region([new Plane(0,0,1,0)]));
+    new RegionExample();
 });
