@@ -2,7 +2,6 @@ define([], function() {
 
     var Viewport = function(container) {
 
-
         var camera, renderer, light;
         var containerWidth = 400, containerHeight = 400;
 
@@ -76,6 +75,60 @@ define([], function() {
             renderer.render(that.scene, camera);
         }
 
+        var polygonToMesh = function(polygon) {
+            var geometry = new THREE.Geometry();
+            var vertices = polygon.toVertices();
+            var coordinates = vertices.map(function(vertex) {
+                return vertex.toCoordinate();
+            });
+
+            coordinates.forEach(function(coordinate) {
+                var i = geometry.vertices.push(new THREE.Vector3(coordinate.x, coordinate.y, coordinate.z)) - 1;
+                ['x', 'y', 'z'].forEach(function(dim) {
+                    if (geometry.vertices[i][dim] === 1000000) {
+                        geometry.vertices[i][dim] = 10;
+                    } else if(geometry.vertices[i][dim] === -1000000) {
+                        geometry.vertices[i][dim] = -10;
+                    }
+                });
+            });
+            if (coordinates.length < 3) {
+                throw Error('invalid polygon');
+            } else if (coordinates.length === 3) {
+                geometry.faces.push(new THREE.Face3(0,1,2));
+            } else if (coordinates.length === 4) {
+                geometry.faces.push(new THREE.Face4(0,1,2,3));
+            } else {
+                geometry.faces.push(new THREE.Face3(0,1,2));
+                for (var i = 2; i < coordinates.length -1; ++i) {
+                    geometry.faces.push(new THREE.Face3(0,i,i+1));
+                }
+            }
+            geometry.computeFaceNormals();
+            return geometry;
+        }   
+
+
+        this.addPolygon = function(polygon, color) {
+            var faceGeometry = polygonToMesh(polygon);
+            var meshObject = THREE.SceneUtils.createMultiMaterialObject(faceGeometry, [
+                new THREE.MeshLambertMaterial({color: color, opacity: 0.5, transparent: true}),
+            ]);
+            this.scene.add(meshObject);
+
+            var edgeGeometry = new THREE.Geometry();
+            for (var i = 0; i <= faceGeometry.vertices.length; ++i) {
+                edgeGeometry.vertices.push(faceGeometry.vertices[i % faceGeometry.vertices.length]);
+            }
+            var material = new THREE.LineBasicMaterial({color: color & 0x9f9f9f, linewidth: 1 });
+            var edges = new THREE.Line(edgeGeometry, material);
+            this.scene.add(edges);
+        }
+
+        this.addPlane = function(plane, color) {
+            var polygon = new Polygon().fromPlane(plane);
+            this.addPolygon(polygon, color);
+        }
     }
 
     return Viewport;
