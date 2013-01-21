@@ -1,4 +1,4 @@
-define(['lib/plane', 'lib/polygon3d'], function(Plane3D, Polygon3D) {
+define(['lib/plane3d', 'lib/polygon3d'], function(Plane3D, Polygon3D) {
 
     describe('3D Polygons', function() {
 

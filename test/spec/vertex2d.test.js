@@ -1,6 +1,6 @@
 define(['lib/plane2d', 'lib/vertex2d'], function(Plane2D, Vertex3D) {
 
-    describe('2D Vertex3D', function() {
+    describe('2D Vertex', function() {
 
         it('can be created', function() {
 

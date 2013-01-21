@@ -5,8 +5,8 @@ define([], function() {
         './spec/plane3d.test.js',
         './spec/vertex2d.test.js',
         './spec/vertex3d.test.js',
-        // './spec/polygon2d.test.js',
-        // './spec/polygon3d.test.js',
+        './spec/polygon2d.test.js',
+        './spec/polygon3d.test.js',
         // './spec/bsp.test.js',
         // './spec/bsptree.test.js',
     ];
