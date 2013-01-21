@@ -5,7 +5,7 @@ define([
         'lib/bsp',
         'examples/js/viewport',
         'examples/js/trackball',
-    ], function(Plane, Polygon, BSPTree, BSP, Viewport, Trackball) {
+    ], function(Plane3D, Polygon3D, BSPTree, BSP, Viewport, Trackball) {
 
 
     var Example = function(mesh1, mesh2) {
@@ -101,7 +101,7 @@ define([
     }
 
     var addPlane = function(viewport, plane, color) {
-        var polygon = new Polygon().fromPlane(plane);
+        var polygon = new Polygon3D().fromPlane(plane);
         addPolygon(viewport, polygon, color);
     }
 

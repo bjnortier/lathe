@@ -1,17 +1,17 @@
-define(['lib/plane', 'lib/polygon3d'], function(Plane, Polygon) {
+define(['lib/plane', 'lib/polygon3d'], function(Plane3D, Polygon3D) {
 
     describe('3D Polygons', function() {
 
         it('can be constructed from a plane and bounding planes', function() {
 
-            var s = new Plane(0,0,1,0);
+            var s = new Plane3D(0,0,1,0);
             var bounding = [
-                new Plane(1,0,0,1),
-                new Plane(0,1,0,1),
-                new Plane(1,0,0,-1),
-                new Plane(0,1,0,-1)
+                new Plane3D(1,0,0,1),
+                new Plane3D(0,1,0,1),
+                new Plane3D(1,0,0,-1),
+                new Plane3D(0,1,0,-1)
             ];
-            var polygon = new Polygon(s, bounding);
+            var polygon = new Polygon3D(s, bounding);
 
             var vertices = polygon.toVertices();
             assert.equal(vertices.length, 4);
@@ -31,13 +31,13 @@ define(['lib/plane', 'lib/polygon3d'], function(Plane, Polygon) {
 
         it('can be constructed from a plane', function() {
 
-            var p1a = new Polygon().fromPlane(new Plane(5,-2,1,0));
-            var p1b = new Polygon().fromPlane(new Plane(-6,2,-1,0));
-            var p2a = new Polygon().fromPlane(new Plane(-6,7,2,0));
-            var p2b = new Polygon().fromPlane(new Plane(0,-8,3,0));
-            var p3a = new Polygon().fromPlane(new Plane(2,1,9,0));
-            var p3b = new Polygon().fromPlane(new Plane(0,1,-2,0));
-            var p4 = new Polygon().fromPlane(new Plane(1,1,1,0));
+            var p1a = new Polygon3D().fromPlane(new Plane3D(5,-2,1,0));
+            var p1b = new Polygon3D().fromPlane(new Plane3D(-6,2,-1,0));
+            var p2a = new Polygon3D().fromPlane(new Plane3D(-6,7,2,0));
+            var p2b = new Polygon3D().fromPlane(new Plane3D(0,-8,3,0));
+            var p3a = new Polygon3D().fromPlane(new Plane3D(2,1,9,0));
+            var p3b = new Polygon3D().fromPlane(new Plane3D(0,1,-2,0));
+            var p4 = new Polygon3D().fromPlane(new Plane3D(1,1,1,0));
 
             var xplus = {a:1,b:0,c:0,d:1000000},
                 yplus = {a:0,b:1,c:0,d:1000000},
@@ -82,18 +82,18 @@ define(['lib/plane', 'lib/polygon3d'], function(Plane, Polygon) {
 
         it('can be split by a plane', function() {
 
-            var s = new Plane(0,0,1,0);
+            var s = new Plane3D(0,0,1,0);
             var bounding = [
-                new Plane(1,0,0,1),
-                new Plane(0,1,0,1),
-                new Plane(-1,0,0,1),
-                new Plane(0,-1,0,1)
+                new Plane3D(1,0,0,1),
+                new Plane3D(0,1,0,1),
+                new Plane3D(-1,0,0,1),
+                new Plane3D(0,-1,0,1)
             ];
-            var polygon = new Polygon(s, bounding);
+            var polygon = new Polygon3D(s, bounding);
 
-            var result1 = polygon.splitBy(new Plane(0,0,1,0));
-            var result2 = polygon.splitBy(new Plane(0,0,-1,0));
-            var result3 = polygon.splitBy(new Plane(1,0,0,0));
+            var result1 = polygon.splitBy(new Plane3D(0,0,1,0));
+            var result2 = polygon.splitBy(new Plane3D(0,0,-1,0));
+            var result3 = polygon.splitBy(new Plane3D(1,0,0,0));
 
             // Coincident and same orientation
             assert.deepEqual(result1.front, polygon);

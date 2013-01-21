@@ -1,4 +1,4 @@
-define(['lib/world', 'lib/Polygon'], function(world, Polygon) {
+define(['lib/world', 'lib/Polygon3D'], function(world, Polygon3D) {
 
     var Viewport = function(container) {
 
@@ -126,7 +126,7 @@ define(['lib/world', 'lib/Polygon'], function(world, Polygon) {
         }
 
         this.addPlane = function(plane, color) {
-            var polygon = new Polygon().fromPlane(plane);
+            var polygon = new Polygon3D().fromPlane(plane);
             this.addPolygon(polygon, color);
         }
     }

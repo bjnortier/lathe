@@ -1,13 +1,13 @@
-define(['lib/plane', 'lib/polygon2d'], function(Plane, Polygon2D) {
+define(['lib/plane', 'lib/polygon2d'], function(Plane3D, Polygon2D) {
 
     describe('2D Polygons', function() {
 
         it.only('can be constructed from a plane and bounding planes', function() {
 
             var bounding = [
-                new Plane(1,0,0),
-                new Plane(0,1,0),
-                new Plane(1,1,1),
+                new Plane3D(1,0,0),
+                new Plane3D(0,1,0),
+                new Plane3D(1,1,1),
             ];
             var polygon = new Ppolygon2D(bounding);
 
@@ -80,18 +80,18 @@ define(['lib/plane', 'lib/polygon2d'], function(Plane, Polygon2D) {
 
         it('can be split by a plane', function() {
 
-            var s = new Plane(0,0,1,0);
+            var s = new Plane3D(0,0,1,0);
             var bounding = [
-                new Plane(1,0,0,1),
-                new Plane(0,1,0,1),
-                new Plane(-1,0,0,1),
-                new Plane(0,-1,0,1)
+                new Plane3D(1,0,0,1),
+                new Plane3D(0,1,0,1),
+                new Plane3D(-1,0,0,1),
+                new Plane3D(0,-1,0,1)
             ];
             var polygon = new Ppolygon2D(s, bounding);
 
-            var result1 = polygon.splitBy(new Plane(0,0,1,0));
-            var result2 = polygon.splitBy(new Plane(0,0,-1,0));
-            var result3 = polygon.splitBy(new Plane(1,0,0,0));
+            var result1 = polygon.splitBy(new Plane3D(0,0,1,0));
+            var result2 = polygon.splitBy(new Plane3D(0,0,-1,0));
+            var result3 = polygon.splitBy(new Plane3D(1,0,0,0));
 
             // Coincident and same orientation
             assert.deepEqual(result1.front, polygon);

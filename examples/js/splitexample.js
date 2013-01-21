@@ -3,7 +3,7 @@ define([
         'lib/polygon',
         'examples/js/viewport',
         'examples/js/trackball',
-    ], function(Plane, Polygon, Viewport, Trackball) {
+    ], function(Plane3D, Polygon3D, Viewport, Trackball) {
 
 
     var Example = function(p1, h) {

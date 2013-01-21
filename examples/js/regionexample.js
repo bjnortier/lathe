@@ -5,7 +5,7 @@ define([
         'lib/bspnode',
         'examples/js/viewport',
         'examples/js/trackball',
-    ], function(Plane, Polygon, Region, BSPTree, Viewport, Trackball) {
+    ], function(Plane3D, Polygon3D, Region, BSPTree, Viewport, Trackball) {
 
 
     var Example = function(region) {
@@ -25,13 +25,13 @@ define([
 
 
         var tree = new BSPTree.Node(
-            new Plane(0,0,-1,0),
+            new Plane3D(0,0,-1,0),
             new BSPTree.Node(
-                new Plane(0,-1,0,0),
+                new Plane3D(0,-1,0,0),
                 new BSPTree.Node(
-                    new Plane(-1,0,0,0),
+                    new Plane3D(-1,0,0,0),
                     new BSPTree.Node(
-                        new Plane(1,1,1,5),
+                        new Plane3D(1,1,1,5),
                         new BSPTree.Cell('OUT'),
                         new BSPTree.Cell('IN')),
                     new BSPTree.Cell('IN')),
@@ -39,41 +39,41 @@ define([
             new BSPTree.Cell('IN'));
 
         // var polyhedron1 = [
-        //     new Polygon(
-        //         new Plane(0,0,-1,0), [new Plane(0,-1,0,0),new Plane(-1,0,0,0),new Plane(1,1,0,10)]),
-        //     new Polygon(
-        //         new Plane(0,-1,0,0), [new Plane(0,0,-1,0),new Plane(1,0,1,10),new Plane(-1,0,0,0)]),
-        //     new Polygon(
-        //         new Plane(-1,0,0,0), [new Plane(0,-1,0,0),new Plane(0,1,1,10),new Plane(0,0,-1,0)]),
-        //     new Polygon(
-        //         new Plane(1,1,1,10), [new Plane(0,-1,0,0),new Plane(0,0,-1,0),new Plane(-1,0,0,0)]),
+        //     new Polygon3D(
+        //         new Plane3D(0,0,-1,0), [new Plane3D(0,-1,0,0),new Plane3D(-1,0,0,0),new Plane3D(1,1,0,10)]),
+        //     new Polygon3D(
+        //         new Plane3D(0,-1,0,0), [new Plane3D(0,0,-1,0),new Plane3D(1,0,1,10),new Plane3D(-1,0,0,0)]),
+        //     new Polygon3D(
+        //         new Plane3D(-1,0,0,0), [new Plane3D(0,-1,0,0),new Plane3D(0,1,1,10),new Plane3D(0,0,-1,0)]),
+        //     new Polygon3D(
+        //         new Plane3D(1,1,1,10), [new Plane3D(0,-1,0,0),new Plane3D(0,0,-1,0),new Plane3D(-1,0,0,0)]),
         // ]
 
         var polyhedron1 = [
-            new Polygon(
-                new Plane(0,0,-1,0), [new Plane(1,0,0,5),new Plane(0,1,0,5),new Plane(-1,0,0,5),new Plane(0,-1,0,5)]),
-            new Polygon(
-                new Plane(0,0,1,5), [new Plane(1,0,0,5),new Plane(0,1,0,5),new Plane(-1,0,0,5),new Plane(0,-1,0,5)]),
-            new Polygon(
-                new Plane(1,0,0,5), [new Plane(0,0,-1,0),new Plane(0,1,0,5),new Plane(0,0,1,5),new Plane(0,-1,0,5)]),
-            new Polygon(
-                new Plane(-1,0,0,5), [new Plane(0,0,-1,0),new Plane(0,1,0,5),new Plane(0,0,1,5),new Plane(0,-1,0,5)]),
-            new Polygon(
-                new Plane(0,1,0,5), [new Plane(0,0,-1,0),new Plane(1,0,0,5),new Plane(0,0,1,5),new Plane(-1,0,0,5)]),
-            new Polygon(
-                new Plane(0,-1,0,5), [new Plane(0,0,-1,0),new Plane(1,0,0,5),new Plane(0,0,1,5),new Plane(-1,0,0,5)]),
+            new Polygon3D(
+                new Plane3D(0,0,-1,0), [new Plane3D(1,0,0,5),new Plane3D(0,1,0,5),new Plane3D(-1,0,0,5),new Plane3D(0,-1,0,5)]),
+            new Polygon3D(
+                new Plane3D(0,0,1,5), [new Plane3D(1,0,0,5),new Plane3D(0,1,0,5),new Plane3D(-1,0,0,5),new Plane3D(0,-1,0,5)]),
+            new Polygon3D(
+                new Plane3D(1,0,0,5), [new Plane3D(0,0,-1,0),new Plane3D(0,1,0,5),new Plane3D(0,0,1,5),new Plane3D(0,-1,0,5)]),
+            new Polygon3D(
+                new Plane3D(-1,0,0,5), [new Plane3D(0,0,-1,0),new Plane3D(0,1,0,5),new Plane3D(0,0,1,5),new Plane3D(0,-1,0,5)]),
+            new Polygon3D(
+                new Plane3D(0,1,0,5), [new Plane3D(0,0,-1,0),new Plane3D(1,0,0,5),new Plane3D(0,0,1,5),new Plane3D(-1,0,0,5)]),
+            new Polygon3D(
+                new Plane3D(0,-1,0,5), [new Plane3D(0,0,-1,0),new Plane3D(1,0,0,5),new Plane3D(0,0,1,5),new Plane3D(-1,0,0,5)]),
 
         ]
 
         var polyhedron2 = [
-            new Polygon(
-                new Plane(0,0,-1,-2), [new Plane(0,-1,0,-2),new Plane(-1,0,0,-2),new Plane(1,1,1,14)]),
-            new Polygon(
-                new Plane(0,-1,0,-2), [new Plane(0,0,-1,-2),new Plane(1,1,1,14),new Plane(-1,0,0,-2)]),
-            new Polygon(
-                new Plane(-1,0,0,-2), [new Plane(0,-1,0,-2),new Plane(1,1,1,14),new Plane(0,0,-1,-2)]),
-            new Polygon(
-                new Plane(1,1,1,14), [new Plane(0,-1,0,-2),new Plane(0,0,-1,-2),new Plane(-1,0,0,-2)]),
+            new Polygon3D(
+                new Plane3D(0,0,-1,-2), [new Plane3D(0,-1,0,-2),new Plane3D(-1,0,0,-2),new Plane3D(1,1,1,14)]),
+            new Polygon3D(
+                new Plane3D(0,-1,0,-2), [new Plane3D(0,0,-1,-2),new Plane3D(1,1,1,14),new Plane3D(-1,0,0,-2)]),
+            new Polygon3D(
+                new Plane3D(-1,0,0,-2), [new Plane3D(0,-1,0,-2),new Plane3D(1,1,1,14),new Plane3D(0,0,-1,-2)]),
+            new Polygon3D(
+                new Plane3D(1,1,1,14), [new Plane3D(0,-1,0,-2),new Plane3D(0,0,-1,-2),new Plane3D(-1,0,0,-2)]),
         ]
 
         polyhedron1.forEach(function(p) {
@@ -102,7 +102,7 @@ define([
                     var permutate = function(toHere, values) {
                         if (values.length === 1) {
                             try {
-                                var p = new Polygon(h, toHere.concat(values[0]));
+                                var p = new Polygon3D(h, toHere.concat(values[0]));
                                 p.toVertices();
                                 return p;
                             } catch (e) {
@@ -147,20 +147,20 @@ define([
         });
 
         // var tree = [
-        //     new Plane(0,0,-1,0), 
-        //     new Plane(0,-1,0,0), 
-        //     new Plane(-1,0,0,0), 
-        //     // new Plane(1,1,1,10), 
+        //     new Plane3D(0,0,-1,0), 
+        //     new Plane3D(0,-1,0,0), 
+        //     new Plane3D(-1,0,0,0), 
+        //     // new Plane3D(1,1,1,10), 
         // ]
 
-        // var s = new Plane(2,2,2,2);
+        // var s = new Plane3D(2,2,2,2);
 
         // var bounding = [];
         // tree.forEach(function(hp) {
 
         // });
 
-        // regionViewport.addPolygon(new Polygon(s, tree), 0xff0000);
+        // regionViewport.addPolygon(new Polygon3D(s, tree), 0xff0000);
         // tree.forEach(function(plane) {
         //     regionViewport.addPlane(plane, 0x00ff00);
         // })
