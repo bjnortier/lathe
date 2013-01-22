@@ -1,6 +1,6 @@
 define([
-        'lib/plane',
-        'lib/polygon',
+        'lib/plane3d',
+        'lib/polygon3d',
         'lib/bsptree',
         'lib/bsp',
         'examples/js/viewport',

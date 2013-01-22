@@ -1,11 +1,10 @@
 define([
-        'lib/plane',
-        'lib/polygon',
-        'lib/region',
-        'lib/bspnode',
+        'lib/plane3d',
+        'lib/polygon3d',
+        'lib/region3d',
         'examples/js/viewport',
         'examples/js/trackball',
-    ], function(Plane3D, Polygon3D, Region, BSPTree, Viewport, Trackball) {
+    ], function(Plane3D, Polygon3D, Region3D, Viewport, Trackball) {
 
 
     var Example = function(region) {
@@ -24,19 +23,19 @@ define([
         new Trackball([beforeViewport, splitViewport]);
 
 
-        var tree = new BSPTree.Node(
-            new Plane3D(0,0,-1,0),
-            new BSPTree.Node(
-                new Plane3D(0,-1,0,0),
-                new BSPTree.Node(
-                    new Plane3D(-1,0,0,0),
-                    new BSPTree.Node(
-                        new Plane3D(1,1,1,5),
-                        new BSPTree.Cell('OUT'),
-                        new BSPTree.Cell('IN')),
-                    new BSPTree.Cell('IN')),
-                new BSPTree.Cell('IN')),
-            new BSPTree.Cell('IN'));
+        // var tree = new BSPTree.Node(
+        //     new Plane3D(0,0,-1,0),
+        //     new BSPTree.Node(
+        //         new Plane3D(0,-1,0,0),
+        //         new BSPTree.Node(
+        //             new Plane3D(-1,0,0,0),
+        //             new BSPTree.Node(
+        //                 new Plane3D(1,1,1,5),
+        //                 new BSPTree.Cell('OUT'),
+        //                 new BSPTree.Cell('IN')),
+        //             new BSPTree.Cell('IN')),
+        //         new BSPTree.Cell('IN')),
+        //     new BSPTree.Cell('IN'));
 
         // var polyhedron1 = [
         //     new Polygon3D(

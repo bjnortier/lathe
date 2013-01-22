@@ -1,6 +1,6 @@
 define([
-        'lib/plane',
-        'lib/polygon',
+        'lib/plane3d',
+        'lib/polygon3d',
         'examples/js/viewport',
         'examples/js/trackball',
     ], function(Plane3D, Polygon3D, Viewport, Trackball) {

@@ -1,4 +1,4 @@
-define(['lib/world', 'lib/Polygon3D'], function(world, Polygon3D) {
+define(['lib/world3d', 'lib/Polygon3D'], function(world, Polygon3D) {
 
     var Viewport = function(container) {
 

@@ -7,17 +7,17 @@ requirejs.config({
 });
 
 requirejs([
-        'lib/plane',
-        'lib/polygon',
-        'lib/region',
-        'examples/js/splitexample',
-        'examples/js/regionexample',
-        'examples/js/bsptreeexample',
+        'lib/plane3d',
+        'lib/polygon3d',
+        'lib/region3d',
+        'examples/js/split3dexample',
+        'examples/js/region3dexample',
+        'examples/js/bsptree3dexample',
     ], 
     function(
         Plane3D,
         Polygon3D,
-        Region,
+        Region3D,
         SplitExample,
         RegionExample,
         BSPTreeExample) {
@@ -30,9 +30,9 @@ requirejs([
     //     new Polygon3D(new Plane3D(0,0,1,0), [new Plane3D(1,0,0,-1), new Plane3D(0,1,0,-1), new Plane3D(1,1,0,5)]),
     //     new Plane3D(0,0,1,0));
 
-    // new SplitExample(
-    //     new Polygon3D(new Plane3D(0,0,1,0), [new Plane3D(-1,1,0,0), new Plane3D(0,1,0,5), new Plane3D(1,0,0,1)]),
-    //     new Plane3D(0,1,0,1));
+    new SplitExample(
+        new Polygon3D(new Plane3D(0,0,1,0), [new Plane3D(-1,1,0,0), new Plane3D(0,1,0,5), new Plane3D(1,0,0,1)]),
+        new Plane3D(0,1,0,1));
 
     // new SplitExample(
     //     new Polygon3D(new Plane3D(0,0,1,0), [
