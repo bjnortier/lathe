@@ -1,4 +1,5 @@
-define(['lib/world3d', 'lib/Polygon3D'], function(world, Polygon3D) {
+define(['lib/world3d', 'lib/Polygon3D',  'lib/plane2d', 'lib/vertex2d'], 
+    function(world, Polygon3D, Plane2D, Vertex2D) {
 
     var Viewport = function(container) {
 
@@ -108,8 +109,7 @@ define(['lib/world3d', 'lib/Polygon3D'], function(world, Polygon3D) {
             return geometry;
         }   
 
-
-        this.addPolygon = function(polygon, color) {
+        this.addPolygon2D = function(polygon, color) {
             var faceGeometry = polygonToMesh(polygon);
             var meshObject = THREE.SceneUtils.createMultiMaterialObject(faceGeometry, [
                 new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide, opacity: 0.5, transparent: true}),
@@ -125,10 +125,51 @@ define(['lib/world3d', 'lib/Polygon3D'], function(world, Polygon3D) {
             this.scene.add(edges);
         }
 
-        this.addPlane = function(plane, color) {
-            var polygon = new Polygon3D().fromPlane(plane);
-            this.addPolygon(polygon, color);
+        this.addPolygon3D = function(polygon, color) {
+            var faceGeometry = polygonToMesh(polygon);
+            var meshObject = THREE.SceneUtils.createMultiMaterialObject(faceGeometry, [
+                new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide, opacity: 0.5, transparent: true}),
+            ]);
+            this.scene.add(meshObject);
+
+            var edgeGeometry = new THREE.Geometry();
+            for (var i = 0; i <= faceGeometry.vertices.length; ++i) {
+                edgeGeometry.vertices.push(faceGeometry.vertices[i % faceGeometry.vertices.length]);
+            }
+            var material = new THREE.LineBasicMaterial({color: color & 0x9f9f9f, linewidth: 1 });
+            var edges = new THREE.Line(edgeGeometry, material);
+            this.scene.add(edges);
         }
+
+        this.addPlane2D = function(plane, color) {
+            var vertices = [];
+            try {
+                vertices = [
+                    new Vertex2D(plane, new Plane2D(1,0,-1000)),
+                    new Vertex2D(plane, new Plane2D(1,0,1000)),
+                ]
+            } catch(e) {
+                vertices = [
+                    new Vertex2D(plane, new Plane2D(0,1,-1000)),
+                    new Vertex2D(plane, new Plane2D(0,1,1000)),
+                ]
+            }
+            var geometry = new THREE.Geometry();
+            vertices.forEach(function(v) {
+                var coordinate = v.toCoordinate();
+                geometry.vertices.push(new THREE.Vector3(coordinate.x, coordinate.y, coordinate.z));
+            })
+            var material = new THREE.LineBasicMaterial({color: color & 0x9f9f9f, linewidth: 1});
+            var edges = new THREE.Line(geometry, material);
+            this.scene.add(edges);
+        }
+
+        this.addPlane3D = function(plane, color) {
+            var polygon = new Polygon3D().fromPlane(plane);
+            this.addPolygon3D(polygon, color);
+        }
+
+
     }
 
     return Viewport;

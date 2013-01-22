@@ -20,16 +20,15 @@ define([
         var splitViewport  = new Viewport(splitContainer);
         new Trackball([beforeViewport, splitViewport]);
 
-        beforeViewport.addPolygon3D(p1, 0x00ffff);
-        beforeViewport.addPlane3D(h, 0xff0000);
+        beforeViewport.addPolygon2D(p1, 0x00ffff);
+        beforeViewport.addPlane2D(h, 0xff0000);
 
         var splits = p1.splitBy(h); 
-        splits.front && splitViewport.addPolygon3D(splits.front, 0x0000ff);
-        splits.back && splitViewport.addPolygon3D(splits.back, 0x00ff00);
-        splitViewport.addPlane3D(h, 0xff0000);
+        splits.front && splitViewport.addPolygon2D(splits.front, 0x0000ff);
+        splits.back && splitViewport.addPolygon2D(splits.back, 0x00ff00);
+        splitViewport.addPlane2D(h, 0xff0000);
 
     }
-
 
     return Example;
 

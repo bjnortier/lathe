@@ -76,10 +76,10 @@ define([
         ]
 
         polyhedron1.forEach(function(p) {
-            beforeViewport.addPolygon(p, 0xffff00);
+            beforeViewport.addPolygon3D(p, 0xffff00);
         });
         polyhedron2.forEach(function(p) {
-            beforeViewport.addPolygon(p, 0x00ffff);
+            beforeViewport.addPolygon3D(p, 0x00ffff);
         });
 
         var splitPolyhedron = function(polyhedron, h) {
@@ -127,8 +127,6 @@ define([
                 backPolygons.push(capPolygon);
             }   
 
-            
-
 
             return {
                 front: frontPolygons,
@@ -142,7 +140,7 @@ define([
         var splits4 = splitPolyhedron(splits3.back, polyhedron2[3].s);
 
         splits4.back.forEach(function(p) {
-            splitViewport.addPolygon(p, 0x00ff00);
+            splitViewport.addPolygon3D(p, 0x00ff00);
         });
 
         // var tree = [
