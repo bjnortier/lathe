@@ -39,6 +39,10 @@ requirejs([
 
     new Split2DExample(
         new Polygon2D([new Plane2D(0,1,1), new Plane2D(1,1,10), new Plane2D(1,0,1)]),
+        new Plane2D(-1,1,0));
+
+    new Split2DExample(
+        new Polygon2D([new Plane2D(0,1,1), new Plane2D(1,1,10), new Plane2D(1,0,1)]),
         new Plane2D(1,1,10));
 
     new Split2DExample(
