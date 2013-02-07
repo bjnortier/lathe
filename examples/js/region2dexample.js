@@ -1,3 +1,5 @@
+'use strict';
+
 define([
         'lib/plane2d',
         'lib/polygon2d',
@@ -6,24 +8,24 @@ define([
     ], function(Plane2D, Polygon2D, Viewport, Trackball) {
 
 
-    var Node = function(plane, back, front, region) {
+    var Node = function(plane, back, front) {
         this.plane  = plane;
         this.back   = back;
         this.front  = front;
-        this.region = region;
+        Object.freeze(this);
     }
 
     Node.prototype.clone = function() {
         return new Node(
             this.plane,
             this.back.clone(),
-            this.front.clone(),
-            this.region);
+            this.front.clone());
     }
 
     var Cell = function(inside, region) {
         this.inside = inside;
         this.region = region;
+        Object.freeze(this);
     }
 
     Cell.prototype.clone = function() {
@@ -74,37 +76,66 @@ define([
                 new Cell(false)),
             new Cell(false));
 
-        var updateRegion = function(region, node) {
+        var updateRegions = function(key, plane, node) {
             if (node instanceof Cell) { 
-                if (node.inside) {
-                    node.region = region;
+                if (node.region) {
+                    var splitRegion = node.region.splitBy(plane);
+                    return new Cell(node.inside, splitRegion[key]);
                 } else {
-                    // Keep unchanged
+                    return node.clone();
                 }
             } else {
-                var newRegion = region.splitBy(node.plane);
-                updateRegion(newRegion.back, node.back);
-                updateRegion(newRegion.front, node.front);
+                return new Node(node.plane, 
+                    updateRegions(key, plane, node.back), 
+                    updateRegions(key, plane, node.front));
             }
         }
 
         var intersect = function(t1,t2) {
 
-            var merge = function(currentNode, region) {
+            var merge = function(currentNode, currentT2) {
 
                 var newBackFront = ['back', 'front'].map(function(key) {
                     var newChild;
                     if (currentNode[key] instanceof Cell) {
                         if (currentNode[key].inside) {
-                            newChild = t2.clone();
-                            updateRegion(currentNode[key].region, newChild);
+                            newChild = currentT2;
                         } else {
                             newChild = new Cell(false);
                         }
                     } else {
-                        newChild = merge(currentNode[key], t2);
+                        // Clone t2 and update regions
+                        var newT2 = currentT2.clone();
+                        updateRegions(key, currentNode.plane, newT2);
+                        newChild = merge(currentNode[key], newT2);
                     }
                     return newChild;
+                });
+                return new Node(currentNode.plane, newBackFront[0], newBackFront[1]);
+            }
+
+            var merged = merge(t1,t2);
+            console.log(merged);
+            return merged;
+
+        }
+
+        var union = function(t1,t2) {
+
+            var merge = function(currentNode, currentT2) {
+
+                var newBackFront = ['back', 'front'].map(function(key) {
+                    if (currentNode[key] instanceof Cell) {
+                        if (currentNode[key].inside) {
+                            return currentNode[key];
+                        } else {
+                            return updateRegions(key, currentNode.plane, currentT2.clone());
+                        }
+                    } else {
+                        // Clone t2 and update regions
+                        var newT2 = updateRegions(key, currentNode.plane, currentT2.clone());
+                        return merge(currentNode[key], newT2);
+                    }
                 });
                 return new Node(currentNode.plane, newBackFront[0], newBackFront[1]);
             }
@@ -133,12 +164,12 @@ define([
 
         }
 
-        var newTree = intersect(t1, t2);
+        var newTree = union(t1, t2);
         var regions = findRegions(newTree);
+        console.log(regions);
 
-
-        regions.forEach(function(region) {
-            splitViewport.addPolygon2D(region, 0xff0000);
+        regions.forEach(function(region, i) {
+            splitViewport.addPolygon2D(region, 0xff0000, i+1);
         });
 
         splitViewport.addPolygon2D(p1, 0xffff00);

@@ -109,7 +109,7 @@ define(['lib/world3d', 'lib/Polygon3D',  'lib/plane2d', 'lib/vertex2d'],
             return geometry;
         }   
 
-        this.addPolygon2D = function(polygon, color) {
+        this.addPolygon2D = function(polygon, color, z) {
             var faceGeometry = polygonToMesh(polygon);
             var meshObject = THREE.SceneUtils.createMultiMaterialObject(faceGeometry, [
                 new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide, opacity: 0.5, transparent: true}),
@@ -120,6 +120,16 @@ define(['lib/world3d', 'lib/Polygon3D',  'lib/plane2d', 'lib/vertex2d'],
             for (var i = 0; i <= faceGeometry.vertices.length; ++i) {
                 edgeGeometry.vertices.push(faceGeometry.vertices[i % faceGeometry.vertices.length]);
             }
+
+            if (z) {
+                faceGeometry.vertices.forEach(function(v) {
+                    v.z = z;
+                });
+                edgeGeometry.vertices.forEach(function(v) {
+                    v.z = z;
+                });
+            }
+
             var material = new THREE.LineBasicMaterial({color: color & 0x9f9f9f, linewidth: 1 });
             var edges = new THREE.Line(edgeGeometry, material);
             this.scene.add(edges);
