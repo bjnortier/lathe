@@ -80,31 +80,22 @@ define([
 
             var merge = function(currentNode, region) {
 
-                var newBack;
-                if (currentNode.back instanceof Cell) {
-                    if (currentNode.back.inside) {
-                        newBack = t2;
-                        updateRegion(currentNode.back.region, t2);
+                var newBackFront = ['back', 'front'].map(function(key) {
+                    var newChild;
+                    if (currentNode[key] instanceof Cell) {
+                        if (currentNode[key].inside) {
+                            newChild = t2;
+                            updateRegion(currentNode[key].region, t2);
+                        } else {
+                            newChild = new Cell(false);
+                        }
                     } else {
-                        newBack = new Cell(false);
+                        newChild = merge(currentNode[key], t2);
                     }
-                } else {
-                    newBack = merge(currentNode.back, t2);
-                }
+                    return newChild;
+                });
 
-                var newFront;
-                if (currentNode.front instanceof Cell) {
-                    if (currentNode.front.inside) {
-                        newFront = t2;
-                        updateRegion(currentNode.front.region, t2);
-                    } else {
-                        newFront = new Cell(false);
-                    }
-                } else {
-                    newFront = merge(currentNode.front, t2);
-                }
-
-                return new Node(currentNode.plane, newBack, newFront);
+                return new Node(currentNode.plane, newBackFront[0], newBackFront[1]);
             }
 
             var merged = merge(t1,t2);
