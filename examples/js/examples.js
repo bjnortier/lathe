@@ -14,6 +14,7 @@ requirejs([
         'lib/region3d',
         'examples/js/split2dexample',
         'examples/js/split3dexample',
+        'examples/js/region2dexample',
         'examples/js/region3dexample',
         'examples/js/bsptree3dexample',
     ], 
@@ -25,29 +26,30 @@ requirejs([
         Region3D,
         Split2DExample,
         Split3DExample,
+        Region2DExample,
         Region3DExample,
         BSPTree3DExample) {
 
 
-    new Split2DExample(
-        new Polygon2D([new Plane2D(0,1,1), new Plane2D(1,1,10), new Plane2D(1,0,1)]),
-        new Plane2D(1,0,5));
+    // new Split2DExample(
+    //     new Polygon2D([new Plane2D(0,1,1), new Plane2D(1,1,10), new Plane2D(1,0,1)]),
+    //     new Plane2D(1,0,5));
 
-    new Split2DExample(
-        new Polygon2D([new Plane2D(0,1,1), new Plane2D(1,1,10), new Plane2D(1,0,1)]),
-        new Plane2D(-1,0,-5));
+    // new Split2DExample(
+    //     new Polygon2D([new Plane2D(0,1,1), new Plane2D(1,1,10), new Plane2D(1,0,1)]),
+    //     new Plane2D(-1,0,-5));
 
-    new Split2DExample(
-        new Polygon2D([new Plane2D(0,1,1), new Plane2D(1,1,10), new Plane2D(1,0,1)]),
-        new Plane2D(-1,1,0));
+    // new Split2DExample(
+    //     new Polygon2D([new Plane2D(0,1,1), new Plane2D(1,1,10), new Plane2D(1,0,1)]),
+    //     new Plane2D(-1,1,0));
 
-    new Split2DExample(
-        new Polygon2D([new Plane2D(0,1,1), new Plane2D(1,1,10), new Plane2D(1,0,1)]),
-        new Plane2D(1,1,10));
+    // new Split2DExample(
+    //     new Polygon2D([new Plane2D(0,1,1), new Plane2D(1,1,10), new Plane2D(1,0,1)]),
+    //     new Plane2D(1,1,10));
 
-    new Split2DExample(
-        new Polygon2D([new Plane2D(0,1,1), new Plane2D(1,1,10), new Plane2D(1,0,1)]),
-        new Plane2D(-1,-1,-10));
+    // new Split2DExample(
+    //     new Polygon2D([new Plane2D(0,1,1), new Plane2D(1,1,10), new Plane2D(1,0,1)]),
+    //     new Plane2D(-1,-1,-10));
 
 
     // new Split3DExample(
@@ -96,5 +98,6 @@ requirejs([
 
     // new BSPTree3DExample(mesh1, mesh2);
 
-    // new Region3DExample();
+    new Region2DExample();
+    new Region3DExample();
 });
