@@ -6,6 +6,19 @@ define([
     ], function(Plane2D, Polygon2D, Viewport, Trackball) {
 
 
+    var Node = function(plane, back, front, region) {
+        this.plane = plane;
+        this.back = back;
+        this.front = front;
+    }
+
+    var Cell = function(inside, region) {
+        this.inside = inside;
+        this.region = region;
+    }
+
+
+
     var Example = function(region) {
 
        var exampleContainer = document.createElement('div');
@@ -27,11 +40,104 @@ define([
         beforeViewport.addPolygon2D(p1, 0xffff00);
         beforeViewport.addPolygon2D(p2, 0x00ffff);
 
-        var splits1 = p1.splitBy(p2.boundingPlanes[0]);
-        var splits2 = splits1.back.splitBy(p2.boundingPlanes[1]);
-        var splits3 = splits2.back.splitBy(p2.boundingPlanes[2]);
+        var t1 = new Node(
+            p1.boundingPlanes[0],
+            new Node(
+                p1.boundingPlanes[1],
+                new Node(
+                    p1.boundingPlanes[2],
+                    new Cell(true, p1),
+                    new Cell(false)),
+                new Cell(false)),
+            new Cell(false));
 
-        splitViewport.addPolygon2D(splits3.back, 0x00ff00);
+        var t2 = new Node(
+            p2.boundingPlanes[0],
+            new Node(
+                p2.boundingPlanes[1],
+                new Node(
+                    p2.boundingPlanes[2],
+                    new Cell(true, p2),
+                    new Cell(false)),
+                new Cell(false)),
+            new Cell(false));
+
+        var updateRegion = function(region, node) {
+            if (node instanceof Cell) { 
+                if (node.inside) {
+                    node.region = region;
+                } else {
+                    // Keep unchanged
+                }
+            } else {
+                var newRegion = region.splitBy(node.plane);
+                updateRegion(newRegion.back, node.back);
+                updateRegion(newRegion.front, node.front);
+            }
+        }
+
+        var intersect = function(t1,t2) {
+
+            var merge = function(currentNode, region) {
+
+                var newBack;
+                if (currentNode.back instanceof Cell) {
+                    if (currentNode.back.inside) {
+                        newBack = t2;
+                        updateRegion(currentNode.back.region, t2);
+                    } else {
+                        newBack = new Cell(false);
+                    }
+                } else {
+                    newBack = merge(currentNode.back, t2);
+                }
+
+                var newFront;
+                if (currentNode.front instanceof Cell) {
+                    if (currentNode.front.inside) {
+                        newFront = t2;
+                        updateRegion(currentNode.front.region, t2);
+                    } else {
+                        newFront = new Cell(false);
+                    }
+                } else {
+                    newFront = merge(currentNode.front, t2);
+                }
+
+                return new Node(currentNode.plane, newBack, newFront);
+            }
+
+            var merged = merge(t1,t2);
+            console.log(merged);
+            return merged;
+
+        }
+
+        var findRegions = function(node) {
+            if (node instanceof Cell) {
+                if (node.inside) {
+                    return node.region;
+                } else {
+                    return undefined;
+                }
+            } else {
+                var backRegions = findRegions(node.back);
+                var frontRegions = findRegions(node.front);
+                var regions = [];
+                backRegions && (regions = regions.concat(backRegions));
+                frontRegions && (regions = regions.concat(frontRegions));
+                return regions;
+            }
+
+        }
+
+        var newTree = intersect(t1, t2);
+        var regions = findRegions(newTree);
+
+
+        regions.forEach(function(region) {
+            splitViewport.addPolygon2D(region, 0x00ff00);
+        });
 
     }
 
