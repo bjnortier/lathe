@@ -7,9 +7,18 @@ define([
 
 
     var Node = function(plane, back, front, region) {
-        this.plane = plane;
-        this.back = back;
-        this.front = front;
+        this.plane  = plane;
+        this.back   = back;
+        this.front  = front;
+        this.region = region;
+    }
+
+    Node.prototype.clone = function() {
+        return new Node(
+            this.plane,
+            this.back.clone(),
+            this.front.clone(),
+            this.region);
     }
 
     var Cell = function(inside, region) {
@@ -17,6 +26,9 @@ define([
         this.region = region;
     }
 
+    Cell.prototype.clone = function() {
+        return new Cell(this.inside, this.region);
+    }
 
 
     var Example = function(region) {
@@ -84,8 +96,8 @@ define([
                     var newChild;
                     if (currentNode[key] instanceof Cell) {
                         if (currentNode[key].inside) {
-                            newChild = t2;
-                            updateRegion(currentNode[key].region, t2);
+                            newChild = t2.clone();
+                            updateRegion(currentNode[key].region, newChild);
                         } else {
                             newChild = new Cell(false);
                         }
@@ -94,7 +106,6 @@ define([
                     }
                     return newChild;
                 });
-
                 return new Node(currentNode.plane, newBackFront[0], newBackFront[1]);
             }
 
@@ -127,8 +138,11 @@ define([
 
 
         regions.forEach(function(region) {
-            splitViewport.addPolygon2D(region, 0x00ff00);
+            splitViewport.addPolygon2D(region, 0xff0000);
         });
+
+        splitViewport.addPolygon2D(p1, 0xffff00);
+        splitViewport.addPolygon2D(p2, 0x00ffff);
 
     }
 
