@@ -16,6 +16,7 @@ requirejs([
         'examples/js/split3dexample',
         'examples/js/region2dexample',
         'examples/js/region3dexample',
+        'examples/js/bsptree2dexample',
         'examples/js/bsptree3dexample',
     ], 
     function(
@@ -28,6 +29,7 @@ requirejs([
         Split3DExample,
         Region2DExample,
         Region3DExample,
+        BSPTree2DExample,
         BSPTree3DExample) {
 
 
@@ -98,6 +100,9 @@ requirejs([
 
     // new BSPTree3DExample(mesh1, mesh2);
 
-    new Region2DExample();
-    new Region3DExample();
+    new BSPTree2DExample();
+    // new Region2DExample();
+
+
+    // new Region3DExample();
 });
