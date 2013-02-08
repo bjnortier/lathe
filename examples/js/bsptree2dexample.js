@@ -129,6 +129,24 @@ define([
             }
  
         }
+
+        var updateLeafRegions = function(key, plane, node) {
+            if (node instanceof Cell) { 
+                if (node.region) {
+                    var splitRegion = node.region.splitBy(plane);
+                    return new Cell(node.inside, splitRegion[key]);
+                } else {
+                    return node.clone();
+                }
+            } else {
+                var splitRegion = node.region.splitBy(plane);
+                return new Node(
+                    splitRegion[key],
+                    node.plane, 
+                    updateLeafRegions(key, plane, node.back), 
+                    updateLeafRegions(key, plane, node.front));
+            }
+        }
         
         var mergeBspts = function(t1, t2) {
             if ((t1 instanceof Cell) || (t2 instanceof Cell)) {
@@ -137,7 +155,11 @@ define([
                 var t2Partitioned = partitionBspt(t2, t1.region, t1.plane);
                 var negSubtree = mergeBspts(t1.back, t2Partitioned.inNegHs);
                 var posSubtree = mergeBspts(t1.front, t2Partitioned.inPosHs);
-                return new Node(t1.rootRegion, t1.plane, negSubtree, posSubtree);
+                return new Node(
+                    t1.region, 
+                    t1.plane, 
+                    updateLeafRegions('back', t1.plane, negSubtree),
+                    updateLeafRegions('front', t1.plane, posSubtree));
             }
         }
 
