@@ -70,62 +70,108 @@ define([
         beforeViewport.addPolygon2D(t1.back.back.back.region, 0xffff00);
         beforeViewport.addPolygon2D(t2.back.back.back.region, 0x00ffff);
         
-        // var p1 = new Polygon2D([new Plane2D(0,-1,-1), new Plane2D(1,1,10), new Plane2D(-1,0,-1)]);
-        // var p2 = new Polygon2D([new Plane2D(0,-1,-3), new Plane2D(1,1,12), new Plane2D(-1,0,-3)]);
+        var mergeTreeWithCell = function(t1, t2) {
+            if (t1 instanceof Cell) {
+                if (t1.inside) {
+                    return t2;
+                } else {
+                    return t1;
+                }
+            } else if (t2 instanceof Cell) {
+                if (t2.inside) {
+                    return t1
+                } else {
+                    return t2;
+                }
+            }
+        }
 
+        var partitionBspt = function(t, region, plane) {
+            var tSplits = region.splitBy(t.plane);
+            var tFrontSplits = tSplits.front.splitBy(plane);
+            var tBackSplits = tSplits.back.splitBy(plane)
 
-        // var t1 = new Node(
-        //     p1.boundingPlanes[0],
-        //     new Node(
-        //         p1.boundingPlanes[1],
-        //         new Node(
-        //             p1.boundingPlanes[2],
-        //             new Cell(true, p1),
-        //             new Cell(false)),
-        //         new Cell(false)),
-        //     new Cell(false));
+            var pSplits = region.splitBy(plane);
+            var pFrontSplits = pSplits.front.splitBy(t.plane);
+            var pBackSplits = pSplits.back.splitBy(t.plane)
 
-        // var t2 = new Node(
-        //     p2.boundingPlanes[0],
-        //     new Node(
-        //         p2.boundingPlanes[1],
-        //         new Node(
-        //             p2.boundingPlanes[2],
-        //             new Cell(true, p2),
-        //             new Cell(false)),
-        //         new Cell(false)),
-        //     new Cell(false));
+            var pInPosHs = (tFrontSplits.back !== undefined);
+            var pInNegHs = (tBackSplits.front !== undefined);
 
-        // var mergeTreeWithCell = function(t1, t2) {
-        //     if (t1 instanceof Cell) {
-        //         if (t1.inside) {
-        //             return t2;
-        //         } else {
-        //             return t1;
-        //         }
-        //     } else if (t2 instanceof Cell) {
-        //         if (t2.inside) {
-        //             return t1
-        //         } else {
-        //             return t2;
-        //         }
-        //     }
-        // }
+            var tInPosHS = (pFrontSplits.back !== undefined);
+            var tInNegHS = (pBackSplits.front !== undefined);
 
-        // var partitionBspt = function(t, bp) {
-            
-        // }
+            console.log(pInPosHs, pInNegHs, tInPosHS, tInNegHS);
+
+            if (pInPosHs && !pInNegHs && !tInPosHS && tInNegHS) {
+                return {
+                    inNegHs: new Node(
+                        pSplits.back, 
+                        t.plane, 
+                        t.back,
+                        t.front),
+                    inPosHs: t
+                }
+            }
+            if (pInPosHs && pInNegHs && tInPosHS && tInNegHS) {
+                return {
+                    inNegHs: new Node(
+                        pSplits.back, 
+                        t.plane, 
+                        t.back,
+                        t.front),
+                    inPosHs: new Node(
+                        pSplits.front, 
+                        t.plane, 
+                        t.back,
+                        t.front),   
+                }
+            }
+ 
+        }
         
-        // var mergeBspts = function(t1, t2) {
-        //     if ((t1 instanceof Cell) || (t2 instanceof Cell)) {
-        //         return mergeTreeWithCell(t1,t2);
-        //     } else {
-        //         var t2Partitioned = partitionBspt(t2, t1.rootRegion.bp);
-        //         var negSubtree = mergeBspts(t1.negSubtree, t2Partitioned.inNegHs);
-        //         var posSubtree = mergeBspts(t1.posSubtree, t2Partitioned.inPosHs);
-        //         return new Node(negSubtree, posSubtree, t1.rootRegion);
-        //     }
-        // }
+        var mergeBspts = function(t1, t2) {
+            if ((t1 instanceof Cell) || (t2 instanceof Cell)) {
+                return mergeTreeWithCell(t1,t2);
+            } else {
+                var t2Partitioned = partitionBspt(t2, t1.region, t1.plane);
+                var negSubtree = mergeBspts(t1.back, t2Partitioned.inNegHs);
+                var posSubtree = mergeBspts(t1.front, t2Partitioned.inPosHs);
+                return new Node(t1.rootRegion, t1.plane, negSubtree, posSubtree);
+            }
+        }
+
+        var merged = mergeBspts(t1, t2);
+        console.log(merged);
+
+        var regions = [];
+        var findRegions = function(node, toHere) {
+            if (node instanceof Cell) {
+                if (node.inside) {
+                    regions.push(toHere.concat(node));
+                } 
+            } else {
+                var backRegions = findRegions(node.back, toHere.concat(node));
+                var frontRegions = findRegions(node.front, toHere.concat(node));
+            }
+
+        }
+
+        findRegions(merged, []);
+        console.log(regions);
+
+        regions.forEach(function(region, i) {
+            // A regions here is a list of nodes
+            var result = Polygon2D.world;
+            region.forEach(function(node) {
+                if (node instanceof Node) {
+                    result = result.splitBy(node.plane).back;
+                }
+            });
+            splitViewport.addPolygon2D(result, 0xff0000, i+1);
+        });
+        splitViewport.addPolygon2D(t1.back.back.back.region, 0xffff00);
+        splitViewport.addPolygon2D(t2.back.back.back.region, 0x00ffff);
 
     }
 
