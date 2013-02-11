@@ -118,9 +118,9 @@ define([
                 }
             } else if (t2 instanceof Cell) {
                 if (t2.inside) {
-                    return updateRegions(t2.region, t1);
+                    return t1;
                 } else {
-                    return t2;
+                    return updateRegions(t1.region, t2);
                 }
             }
         }
@@ -135,9 +135,9 @@ define([
                 }
             } else if (t2 instanceof Cell) {
                 if (t2.inside) {
-                    return t2;
+                    return updateRegions(t1.region, t2);
                 } else {
-                    return updateRegions(t2.region, t1);
+                    return t1;
                 }
             }
         }
@@ -151,9 +151,26 @@ define([
                 }
             } else if (t2 instanceof Cell) {
                 if (t2.inside) {
-                    return updateRegions(t2.region, complement(t1));
+                    return complement(t1);
                 } else {
-                    return t2;
+                    return updateRegions(t1.region, (t2));
+                }
+            }
+        }
+
+
+        var symmetricDifference = function(t1, t2) {
+            if (t1 instanceof Cell) {
+                if (t1.inside) {
+                    return updateRegions(t1.region, complement(t2));
+                } else {
+                    return updateRegions(t1.region, t2);
+                }
+            } else if (t2 instanceof Cell) {
+                if (t2.inside) {
+                    return complement(t1);
+                } else {
+                    return t1;
                 }
             }
         }
@@ -233,7 +250,7 @@ define([
             }
         }
 
-        var merged = mergeBspts(t1, t2, difference);
+        var merged = mergeBspts(t1, t2, symmetricDifference);
         console.log(merged);
 
         var findRegions = function(node) {
