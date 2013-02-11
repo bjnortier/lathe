@@ -66,25 +66,47 @@ define([
                 return new Cell('-', true, region);
             }
         }
-        var t1 = createConvexTree(
-            ['1','2','3'],
-            [new Plane2D(0,-1,-1), new Plane2D(1,1,10), new Plane2D(-1,0,-1)],
-            worldRegion);
-        var t2 = createConvexTree(
-            ['a','b','c'],
-            [new Plane2D(0,-1,-3), new Plane2D(1,1,12), new Plane2D(-1,0,-3)],
-            worldRegion);
 
-        beforeViewport.addPolygon2D(t1.back.back.back.region, 0xffff00);
-        beforeViewport.addPolygon2D(t2.back.back.back.region, 0x00ffff);
+        var plane0 = new Plane2D(0,-1,-1);
+        var splits0 = worldRegion.splitBy(plane0);
+        var t1 = 
+            new Node('0', worldRegion, 
+                plane0,
+                // new Cell('-', false, splits0.back),
+                createConvexTree(
+                    ['1','2'],
+                    [new Plane2D(1,1,10), new Plane2D(-1,0,-1)],
+                    worldRegion.splitBy(new Plane2D(0,-1,-1)).back),
+                createConvexTree(
+                    ['3','4'],
+                    [new Plane2D(1,-1,10), new Plane2D(-1,0,-1)],
+                    splits0.front));
+        // var t1 = createConvexTree(
+        //     ['0','1','1'],
+        //     [new Plane2D(0,-1,2), new Plane2D(1,1,5), new Plane2D(-1,0,-1)],
+        //     worldRegion);
+
+        var plane1 = new Plane2D(-1,0,-3);
+        var splits1 = worldRegion.splitBy(plane1);
+        var t2 = 
+            new Node('a', worldRegion, 
+                plane1,
+                createConvexTree(
+                    ['b','c'],
+                    [new Plane2D(0,-1,-5), new Plane2D(1,1,12)],
+                    splits1.back),
+                createConvexTree(
+                    ['d','e'],
+                    [new Plane2D(0,-1,-5), new Plane2D(-1,1,5)],
+                    splits1.front));
+
 
         var updateRegions = function(region, node) {
-            if (node instanceof Cell) {
-                if (region === undefined) {
-                    return new Cell(node.label, false, undefined);
-                } else {
-                    return node.clone(region);
-                }
+            if (region === undefined) {
+                return new Cell(node.label, false, undefined);
+            }
+            else if (node instanceof Cell) {
+                return node.clone(region);
             } else {
                 var splits = region.splitBy(node.plane);
                 return new Node(
@@ -124,7 +146,6 @@ define([
                 }
             }
         }
-
         
         var union = function(t1, t2) {
             if (t1 instanceof Cell) {
@@ -151,9 +172,9 @@ define([
                 }
             } else if (t2 instanceof Cell) {
                 if (t2.inside) {
-                    return complement(t1);
+                    return updateRegions(t1.region, complement(t2));
                 } else {
-                    return updateRegions(t1.region, (t2));
+                    return t1;
                 }
             }
         }
@@ -203,8 +224,7 @@ define([
                         t.front.clone(splitByP.back)),
                     inPosHs: t.front.clone(splitByP.front)
                 }
-            }
-            if (!pInPosHs && pInNegHs && tInPosHS && !tInNegHS) {
+            } else if (!pInPosHs && pInNegHs && tInPosHS && !tInNegHS) {
                 return {
                     inNegHs: t.back.clone(splitByP.back),
                     inPosHs: new Node(
@@ -214,8 +234,7 @@ define([
                         t.back.clone(splitByP.front),
                         t.front),   
                 }
-            }
-            if (pInPosHs && pInNegHs && tInPosHS && tInNegHS) {
+            } else if (pInPosHs && pInNegHs && tInPosHS && tInNegHS) {
                 return {
                     inNegHs: new Node(
                         t.label,
@@ -230,6 +249,8 @@ define([
                         t.back.clone(splitByP.front),
                         t.front),   
                 }
+            } else {
+                throw Error('not implemented');
             }
  
         }
@@ -270,9 +291,16 @@ define([
             }
 
         }
-        var regions = findRegions(merged);
-        regions.forEach(function(region, i) {
-            splitViewport.addPolygon2D(region, 0xff0000, i);
+
+        findRegions(t1).forEach(function(region) {
+            beforeViewport.addPolygon2D(region, 0xffff00);
+        });
+        findRegions(t2).forEach(function(region) {
+            beforeViewport.addPolygon2D(region, 0x00ffff);
+        });
+
+        findRegions(merged).forEach(function(region, i) {
+            splitViewport.addPolygon2D(region, 0xff0000);
         });
 
     }
