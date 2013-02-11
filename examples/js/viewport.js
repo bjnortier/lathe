@@ -206,7 +206,13 @@ define(['lib/world3d', 'lib/Polygon3D',  'lib/plane2d', 'lib/vertex2d', 'lib/bsp
             });
         }
 
-
+        this.addBSPTree3D = function(t, color) {
+            findRegions(t).forEach(function(region) {
+                region.polygons.forEach(function(polygon) {
+                    that.addPolygon3D(polygon, color);
+                });
+            });
+        }
 
 
     }

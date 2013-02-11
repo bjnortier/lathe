@@ -8,19 +8,13 @@ requirejs.config({
 
 requirejs([
         'lib/plane2d',
-        'lib/plane3d',
         'lib/polygon2d',
-        'lib/polygon3d',
-        'lib/region3d',
         'lib/bsp2d',
         'examples/js/bsptree2dexample',
     ], 
     function(
         Plane2D,
-        Plane3D,
         Polygon2D,
-        Polygon3D,
-        Region3D,
         BSP2D,
         BSPTree2DExample) {
 

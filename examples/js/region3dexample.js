@@ -22,21 +22,6 @@ define([
         var splitViewport  = new Viewport(splitContainer);
         new Trackball([beforeViewport, splitViewport]);
 
-
-        // var tree = new BSPTree.Node(
-        //     new Plane3D(0,0,-1,0),
-        //     new BSPTree.Node(
-        //         new Plane3D(0,-1,0,0),
-        //         new BSPTree.Node(
-        //             new Plane3D(-1,0,0,0),
-        //             new BSPTree.Node(
-        //                 new Plane3D(1,1,1,5),
-        //                 new BSPTree.Cell('OUT'),
-        //                 new BSPTree.Cell('IN')),
-        //             new BSPTree.Cell('IN')),
-        //         new BSPTree.Cell('IN')),
-        //     new BSPTree.Cell('IN'));
-
         // var polyhedron1 = [
         //     new Polygon3D(
         //         new Plane3D(0,0,-1,0), [new Plane3D(0,-1,0,0),new Plane3D(-1,0,0,0),new Plane3D(1,1,0,10)]),
@@ -82,57 +67,7 @@ define([
             beforeViewport.addPolygon3D(p, 0x00ffff);
         });
 
-        var splitPolyhedron = function(polyhedron, h) {
-            var frontPolygons = [], backPolygons = [];
-            var intersectedpolygons = [];
-            polyhedron.forEach(function(polygon) {
-                var splits = polygon.splitBy(h);
-                splits.front && frontPolygons.push(splits.front);
-                splits.back && backPolygons.push(splits.back);
-                if(splits.front && splits.back) {
-                    intersectedpolygons.push(polygon);
-                }
-            })
-            if (intersectedpolygons.length > 0) {
-                // Sort the bounding polygons so that they form a valid boundary
-                // i.e. all vertices are valid
-                var findValidPolygon = function(h, sequence) {
-
-                    var permutate = function(toHere, values) {
-                        if (values.length === 1) {
-                            try {
-                                var p = new Polygon3D(h, toHere.concat(values[0]));
-                                p.toVertices();
-                                return p;
-                            } catch (e) {
-                                return undefined;
-                            }
-                        }
-
-                        var found;
-                        for (var i = 0; (i < values.length) && (!found); ++i) {
-                            var newValues = values.slice(0);
-                            newValues.splice(i, 1);
-                            found = permutate(toHere.concat(values[i]), newValues);
-                        }
-                        return found;
-                    }
-                    return permutate([], sequence);
-                }
-                var capPolygon = findValidPolygon(h, intersectedpolygons.map(function(p) {
-                    return p.s;
-                }));
-
-                frontPolygons.push(capPolygon);
-                backPolygons.push(capPolygon);
-            }   
-
-
-            return {
-                front: frontPolygons,
-                back: backPolygons
-            }
-        }
+        
 
         var splits = splitPolyhedron(polyhedron1, polyhedron2[0].s);
         var splits2 = splitPolyhedron(splits.back, polyhedron2[1].s);
