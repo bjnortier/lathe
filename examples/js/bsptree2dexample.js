@@ -7,7 +7,8 @@ define([
         'examples/js/trackball',
     ], function(Plane2D, Polygon2D, Viewport, Trackball) {
 
-    var Node = function(region, plane, back, front) {
+    var Node = function(label, region, plane, back, front) {
+        this.label = label;
         this.region = region;
         this.plane  = plane;
         this.back   = back;
@@ -15,21 +16,26 @@ define([
         Object.freeze(this);
     }
 
-    Node.prototype.clone = function() {
+    Node.prototype.clone = function(region) {
+        var region = region || this.region;
         return new Node(
+            this.label,
+            region,
             this.plane,
             this.back.clone(),
             this.front.clone());
     }
 
-    var Cell = function(inside, region) {
+    var Cell = function(label, inside, region) {
+        this.label = label;
         this.inside = inside;
         this.region = region;
         Object.freeze(this);
     }
 
-    Cell.prototype.clone = function() {
-        return new Cell(this.inside, this.region);
+    Cell.prototype.clone = function(region) {
+        var region = region || this.region;
+        return new Cell(this.label, this.inside, region);
     }
 
 
@@ -50,150 +56,177 @@ define([
 
         var worldRegion = Polygon2D.world;
 
-        var createConvexTree = function(planes, region) {
+        var createConvexTree = function(labels, planes, region) {
             if (planes.length) {
                 var splits = region.splitBy(planes[0]);
-                var frontNode = new Cell(false, splits.front);
-                var backNode = createConvexTree(planes.slice(1), splits.back);
-                return new Node(region, planes[0], backNode, frontNode);
+                var frontNode = new Cell('+', false, splits.front);
+                var backNode = createConvexTree(labels.slice(1), planes.slice(1), splits.back);
+                return new Node(labels[0], region, planes[0], backNode, frontNode);
             } else {
-                return new Cell(true, region);
+                return new Cell('-', true, region);
             }
         }
         var t1 = createConvexTree(
+            ['1','2','3'],
             [new Plane2D(0,-1,-1), new Plane2D(1,1,10), new Plane2D(-1,0,-1)],
             worldRegion);
         var t2 = createConvexTree(
+            ['a','b','c'],
             [new Plane2D(0,-1,-3), new Plane2D(1,1,12), new Plane2D(-1,0,-3)],
             worldRegion);
 
         beforeViewport.addPolygon2D(t1.back.back.back.region, 0xffff00);
         beforeViewport.addPolygon2D(t2.back.back.back.region, 0x00ffff);
+
+        var updateRegions = function(region, node) {
+            if (node instanceof Cell) {
+                if (region === undefined) {
+                    return new Cell(node.label, false, undefined);
+                } else {
+                    return node.clone(region);
+                }
+            } else {
+                var splits = region.splitBy(node.plane);
+                return new Node(
+                    node.label,
+                    region,
+                    node.plane,
+                    updateRegions(splits.back, node.back),
+                    updateRegions(splits.front, node.front))
+            }
+        }
         
-        var mergeTreeWithCell = function(t1, t2) {
+        var intersection = function(t1, t2) {
             if (t1 instanceof Cell) {
                 if (t1.inside) {
-                    return t2;
+                    return updateRegions(t1.region, t2);
                 } else {
                     return t1;
                 }
             } else if (t2 instanceof Cell) {
                 if (t2.inside) {
-                    return t1
+                    return updateRegions(t2.region, t1);
                 } else {
                     return t2;
                 }
             }
         }
 
-        var partitionBspt = function(t, region, plane) {
-            var tSplits = region.splitBy(t.plane);
-            var tFrontSplits = tSplits.front.splitBy(plane);
-            var tBackSplits = tSplits.back.splitBy(plane)
+        
+        var union = function(t1, t2) {
+            if (t1 instanceof Cell) {
+                if (t1.inside) {
+                    return t1;
+                } else {
+                    return updateRegions(t1.region, t2);
+                }
+            } else if (t2 instanceof Cell) {
+                if (t2.inside) {
+                    return t2;
+                } else {
+                    return updateRegions(t2.region, t1);
+                }
+            }
+        }
 
-            var pSplits = region.splitBy(plane);
-            var pFrontSplits = pSplits.front.splitBy(t.plane);
-            var pBackSplits = pSplits.back.splitBy(t.plane)
+        var partitionBspt = function(t, plane) {
+            var splitByT = t.region.splitBy(t.plane);
+            var splitByTFrontSplitByP = splitByT.front.splitBy(plane);
+            var splitByTBackSplitByP = splitByT.back.splitBy(plane)
 
-            var pInPosHs = (tFrontSplits.back !== undefined);
-            var pInNegHs = (tBackSplits.front !== undefined);
+            var splitByP = t.region.splitBy(plane);
+            var splitByPFrontSplitByT = splitByP.front.splitBy(t.plane);
+            var splitByPBackSplitByT = splitByP.back.splitBy(t.plane)
 
-            var tInPosHS = (pFrontSplits.back !== undefined);
-            var tInNegHS = (pBackSplits.front !== undefined);
+            var pInPosHs = (splitByTFrontSplitByP.back !== undefined);
+            var pInNegHs = (splitByTBackSplitByP.front !== undefined);
+
+            var tInPosHS = (splitByPFrontSplitByT.back !== undefined);
+            var tInNegHS = (splitByPBackSplitByT.front !== undefined);
 
             console.log(pInPosHs, pInNegHs, tInPosHS, tInNegHS);
 
             if (pInPosHs && !pInNegHs && !tInPosHS && tInNegHS) {
                 return {
                     inNegHs: new Node(
-                        pSplits.back, 
+                        t.label,
+                        splitByP.back, 
                         t.plane, 
                         t.back,
-                        t.front),
-                    inPosHs: t
+                        t.front.clone(splitByP.back)),
+                    inPosHs: t.front.clone(splitByP.front)
+                }
+            }
+            if (!pInPosHs && pInNegHs && tInPosHS && !tInNegHS) {
+                return {
+                    inNegHs: t.back.clone(splitByP.back),
+                    inPosHs: new Node(
+                        t.label,
+                        splitByP.front, 
+                        t.plane, 
+                        t.back.clone(splitByP.front),
+                        t.front),   
                 }
             }
             if (pInPosHs && pInNegHs && tInPosHS && tInNegHS) {
                 return {
                     inNegHs: new Node(
-                        pSplits.back, 
+                        t.label,
+                        splitByP.back, 
                         t.plane, 
                         t.back,
-                        t.front),
+                        t.front.clone(splitByP.back)),
                     inPosHs: new Node(
-                        pSplits.front, 
+                        t.label,
+                        splitByP.front, 
                         t.plane, 
-                        t.back,
+                        t.back.clone(splitByP.front),
                         t.front),   
                 }
             }
  
         }
-
-        var updateLeafRegions = function(key, plane, node) {
-            if (node instanceof Cell) { 
-                if (node.region) {
-                    var splitRegion = node.region.splitBy(plane);
-                    return new Cell(node.inside, splitRegion[key]);
-                } else {
-                    return node.clone();
-                }
-            } else {
-                var splitRegion = node.region.splitBy(plane);
-                return new Node(
-                    splitRegion[key],
-                    node.plane, 
-                    updateLeafRegions(key, plane, node.back), 
-                    updateLeafRegions(key, plane, node.front));
-            }
-        }
         
-        var mergeBspts = function(t1, t2) {
+        var mergeBspts = function(t1, t2, cellOp) {
             if ((t1 instanceof Cell) || (t2 instanceof Cell)) {
-                return mergeTreeWithCell(t1,t2);
+                return cellOp(t1,t2);
             } else {
-                var t2Partitioned = partitionBspt(t2, t1.region, t1.plane);
-                var negSubtree = mergeBspts(t1.back, t2Partitioned.inNegHs);
-                var posSubtree = mergeBspts(t1.front, t2Partitioned.inPosHs);
+                var t2Partitioned = partitionBspt(t2, t1.plane);
+                var negSubtree = mergeBspts(t1.back, t2Partitioned.inNegHs, cellOp);
+                var posSubtree = mergeBspts(t1.front, t2Partitioned.inPosHs, cellOp);
                 return new Node(
+                    t1.label,
                     t1.region, 
                     t1.plane, 
-                    updateLeafRegions('back', t1.plane, negSubtree),
-                    updateLeafRegions('front', t1.plane, posSubtree));
+                    negSubtree,
+                    posSubtree)
             }
         }
 
-        var merged = mergeBspts(t1, t2);
+        var merged = mergeBspts(t1, t2, union);
         console.log(merged);
 
-        var regions = [];
-        var findRegions = function(node, toHere) {
+        var findRegions = function(node) {
             if (node instanceof Cell) {
                 if (node.inside) {
-                    regions.push(toHere.concat(node));
-                } 
+                    return node.region;
+                } else {
+                    return undefined;
+                }
             } else {
-                var backRegions = findRegions(node.back, toHere.concat(node));
-                var frontRegions = findRegions(node.front, toHere.concat(node));
+                var backRegions = findRegions(node.back);
+                var frontRegions = findRegions(node.front);
+                var regions = [];
+                backRegions && (regions = regions.concat(backRegions));
+                frontRegions && (regions = regions.concat(frontRegions));
+                return regions;
             }
 
         }
-
-        findRegions(merged, []);
-        console.log(regions);
-
+        var regions = findRegions(merged);
         regions.forEach(function(region, i) {
-            // A regions here is a list of nodes
-            var result = Polygon2D.world;
-            region.forEach(function(node) {
-                if (node instanceof Node) {
-                    result = result.splitBy(node.plane).back;
-                }
-            });
-            splitViewport.addPolygon2D(result, 0xff0000, i+1);
+            splitViewport.addPolygon2D(region, 0xff0000);
         });
-        splitViewport.addPolygon2D(t1.back.back.back.region, 0xffff00);
-        splitViewport.addPolygon2D(t2.back.back.back.region, 0x00ffff);
 
     }
 

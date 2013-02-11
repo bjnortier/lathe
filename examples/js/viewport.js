@@ -85,13 +85,13 @@ define(['lib/world3d', 'lib/Polygon3D',  'lib/plane2d', 'lib/vertex2d'],
 
             coordinates.forEach(function(coordinate) {
                 var i = geometry.vertices.push(new THREE.Vector3(coordinate.x, coordinate.y, coordinate.z)) - 1;
-                ['x', 'y', 'z'].forEach(function(dim) {
-                    if (geometry.vertices[i][dim] === world.bigNumber) {
-                        geometry.vertices[i][dim] = 10;
-                    } else if(geometry.vertices[i][dim] === -world.bigNumber) {
-                        geometry.vertices[i][dim] = -10;
-                    }
-                });
+                // ['x', 'y', 'z'].forEach(function(dim) {
+                //     if (geometry.vertices[i][dim] === world.bigNumber) {
+                //         geometry.vertices[i][dim] = 10;
+                //     } else if(geometry.vertices[i][dim] === -world.bigNumber) {
+                //         geometry.vertices[i][dim] = -10;
+                //     }
+                // });
             });
             if (coordinates.length < 3) {
                 throw Error('invalid polygon');
