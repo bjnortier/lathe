@@ -95,6 +95,19 @@ define([
                     updateRegions(splits.front, node.front))
             }
         }
+
+        var complement = function(node) {
+            if (node instanceof Cell) {
+                return new Cell(node.label, !node.inside, node.region);
+            } else {
+                return new Node(
+                    node.label,
+                    node.region,
+                    node.plane, 
+                    complement(node.back),
+                    complement(node.front));
+            }
+        }
         
         var intersection = function(t1, t2) {
             if (t1 instanceof Cell) {
@@ -128,6 +141,23 @@ define([
                 }
             }
         }
+
+        var difference = function(t1, t2) {
+            if (t1 instanceof Cell) {
+                if (t1.inside) {
+                    return updateRegions(t1.region, complement(t2));
+                } else {
+                    return t1;
+                }
+            } else if (t2 instanceof Cell) {
+                if (t2.inside) {
+                    return updateRegions(t2.region, complement(t1));
+                } else {
+                    return t2;
+                }
+            }
+        }
+
 
         var partitionBspt = function(t, plane) {
             var splitByT = t.region.splitBy(t.plane);
@@ -203,7 +233,7 @@ define([
             }
         }
 
-        var merged = mergeBspts(t1, t2, union);
+        var merged = mergeBspts(t1, t2, difference);
         console.log(merged);
 
         var findRegions = function(node) {
@@ -225,7 +255,7 @@ define([
         }
         var regions = findRegions(merged);
         regions.forEach(function(region, i) {
-            splitViewport.addPolygon2D(region, 0xff0000);
+            splitViewport.addPolygon2D(region, 0xff0000, i);
         });
 
     }
