@@ -1,5 +1,8 @@
-define(['lib/world3d', 'lib/Polygon3D',  'lib/plane2d', 'lib/vertex2d'], 
-    function(world, Polygon3D, Plane2D, Vertex2D) {
+define(['lib/world3d', 'lib/Polygon3D',  'lib/plane2d', 'lib/vertex2d', 'lib/bsp2d'], 
+    function(world, Polygon3D, Plane2D, Vertex2D, BSP2D) {
+
+    var Node = BSP2D.Node;
+    var Cell = BSP2D.Cell; 
 
     var Viewport = function(container) {
 
@@ -85,13 +88,13 @@ define(['lib/world3d', 'lib/Polygon3D',  'lib/plane2d', 'lib/vertex2d'],
 
             coordinates.forEach(function(coordinate) {
                 var i = geometry.vertices.push(new THREE.Vector3(coordinate.x, coordinate.y, coordinate.z)) - 1;
-                // ['x', 'y', 'z'].forEach(function(dim) {
-                //     if (geometry.vertices[i][dim] === world.bigNumber) {
-                //         geometry.vertices[i][dim] = 10;
-                //     } else if(geometry.vertices[i][dim] === -world.bigNumber) {
-                //         geometry.vertices[i][dim] = -10;
-                //     }
-                // });
+                ['x', 'y', 'z'].forEach(function(dim) {
+                    if (geometry.vertices[i][dim] === world.bigNumber) {
+                        geometry.vertices[i][dim] = 10;
+                    } else if(geometry.vertices[i][dim] === -world.bigNumber) {
+                        geometry.vertices[i][dim] = -10;
+                    }
+                });
             });
             if (coordinates.length < 3) {
                 throw Error('invalid polygon');
@@ -178,6 +181,32 @@ define(['lib/world3d', 'lib/Polygon3D',  'lib/plane2d', 'lib/vertex2d'],
             var polygon = new Polygon3D().fromPlane(plane);
             this.addPolygon3D(polygon, color);
         }
+
+        var findRegions = function(node) {
+            if (node instanceof Cell) {
+                if (node.inside) {
+                    return node.region;
+                } else {
+                    return undefined;
+                }
+            } else {
+                var backRegions = findRegions(node.back);
+                var frontRegions = findRegions(node.front);
+                var regions = [];
+                backRegions && (regions = regions.concat(backRegions));
+                frontRegions && (regions = regions.concat(frontRegions));
+                return regions;
+            }
+
+        }
+
+        this.addBSPTree2D = function(t, color) {
+            findRegions(t).forEach(function(region) {
+                that.addPolygon2D(region, color);
+            });
+        }
+
+
 
 
     }
