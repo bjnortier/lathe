@@ -54,6 +54,10 @@ define(['lib/world3d', 'lib/polygon3D',  'lib/plane2d', 'lib/vertex2d', 'lib/bsp
             that.scene.add(new THREE.Line(yGeom, yMaterial));
             that.scene.add(new THREE.Line(zGeom, zMaterial));
 
+            that.scene.add(new THREE.Mesh(
+                new THREE.SphereGeometry(5, 20, 20), 
+                new THREE.MeshLambertMaterial({wireframe: true, color: 0xff0000, transparent: true, opacity: 0.5})));
+
             renderer = new THREE.WebGLRenderer( { antialias: true } );
             renderer.sortObjects = false;
             renderer.setSize(containerWidth, containerHeight);
