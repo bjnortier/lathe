@@ -27,11 +27,18 @@ define([
 
         beforeViewport.addBSPTree3D(t1, 0xffff00);
         beforeViewport.addBSPTree3D(t2, 0x00ffff);
+
+        var time = function(fn) {
+            var t1 = new Date().getTime();
+            var r = fn();
+            console.log(new Date().getTime()-t1);
+            return r;
+        }
         
-        var merged = operation(t1, t2);
+        var merged = time(function() { return operation(t1, t2) });
         bspAViewport.addBSPTree3D(merged, 0x00ff00);
 
-        var merged = operation(t2, t1);
+        var merged = time(function() { return operation(t2, t1) });
         bspBViewport.addBSPTree3D(merged, 0x00ff00);
 
     }
