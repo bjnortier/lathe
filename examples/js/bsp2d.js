@@ -34,35 +34,47 @@ requirejs([
     }
 
     var plane0 = new Plane2D(0,-1,-1);
-        var splits0 = worldRegion.splitBy(plane0);
-        var t1 = 
-            new Node('0', worldRegion, 
-                plane0,
-                createConvexTree(
-                    ['1','2'],
-                    [new Plane2D(1,1,10), new Plane2D(-1,0,-1)],
-                    worldRegion.splitBy(new Plane2D(0,-1,-1)).back),
-                createConvexTree(
-                    ['3','4'],
-                    [new Plane2D(1,-1,10), new Plane2D(-1,0,-1)],
-                    splits0.front));
+    var splits0 = worldRegion.splitBy(plane0);
+    var t1 = 
+        new Node('0', worldRegion, 
+            plane0,
+            createConvexTree(
+                ['1','2'],
+                [new Plane2D(1,1,10), new Plane2D(-1,0,-1)],
+                worldRegion.splitBy(new Plane2D(0,-1,-1)).back),
+            createConvexTree(
+                ['3','4'],
+                [new Plane2D(1,-1,10), new Plane2D(-1,0,-1)],
+                splits0.front));
 
     var plane1 = new Plane2D(-1,0,-3);
-        var splits1 = worldRegion.splitBy(plane1);
-        var t2 = 
-            new Node('a', worldRegion, 
-                plane1,
-                createConvexTree(
-                    ['b','c'],
-                    [new Plane2D(0,-1,-2), new Plane2D(1,1,12)],
-                    splits1.back),
-                createConvexTree(
-                    ['d','e'],
-                    [new Plane2D(0,-1,0), new Plane2D(-1,1,5)],
-                    splits1.front));
+    var splits1 = worldRegion.splitBy(plane1);
+    var t2 = 
+        new Node('a', worldRegion, 
+            plane1,
+            createConvexTree(
+                ['b','c'],
+                [new Plane2D(0,-1,-2), new Plane2D(1,1,12)],
+                splits1.back),
+            createConvexTree(
+                ['d','e'],
+                [new Plane2D(0,-1,0), new Plane2D(-1,1,5)],
+                splits1.front));
 
-    new BSPTree2DExample(t1, t2, BSP2D.intersection);
-    new BSPTree2DExample(t1, t2, BSP2D.union);
-    new BSPTree2DExample(t1, t2, BSP2D.difference);
-    new BSPTree2DExample(t1, t2, BSP2D.symmetricDifference);
+    // new BSPTree2DExample(t1, t2, BSP2D.intersection);
+    // new BSPTree2DExample(t1, t2, BSP2D.union);
+    // new BSPTree2DExample(t1, t2, BSP2D.difference);
+    // new BSPTree2DExample(t1, t2, BSP2D.symmetricDifference);
+
+    var t3 = createConvexTree(
+                ['1','2','3'], 
+                [new Plane2D(1,1,10), new Plane2D(-1,0,0), new Plane2D(0,-1,0)],
+                worldRegion);
+
+    var t4 = createConvexTree(
+                ['a', 'b','c'],
+                [new Plane2D(-1,0,-3), new Plane2D(0,-1,-2), new Plane2D(1,1,9)],
+                worldRegion);
+
+    new BSPTree2DExample(t3, t4, BSP2D.union);
 });

@@ -214,6 +214,12 @@ define(['lib/world3d', 'lib/Polygon3D',  'lib/plane2d', 'lib/vertex2d', 'lib/bsp
             });
         }
 
+        this.addRegion3D = function(r, color) {
+            r.polygons.forEach(function(polygon) {
+                that.addPolygon3D(polygon, color);
+            });
+        }
+
 
     }
 
