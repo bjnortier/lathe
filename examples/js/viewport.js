@@ -1,4 +1,4 @@
-define(['lib/world3d', 'lib/Polygon3D',  'lib/plane2d', 'lib/vertex2d', 'lib/bsp2d'], 
+define(['lib/world3d', 'lib/polygon3D',  'lib/plane2d', 'lib/vertex2d', 'lib/bsp2d'], 
     function(world, Polygon3D, Plane2D, Vertex2D, BSP2D) {
 
     var Node = BSP2D.Node;
@@ -88,13 +88,13 @@ define(['lib/world3d', 'lib/Polygon3D',  'lib/plane2d', 'lib/vertex2d', 'lib/bsp
 
             coordinates.forEach(function(coordinate) {
                 var i = geometry.vertices.push(new THREE.Vector3(coordinate.x, coordinate.y, coordinate.z)) - 1;
-                ['x', 'y', 'z'].forEach(function(dim) {
-                    if (geometry.vertices[i][dim] === world.bigNumber) {
-                        geometry.vertices[i][dim] = 10;
-                    } else if(geometry.vertices[i][dim] === -world.bigNumber) {
-                        geometry.vertices[i][dim] = -10;
-                    }
-                });
+                // ['x', 'y', 'z'].forEach(function(dim) {
+                //     if (geometry.vertices[i][dim] === world.bigNumber) {
+                //         geometry.vertices[i][dim] = 10;
+                //     } else if(geometry.vertices[i][dim] === -world.bigNumber) {
+                //         geometry.vertices[i][dim] = -10;
+                //     }
+                // });
             });
             if (coordinates.length < 3) {
                 throw Error('invalid polygon');
@@ -185,9 +185,9 @@ define(['lib/world3d', 'lib/Polygon3D',  'lib/plane2d', 'lib/vertex2d', 'lib/bsp
         var findRegions = function(node) {
             if (node instanceof Cell) {
                 if (node.inside) {
-                    return node.region;
+                    return [node.region];
                 } else {
-                    return undefined;
+                    return [];
                 }
             } else {
                 var backRegions = findRegions(node.back);

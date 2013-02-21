@@ -42,9 +42,9 @@ requirejs([
         [new Plane3D(0,0,-1,-1), new Plane3D(0,0,1,5), new Plane3D(1,0,0,5), new Plane3D(-1,0,0,5), new Plane3D(0,1,0,5), new Plane3D(0,-1,0,4)],
         worldRegion);
 
-    // new BSPTree3DExample(t1, t2, BSP2D.intersection);
-    // new BSPTree3DExample(t1, t2, BSP2D.union);
-    // new BSPTree3DExample(t1, t2, BSP2D.difference);
+    new BSPTree3DExample(t1, t2, BSP2D.intersection);
+    new BSPTree3DExample(t1, t2, BSP2D.union);
+    new BSPTree3DExample(t1, t2, BSP2D.difference);
 
     var t3 = createConvexTree(
         ['0', '1', '2', '3', '4'], 
@@ -55,8 +55,8 @@ requirejs([
         [new Plane3D(0,0,-1,1), new Plane3D(0,0,1,5), new Plane3D(1,0,0,5), new Plane3D(-1,0,0,5), new Plane3D(0,1,0,5), new Plane3D(0,-1,0,5)],
         worldRegion);
     
-    // new BSPTree3DExample(t3, t4, BSP2D.intersection);
+    new BSPTree3DExample(t3, t4, BSP2D.intersection);
+    new BSPTree3DExample(t3, t4, BSP2D.difference);
     new BSPTree3DExample(t3, t4, BSP2D.union);
-    // new BSPTree3DExample(t3, t4, BSP2D.difference);
 
 });

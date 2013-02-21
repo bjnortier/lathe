@@ -11,24 +11,28 @@ define([
        var exampleContainer = document.createElement('div');
         exampleContainer.classList.add('example');
         var beforeContainer = document.createElement('div');
-        var splitContainer = document.createElement('div');
+        var bspAContainer = document.createElement('div');
+        var bspBContainer = document.createElement('div');
         beforeContainer.classList.add('viewport');
-        splitContainer.classList.add('viewport');
+        bspAContainer.classList.add('viewport');
+        bspBContainer.classList.add('viewport');
         document.body.appendChild(exampleContainer);
         exampleContainer.appendChild(beforeContainer);
-        exampleContainer.appendChild(splitContainer);
+        exampleContainer.appendChild(bspAContainer);
+        exampleContainer.appendChild(bspBContainer);
         var beforeViewport = new Viewport(beforeContainer);
-        var splitViewport  = new Viewport(splitContainer);
-        new Trackball([beforeViewport, splitViewport]);
-
+        var bspAViewport  = new Viewport(bspAContainer);
+        var bspBViewport  = new Viewport(bspBContainer);
+        new Trackball([beforeViewport, bspAViewport, bspBViewport]);
 
         beforeViewport.addBSPTree3D(t1, 0xffff00);
         beforeViewport.addBSPTree3D(t2, 0x00ffff);
         
         var merged = operation(t1, t2);
-        splitViewport.addBSPTree3D(merged, 0x00ff00);
-        // splitViewport.addBSPTree3D(merged.back.front, 0x00ff00);
-        // splitViewport.addRegion3D(t1.back.front, 0x00ff00);
+        bspAViewport.addBSPTree3D(merged, 0x00ff00);
+
+        var merged = operation(t2, t1);
+        bspBViewport.addBSPTree3D(merged, 0x00ff00);
 
     }
 

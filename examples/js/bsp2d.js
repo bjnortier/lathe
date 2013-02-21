@@ -61,10 +61,10 @@ requirejs([
                 [new Plane2D(0,-1,0), new Plane2D(-1,1,5)],
                 splits1.front));
 
-    // new BSPTree2DExample(t1, t2, BSP2D.intersection);
-    // new BSPTree2DExample(t1, t2, BSP2D.union);
-    // new BSPTree2DExample(t1, t2, BSP2D.difference);
-    // new BSPTree2DExample(t1, t2, BSP2D.symmetricDifference);
+    new BSPTree2DExample(t1, t2, BSP2D.intersection);
+    new BSPTree2DExample(t1, t2, BSP2D.union);
+    new BSPTree2DExample(t1, t2, BSP2D.difference);
+    new BSPTree2DExample(t1, t2, BSP2D.symmetricDifference);
 
     var t3 = createConvexTree(
                 ['1','2','3'], 

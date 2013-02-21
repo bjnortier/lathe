@@ -12,25 +12,21 @@ define([
         var exampleContainer = document.createElement('div');
         exampleContainer.classList.add('example');
         var beforeContainer = document.createElement('div');
-        var splitBackContainer = document.createElement('div');
-        var splitFrontContainer = document.createElement('div');
+        var splitContainer = document.createElement('div');
         beforeContainer.classList.add('viewport');
-        splitBackContainer.classList.add('viewport');
-        splitFrontContainer.classList.add('viewport');
+        splitContainer.classList.add('viewport');
         document.body.appendChild(exampleContainer);
         exampleContainer.appendChild(beforeContainer);
-        exampleContainer.appendChild(splitBackContainer);
-        exampleContainer.appendChild(splitFrontContainer);
+        exampleContainer.appendChild(splitContainer);
         var beforeViewport = new Viewport(beforeContainer);
-        var splitBackViewport  = new Viewport(splitBackContainer);
-        var splitFrontViewport  = new Viewport(splitFrontContainer);
-        new Trackball([beforeViewport, splitBackViewport, splitFrontViewport]);
+        var splitViewport  = new Viewport(splitContainer);
+        new Trackball([beforeViewport, splitViewport]);
 
         beforeViewport.addRegion3D(region, 0x00ffff);
 
         var splits = region.splitBy(h);
-        splitBackViewport.addRegion3D(splits.back, 0x00ff00);
-        splitFrontViewport.addRegion3D(splits.front, 0x0000ff);
+        splitViewport.addRegion3D(splits.back, 0x00ff00);
+        splitViewport.addRegion3D(splits.front, 0x0000ff);
     }
 
     return Example;
