@@ -75,37 +75,61 @@ requirejs([
             planes,
             worldRegion);
 
-        var findFrontNodes = function(node) {
-            if (node.front) {
-                return [node.front].concat(findFrontNodes(node.back));
+        var expandFront = function(node, i) {
+
+            var points2 = [points[i%4], points[(i+1)%4], points[(i+2)%4]];
+            var center = points2[0].add(points2[1]).add(points2[2]).mult(1/3);
+            var onSphere = center.mult(r/center.length());
+            if (i % 2 === 0) {
+                var planes2 = [
+                    Plane3D.fromPoints(points2[0], points2[1], onSphere),
+                    Plane3D.fromPoints(points2[1], points2[2], onSphere),
+                    Plane3D.fromPoints(points2[2], points2[0], onSphere),
+                ]
             } else {
-                return [];
+                var planes2 = [
+                    // Plane3D.fromPoints(points2[0], onSphere, points2[1]),
+                    // Plane3D.fromPoints(points2[1], onSphere, points2[2]),
+                    // Plane3D.fromPoints(points2[2], onSphere, points2[0]),
+                ]
             }
+
+            node.front = createConvexTree(planes2, node.front.region);
+            // if (node.back && (i < 0)) {
+            //     expandFront(node.back, i+1);
+            // }
         }
-        var frontNodes = findFrontNodes(this.bsp);
+        // expandFront(this.bsp.back, 1);
 
-        // for (var i = 0; i < 1; ++i) {
+    }
 
-        var zmin = new Vector3(0,0,-r);
-        var points2 = [points[0], points[1], points[2]];
-        var center = points[0].add(points[1]).add(points[2]).mult(1/3);
-        var onSphere = center.mult(r/center.length());
-        var planes2 = [
-            Plane3D.fromPoints(points[0], points[1], onSphere),
-            Plane3D.fromPoints(points[1], points[2], onSphere),
-            Plane3D.fromPoints(points[2], points[0], onSphere),
-        ]
-        this.bsp.front = createConvexTree(planes2, this.bsp.front.region);
+    var Sphere2 = function(r) {
 
+        var halfVRes = 1;
+        var thetaN = 5;
+        
+        var planes = [new Plane3D(0,0,-1,0), new Plane3D(0,0,1,10)];
+        for (var i = 0; i < thetaN; ++i) {
+            var theta = Math.PI*2*(i/thetaN);
+            var phi = Math.PI/4;
+            planes[i+2] = new Plane3D(
+                Math.cos(phi)*Math.cos(theta), 
+                Math.cos(phi)*Math.sin(theta), 
+                Math.sin(phi), 
+                r);
+        }
 
+        this.bsp = createConvexTree(
+            planes,
+            worldRegion);
     }
 
     var p1 = new Cube(0.5,0.5,0.5,5,5,5);
     // var p2 = new Cube(1,2,3,5,5,5);
-    var p2 = new Sphere(5);
+    var p2 = new Sphere2(5);
 
     // new PrimitivesExample(p1, p2, BSP2D.union);
-    // new PrimitivesExample(p1, p2, BSP2D.union);
+    // new PrimitivesExample(p1, p2, BSP2D.intersection);
     new PrimitivesExample(p1, p2, BSP2D.difference);
 
 });

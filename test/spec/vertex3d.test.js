@@ -6,13 +6,20 @@ define(['lib/plane3d', 'lib/vertex3d'], function(Plane3D, Vertex3D) {
 
             var p = new Vertex3D(new Plane3D(1,0,0,0), new Plane3D(0,1,0,0), new Plane3D(0,0,1,0));
 
-            assert.throws(function() {
+            try {
                 new Vertex3D(1,2,3);
-            }, Error, 'invalid vertex construction: 1,2,3');
+                assert.fail();
+            } catch (e) {
+                assert.equal(e.message, 'invalid vertex construction: 1,2,3');
+                assert.equal(e.name, 'InvalidVertex');
+            }
 
-            assert.throws(function() {
+            try {
                 new Vertex3D(new Plane3D(1,0,0,0), new Plane3D(1,0,0,0), new Plane3D(1,0,0,0));
-            }, Error, 'invalid vertex');
+                assert.fail();
+            } catch (e) {
+                assert.equal(e.name, 'InvalidVertex');
+            }
 
         });
 

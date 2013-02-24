@@ -1,4 +1,4 @@
-define(['lib/plane3d', 'lib/polygon3d'], function(Plane3D, Polygon3D) {
+define(['lib/world3d', 'lib/plane3d', 'lib/polygon3d'], function(world3D, Plane3D, Polygon3D) {
 
     describe('3D Polygons', function() {
 
@@ -31,20 +31,20 @@ define(['lib/plane3d', 'lib/polygon3d'], function(Plane3D, Polygon3D) {
 
         it('can be constructed from a plane', function() {
 
-            var p1a = new Polygon3D().fromPlane(new Plane3D(5,-2,1,0));
-            var p1b = new Polygon3D().fromPlane(new Plane3D(-6,2,-1,0));
-            var p2a = new Polygon3D().fromPlane(new Plane3D(-6,7,2,0));
-            var p2b = new Polygon3D().fromPlane(new Plane3D(0,-8,3,0));
-            var p3a = new Polygon3D().fromPlane(new Plane3D(2,1,9,0));
-            var p3b = new Polygon3D().fromPlane(new Plane3D(0,1,-2,0));
-            var p4 = new Polygon3D().fromPlane(new Plane3D(1,1,1,0));
+            var p1a = Polygon3D.fromPlane(new Plane3D(5,-2,1,0));
+            var p1b = Polygon3D.fromPlane(new Plane3D(-6,2,-1,0));
+            var p2a = Polygon3D.fromPlane(new Plane3D(-6,7,2,0));
+            var p2b = Polygon3D.fromPlane(new Plane3D(0,-8,3,0));
+            var p3a = Polygon3D.fromPlane(new Plane3D(2,1,9,0));
+            var p3b = Polygon3D.fromPlane(new Plane3D(0,1,-2,0));
+            var p4  = Polygon3D.fromPlane(new Plane3D(1,1,1,0));
 
-            var xplus = {a:1,b:0,c:0,d:1000000},
-                yplus = {a:0,b:1,c:0,d:1000000},
-                zplus = {a:0,b:0,c:1,d:1000000},
-                xmin = {a:-1,b:0,c:0,d:1000000},
-                ymin = {a:0,b:-1,c:0,d:1000000},
-                zmin = {a:0,b:0,c:-1,d:1000000};
+            var xplus = {a:1,b:0,c:0,d:world3D.bigNumber},
+                yplus = {a:0,b:1,c:0,d:world3D.bigNumber},
+                zplus = {a:0,b:0,c:1,d:world3D.bigNumber},
+                xmin = {a:-1,b:0,c:0,d:world3D.bigNumber},
+                ymin = {a:0,b:-1,c:0,d:world3D.bigNumber},
+                zmin = {a:0,b:0,c:-1,d:world3D.bigNumber};
 
             assert.deepEqual(p1a, {
                 s: {a:5, b:-2, c:1, d:0},
