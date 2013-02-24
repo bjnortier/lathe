@@ -106,7 +106,7 @@ requirejs([
     var Sphere2 = function(r) {
 
         var halfVRes = 1;
-        var thetaN = 5;
+        var thetaN = 9;
         
         var planes = [new Plane3D(0,0,-1,0), new Plane3D(0,0,1,10)];
         for (var i = 0; i < thetaN; ++i) {
