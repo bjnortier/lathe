@@ -71,9 +71,7 @@ requirejs([
             return plane;
         })
 
-        this.bsp = createConvexTree(
-            planes,
-            worldRegion);
+        this.bsp = createConvexTree(planes, worldRegion);
 
         var expandFront = function(node, i) {
 
@@ -88,40 +86,106 @@ requirejs([
                 ]
             } else {
                 var planes2 = [
-                    // Plane3D.fromPoints(points2[0], onSphere, points2[1]),
-                    // Plane3D.fromPoints(points2[1], onSphere, points2[2]),
-                    // Plane3D.fromPoints(points2[2], onSphere, points2[0]),
+                    Plane3D.fromPoints(points2[0], onSphere, points2[1]),
+                    Plane3D.fromPoints(points2[1], onSphere, points2[2]),
+                    Plane3D.fromPoints(points2[2], onSphere, points2[0]),
                 ]
             }
 
             node.front = createConvexTree(planes2, node.front.region);
-            // if (node.back && (i < 0)) {
-            //     expandFront(node.back, i+1);
-            // }
+            if (node.back && (i < 3)) {
+                expandFront(node.back, i+1);
+            }
         }
-        // expandFront(this.bsp.back, 1);
+        expandFront(this.bsp, 0);
 
     }
 
     var Sphere2 = function(r) {
 
-        var halfVRes = 1;
-        var thetaN = 9;
-        
-        var planes = [new Plane3D(0,0,-1,0), new Plane3D(0,0,1,10)];
-        for (var i = 0; i < thetaN; ++i) {
-            var theta = Math.PI*2*(i/thetaN);
-            var phi = Math.PI/4;
-            planes[i+2] = new Plane3D(
-                Math.cos(phi)*Math.cos(theta), 
-                Math.cos(phi)*Math.sin(theta), 
-                Math.sin(phi), 
-                r);
+        var thetaN = 6;
+        var halfZRes = 4;
+
+        var region = worldRegion;
+
+        var createTopSlice = function(z, region) {
+
+            var curvePlanes = [];
+            var phi = Math.PI/2*z/halfZRes;
+            var phi1 = Math.PI/2*(z+1)/halfZRes;
+            var rz = r*Math.cos(phi)
+            for (var i = 0; i < thetaN; ++i) {
+                var theta = Math.PI*2*(i/thetaN);
+                var theta1 = Math.PI*2*((i+1)/thetaN);
+                var p1 = new Vector3(
+                    r*Math.cos(phi)*Math.cos(theta),
+                    r*Math.cos(phi)*Math.sin(theta),
+                    r*Math.sin(phi));
+                var p2 = new Vector3(
+                    r*Math.cos(phi)*Math.cos(theta1),
+                    r*Math.cos(phi)*Math.sin(theta1),
+                    r*Math.sin(phi));
+                var p3 = new Vector3(
+                    r*Math.cos(phi1)*Math.cos(theta),
+                    r*Math.cos(phi1)*Math.sin(theta),
+                    r*Math.sin(phi1));
+                curvePlanes.push(new Plane3D.fromPoints(p1, p2, p3));
+            }
+
+            var planeZ = new Plane3D(0,0,1,r*Math.sin(phi1));
+            var splits = region.splitBy(planeZ);
+            var curvedTree = createConvexTree(curvePlanes, splits.back);
+            if (z < halfZRes-1) {
+                var front = createTopSlice(z+1, splits.front);
+                return new Node(undefined, region, planeZ, curvedTree, front);
+            } else {
+                return curvedTree;
+            }
+
         }
 
-        this.bsp = createConvexTree(
-            planes,
-            worldRegion);
+        var createBottomSlice = function(z, region) {
+
+            var curvePlanes = [];
+            var phi = Math.PI/2*z/halfZRes;
+            var phi1 = Math.PI/2*(z+1)/halfZRes;
+            var rz = -r*Math.cos(phi)
+            for (var i = 0; i < thetaN; ++i) {
+                var theta = Math.PI*2*(i/thetaN);
+                var theta1 = Math.PI*2*((i+1)/thetaN);
+                var p1 = new Vector3(
+                    r*Math.cos(phi)*Math.cos(theta),
+                    r*Math.cos(phi)*Math.sin(theta),
+                    -r*Math.sin(phi));
+                var p2 = new Vector3(
+                    r*Math.cos(phi)*Math.cos(theta1),
+                    r*Math.cos(phi)*Math.sin(theta1),
+                    -r*Math.sin(phi));
+                var p3 = new Vector3(
+                    r*Math.cos(phi1)*Math.cos(theta),
+                    r*Math.cos(phi1)*Math.sin(theta),
+                    -r*Math.sin(phi1));
+                curvePlanes.push(new Plane3D.fromPoints(p1, p3, p2));
+            }
+
+            var planeZ = new Plane3D(0,0,-1,r*Math.sin(phi1));
+            var splits = region.splitBy(planeZ);
+            var curvedTree = createConvexTree(curvePlanes, splits.back);
+            if (z < halfZRes-1) {
+                var front = createBottomSlice(z+1, splits.front);
+                return new Node(undefined, region, planeZ, curvedTree, front);
+            } else {
+                return curvedTree;
+            }
+
+        }
+
+        var plane0 = new Plane3D(0,0,-1,0);
+        var splits = worldRegion.splitBy(plane0);
+        this.bsp = new Node(
+            undefined, worldRegion, plane0, 
+            createTopSlice(0, splits.back), createBottomSlice(0, splits.front));
+
     }
 
     var p1 = new Cube(0.5,0.5,0.5,5,5,5);
