@@ -1,15 +1,15 @@
 'use strict';
 
 define([
-        'lib/bsp',
+        'lib/polygon3d',
         'lib/conv',
         'examples/js/viewport',
         'examples/js/trackball',
-    ], function(BSP2D, Conv, Viewport, Trackball) {
+    ], function(Polygon3D, Conv, Viewport, Trackball) {
 
     var Example = function(t1, t2, operation) {
 
-       var exampleContainer = document.createElement('div');
+        var exampleContainer = document.createElement('div');
         exampleContainer.classList.add('example');
         var beforeContainer = document.createElement('div');
         var bspAContainer = document.createElement('div');
@@ -26,27 +26,8 @@ define([
         var bspBViewport  = new Viewport(bspBContainer);
         new Trackball([beforeViewport, bspAViewport, bspBViewport]);
 
-        // beforeViewport.addBoundary(t1, 0xffff00);
-
-        // beforeViewport.addPolygon3D(t1.shp, 0xff0000);
-        // beforeViewport.addPolygon3D(t1.back.shp, 0xffff00);
-        // beforeViewport.addPolygon3D(t1.back.back.shp, 0x00ff00);
-        // beforeViewport.addPolygon3D(t1.back.back.back.shp, 0x00ffff);
-
-        
-
-
-        // beforeViewport.addBoundary(t2, 0x00ffff);
-
-        var brep = Conv.bsp3DtoBrep(t1).forEach(function(polygon, i) {
-            var color = Math.random()*0xffffff;
-            beforeViewport.addPolygon3D(polygon, color);
-        })
-
-        var brep = Conv.bsp3DtoBrep(t2).forEach(function(polygon, i) {
-            var color = Math.random()*0xffffff;
-            bspAViewport.addPolygon3D(polygon, color);
-        })
+        beforeViewport.addBRep3D(Conv.bspToBrep(t1, Polygon3D), 0x00ff00);
+        beforeViewport.addBRep3D(Conv.bspToBrep(t2, Polygon3D), 0x0000ff);
 
         var time = function(fn) {
             var t1 = new Date().getTime();
@@ -55,17 +36,11 @@ define([
             return r;
         }
 
-        var merged = time(function() { return operation(t1, t2) });
+        var mergedA = time(function() { return operation(t1, t2) });
+        bspAViewport.addBRep3D(Conv.bspToBrep(mergedA, Polygon3D), 0x00ffff);
 
-        var brep = Conv.bsp3DtoBrep(merged).forEach(function(polygon, i) {
-            var color = Math.random()*0xffffff;
-            bspBViewport.addPolygon3D(polygon, color);
-        })
-        
-        // bspAViewport.addBSPTree3D(merged, 0x00ff00);
-
-        // var merged = time(function() { return operation(t2, t1) });
-        // bspBViewport.addBSPTree3D(merged, 0x00ff00);
+        var mergedB = time(function() { return operation(t2, t1) });
+        bspBViewport.addBRep3D(Conv.bspToBrep(mergedB, Polygon3D), 0x00ffff);
 
     }
 

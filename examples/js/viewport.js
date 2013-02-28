@@ -253,6 +253,12 @@ define(['lib/world3d', 'lib/polygon3D',  'lib/plane2d', 'lib/vertex2d', 'lib/bsp
 
         this.addBRep3D = function(polygons, color) {
             polygons.forEach(function(polygon) {
+                that.addLine2D(polygon, color);
+            });
+        }
+
+        this.addBRep3D = function(polygons, color) {
+            polygons.forEach(function(polygon) {
                 that.addPolygon3D(polygon, color);
             });
         }
