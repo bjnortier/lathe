@@ -1,4 +1,4 @@
-define(['lib/world3d', 'lib/polygon3D',  'lib/plane2d', 'lib/vertex2d', 'lib/bsp2d'], 
+define(['lib/world3d', 'lib/polygon3D',  'lib/plane2d', 'lib/vertex2d', 'lib/bsp'], 
     function(world, Polygon3D, Plane2D, Vertex2D, BSP2D) {
 
     var Node = BSP2D.Node;
@@ -204,6 +204,15 @@ define(['lib/world3d', 'lib/polygon3D',  'lib/plane2d', 'lib/vertex2d', 'lib/bsp
 
         }
 
+        var findBoundaries = function(node) {
+            if (node instanceof Cell) {
+                return [];
+            } else {
+                return [node.boundary].concat(findBoundaries(node.back));
+            }
+
+        }
+
         this.addBSPTree2D = function(t, color) {
             findRegions(t).forEach(function(region) {
                 that.addPolygon2D(region, color);
@@ -215,6 +224,12 @@ define(['lib/world3d', 'lib/polygon3D',  'lib/plane2d', 'lib/vertex2d', 'lib/bsp
                 region.polygons.forEach(function(polygon) {
                     that.addPolygon3D(polygon, color);
                 });
+            });
+        }
+
+        this.addBoundary = function(t, color) {
+            findBoundaries(t).forEach(function(polygon) {
+                that.addPolygon3D(polygon, color);
             });
         }
 

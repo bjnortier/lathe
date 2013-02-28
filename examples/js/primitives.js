@@ -12,7 +12,7 @@ requirejs([
         'lib/vector3',
         'lib/plane3d',
         'lib/region3d',
-        'lib/bsp2d',
+        'lib/bsp',
         'examples/js/primitivesexample',
     ], 
     function(
@@ -193,7 +193,7 @@ requirejs([
     var p2 = new Sphere2(5);
 
     // new PrimitivesExample(p1, p2, BSP2D.union);
-    // new PrimitivesExample(p1, p2, BSP2D.intersection);
-    new PrimitivesExample(p1, p2, BSP2D.difference);
+    new PrimitivesExample(p1, p2, BSP2D.intersection);
+    // new PrimitivesExample(p1, p2, BSP2D.difference);
 
 });

@@ -1,7 +1,7 @@
 'use strict';
 
 define([
-        'lib/bsp2d',
+        'lib/bsp',
         'examples/js/viewport',
         'examples/js/trackball',
     ], function(BSP2D, Viewport, Trackball) {

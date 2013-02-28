@@ -1,7 +1,7 @@
 'use strict';
 
 define([
-        'lib/bsp2d',
+        'lib/bsp',
         'examples/js/viewport',
         'examples/js/trackball',
     ], function(BSP2D, Viewport, Trackball) {
@@ -47,8 +47,8 @@ define([
 
         // bspBViewport.addRegion3D(t2.bsp.back.front.back.back.back.region, 0x00ffff);
 
-        var merged = time(function() { return operation(t1.bsp, t2.bsp) });
-        bspAViewport.addBSPTree3D(merged, 0x00ffff);
+        // var merged = time(function() { return operation(t1.bsp, t2.bsp) });
+        // bspAViewport.addBSPTree3D(merged, 0x00ffff);
 
         var merged = time(function() { return operation(t2.bsp, t1.bsp) });
         bspBViewport.addBSPTree3D(merged, 0x00ffff);

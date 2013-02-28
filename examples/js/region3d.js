@@ -30,9 +30,9 @@ requirejs([
         new Polygon3D(
             new Plane3D(1,1,1,10), [new Plane3D(0,-1,0,0),new Plane3D(0,0,-1,0),new Plane3D(-1,0,0,0)]),
     ]);
-    // new Region3DExample(region2, new Plane3D(0,0,1,0.5));
+    new Region3DExample(region2, new Plane3D(0,0,1,0.5));
 
-    // new Region3DExample(Region3D.world, new Plane3D(1,1,0,0));
+    new Region3DExample(Region3D.world, new Plane3D(1,1,0,0));
 
     var region1 = new Region3D([
         new Polygon3D(

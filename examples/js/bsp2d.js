@@ -9,7 +9,7 @@ requirejs.config({
 requirejs([
         'lib/plane2d',
         'lib/polygon2d',
-        'lib/bsp2d',
+        'lib/bsp',
         'examples/js/bsptree2dexample',
     ], 
     function(
