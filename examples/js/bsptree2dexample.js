@@ -9,34 +9,31 @@ define([
 
     var Example = function(t1, t2, operation) {
 
-       var exampleContainer = document.createElement('div');
+        var exampleContainer = document.createElement('div');
         exampleContainer.classList.add('example');
         var beforeContainer = document.createElement('div');
-        var splitContainer = document.createElement('div');
+        var bspAContainer = document.createElement('div');
+        var bspBContainer = document.createElement('div');
         beforeContainer.classList.add('viewport');
-        splitContainer.classList.add('viewport');
+        bspAContainer.classList.add('viewport');
+        bspBContainer.classList.add('viewport');
         document.body.appendChild(exampleContainer);
         exampleContainer.appendChild(beforeContainer);
-        exampleContainer.appendChild(splitContainer);
+        exampleContainer.appendChild(bspAContainer);
+        exampleContainer.appendChild(bspBContainer);
         var beforeViewport = new Viewport(beforeContainer);
-        var splitViewport  = new Viewport(splitContainer);
-        new Trackball([beforeViewport, splitViewport]);
+        var bspAViewport  = new Viewport(bspAContainer);
+        var bspBViewport  = new Viewport(bspBContainer);
+        new Trackball([beforeViewport, bspAViewport, bspBViewport]);
 
-        var brep = Conv.bsp2DtoBrep(t1).forEach(function(line, i) {
-            var color = Math.random()*0xffffff;
-            beforeViewport.addLine2D(line, color);
-        })
+        beforeViewport.addBRep2D(Conv.bsp2DtoBrep(t1), 0x0000ff);
+        beforeViewport.addBRep2D(Conv.bsp2DtoBrep(t2), 0x00ff00);
 
-        var brep = Conv.bsp2DtoBrep(t2).forEach(function(line, i) {
-            var color = Math.random()*0xffffff;
-            splitViewport.addLine2D(line, color);
-        })
+        var mergedA = operation(t1, t2);
+        bspAViewport.addBRep2D(Conv.bsp2DtoBrep(mergedA), 0x00ffff);
 
-        // beforeViewport.addBSPTree2D(t1, 0xffff00);
-        // beforeViewport.addBSPTree2D(t2, 0x00ffff);
-        
-        // var merged = operation(t1, t2);
-        // splitViewport.addBSPTree2D(merged, 0x00ff00);
+        var mergedB = operation(t2, t1);
+        bspBViewport.addBRep2D(Conv.bsp2DtoBrep(mergedB), 0x00ffff);
 
     }
 

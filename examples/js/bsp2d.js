@@ -63,8 +63,9 @@ requirejs([
 
 
     new BSPTree2DExample(t1, t2, BSP2D.intersection);
-    // new BSPTree2DExample(t1, t2, BSP2D.union);
-    // new BSPTree2DExample(t1, t2, BSP2D.difference);
+    new BSPTree2DExample(t1, t2, BSP2D.union);
+    new BSPTree2DExample(t1, t2, BSP2D.difference);
+    new BSPTree2DExample(t2, t1, BSP2D.difference);
     // new BSPTree2DExample(t1, t2, BSP2D.symmetricDifference);
 
     // var t3 = createConvexTree(
