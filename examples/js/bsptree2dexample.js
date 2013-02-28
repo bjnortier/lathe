@@ -31,7 +31,6 @@ define([
         beforeViewport.addBRep2D(Conv.bspToBrep2D(t2), 0x00ff00);
 
         var mergedA = operation(t1, t2, Line2D);
-        mergedA.createSHPs(Line2D);
         bspAViewport.addBRep2D(Conv.bspToBrep2D(mergedA), 0x00ffff);
 
         var mergedB = operation(t2, t1, Line2D);

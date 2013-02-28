@@ -62,11 +62,7 @@ define([
             that.scene.add(new THREE.Line(yGeom, yMaterial));
             that.scene.add(new THREE.Line(zGeom, zMaterial));
 
-            // that.scene.add(new THREE.Mesh(
-            //     new THREE.SphereGeometry(5, 20, 20), 
-            //     new THREE.MeshLambertMaterial({wireframe: true, color: 0xff0000, transparent: true, opacity: 0.5})));
-
-            renderer = new THREE.WebGLRenderer( { antialias: true } );
+            renderer = new THREE.WebGLRenderer({antialias: true});
             renderer.sortObjects = false;
             renderer.setSize(containerWidth, containerHeight);
             container.appendChild(renderer.domElement);
@@ -170,7 +166,7 @@ define([
             var meshObject = THREE.SceneUtils.createMultiMaterialObject(faceGeometry, [
                 new THREE.MeshPhongMaterial({color: color}),
                 // new THREE.MeshLambertMaterial({color: color, opacity: 0.5, transparent: true}),
-                // new THREE.MeshBasicMaterial({color: color, wireframe: true}),
+                new THREE.MeshBasicMaterial({color: color&0x8f8f8f, wireframe: true, linewidth: 5}),
             ]);
             this.scene.add(meshObject);
 

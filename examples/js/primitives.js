@@ -128,12 +128,18 @@ requirejs([
 
     }
 
-    var p1 = new Cube(0.5,0.5,0.5,15,5,5);
+    var time = function(fn, msg) {
+        var t1 = new Date().getTime();
+        var r = fn();
+        console.log(msg, new Date().getTime()-t1);
+        return r;
+    }
+    var p1 = time(function() { return new Cube(-8,-8,-8,10,10,10); }, 'cube');
     // var p2 = new Cube(1,2,3,5,5,5);
-    var p2 = new Sphere2(10);
+    var p2 = time(function() { return new Sphere2(5); }, 'sphere');
 
     // new PrimitivesExample(p1, p2, BSP2D.union);
-    new PrimitivesExample(p1, p2, BSP2D.intersection);
+    // new PrimitivesExample(p1, p2, BSP2D.intersection);
     new PrimitivesExample(p1, p2, BSP2D.difference);
 
 });

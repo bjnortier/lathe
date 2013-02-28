@@ -29,20 +29,20 @@ define([
         beforeViewport.addBRep3D(Conv.bspToBrep3D(t1), 0x00ff00);
         beforeViewport.addBRep3D(Conv.bspToBrep3D(t2), 0x0000ff);
 
-        var time = function(fn) {
+        var time = function(fn, msg) {
             var t1 = new Date().getTime();
             var r = fn();
-            console.log(new Date().getTime()-t1);
+            console.log(msg, new Date().getTime()-t1);
             return r;
         }
 
-        var mergedA = time(function() { return operation(t1, t2, Polygon3D) });
-        mergedA.createSHPs(Polygon3D);
-        bspAViewport.addBRep3D(Conv.bspToBrep3D(mergedA), 0x00ffff);
+        var mergedA = time(function() { return operation(t1, t2, Polygon3D) }, 'boolean');
+        var brepA = time(function() { return Conv.bspToBrep3D(mergedA); }, 'brep');
+        bspAViewport.addBRep3D(brepA, 0x00ffff);
 
-        var mergedB = time(function() { return operation(t2, t1, Polygon3D) });
-        mergedB.createSHPs(Polygon3D);
-        bspBViewport.addBRep3D(Conv.bspToBrep3D(mergedB), 0x00ffff);
+        var mergedB = time(function() { return operation(t2, t1, Polygon3D) }, 'boolean');
+        var brepB = time(function() { return Conv.bspToBrep3D(mergedB); }, 'brep');
+        bspBViewport.addBRep3D(brepB, 0x00ffff);
 
     }
 

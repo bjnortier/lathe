@@ -8,21 +8,16 @@ requirejs.config({
 
 requirejs([
         'lib/plane3d',
-        'lib/polygon3d',
-        'lib/region3d',
         'lib/bsp',
         'examples/js/bsptree3dexample',
     ], 
     function(
         Plane3D,
-        Polygon3D,
-        Region3D,
         BSP2D,
         BSPTree3DExample) {
 
     var Node = BSP2D.Node;
     var Cell = BSP2D.Cell;
-    var worldRegion = Region3D.world;
 
     var createConvexTree = function(planes) {
         if (planes.length) {

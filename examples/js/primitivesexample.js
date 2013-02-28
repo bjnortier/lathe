@@ -13,34 +13,28 @@ define([
         exampleContainer.classList.add('example');
         var beforeContainer = document.createElement('div');
         var bspAContainer = document.createElement('div');
-        var bspBContainer = document.createElement('div');
         beforeContainer.classList.add('viewport');
         bspAContainer.classList.add('viewport');
-        bspBContainer.classList.add('viewport');
         document.body.appendChild(exampleContainer);
         exampleContainer.appendChild(beforeContainer);
         exampleContainer.appendChild(bspAContainer);
-        exampleContainer.appendChild(bspBContainer);
         var beforeViewport = new Viewport(beforeContainer);
         var bspAViewport  = new Viewport(bspAContainer);
-        var bspBViewport  = new Viewport(bspBContainer);
-        new Trackball([beforeViewport, bspAViewport, bspBViewport]);
+        new Trackball([beforeViewport, bspAViewport]);
 
         beforeViewport.addBRep3D(Conv.bspToBrep3D(t1.bsp), 0x00ff00);
         beforeViewport.addBRep3D(Conv.bspToBrep3D(t2.bsp), 0x0000ff);
 
-        var time = function(fn) {
+        var time = function(fn, msg) {
             var t1 = new Date().getTime();
             var r = fn();
-            console.log(new Date().getTime()-t1);
+            console.log(msg, new Date().getTime()-t1);
             return r;
         }
 
-        var merged = time(function() { return operation(t1.bsp, t2.bsp, Polygon3D) });
-        bspAViewport.addBRep3D(Conv.bspToBrep3D(merged), 0x00ffff);
-
-        var merged = time(function() { return operation(t2.bsp, t1.bsp, Polygon3D) });
-        bspBViewport.addBRep3D(Conv.bspToBrep3D(merged), 0x00ffff);
+        var merged = time(function() { return operation(t1.bsp, t2.bsp, Polygon3D) }, 'boolean');
+        var brep = time(function() { return Conv.bspToBrep3D(merged); }, 'brep');
+        bspAViewport.addBRep3D(brep, 0x00ffff);
 
     }
 
