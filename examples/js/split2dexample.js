@@ -6,7 +6,7 @@ define([
     ], function(Plane3D, Polygon3D, Viewport, Trackball) {
 
 
-    var Example = function(p1, h) {
+    var Example = function(l1, h) {
         var exampleContainer = document.createElement('div');
         exampleContainer.classList.add('example');
         var beforeContainer = document.createElement('div');
@@ -20,12 +20,12 @@ define([
         var splitViewport  = new Viewport(splitContainer);
         new Trackball([beforeViewport, splitViewport]);
 
-        beforeViewport.addPolygon2D(p1, 0x00ffff);
+        beforeViewport.addLine2D(l1, 0x00ffff);
         beforeViewport.addPlane2D(h, 0xff0000);
 
-        var splits = p1.splitBy(h); 
-        splits.front && splitViewport.addPolygon2D(splits.front, 0x0000ff);
-        splits.back && splitViewport.addPolygon2D(splits.back, 0x00ff00);
+        var splits = l1.splitBy(h); 
+        splits.front && splitViewport.addLine2D(splits.front, 0x0000ff);
+        splits.back && splitViewport.addLine2D(splits.back, 0x00ff00);
         splitViewport.addPlane2D(h, 0xff0000);
 
     }

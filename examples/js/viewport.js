@@ -91,37 +91,35 @@ define([
             renderer.render(that.scene, camera);
         }
 
-        var polygonToMesh = function(polygon) {
+        var polygonsToMesh = function(polygons) {
             var geometry = new THREE.Geometry();
-            var vertices = polygon.toVertices();
-            var coordinates = vertices.map(function(vertex) {
-                return vertex.toCoordinate();
-            });
-
-            coordinates.forEach(function(coordinate) {
-                var i = geometry.vertices.push(new THREE.Vector3(coordinate.x, coordinate.y, coordinate.z)) - 1;
-                // ['x', 'y', 'z'].forEach(function(dim) {
-                //     if (geometry.vertices[i][dim] === world.bigNumber) {
-                //         geometry.vertices[i][dim] = 10;
-                //     } else if(geometry.vertices[i][dim] === -world.bigNumber) {
-                //         geometry.vertices[i][dim] = -10;
-                //     }
-                // });
-            });
-            if (coordinates.length < 3) {
-                throw Error('invalid polygon');
-            } else if (coordinates.length === 3) {
-                geometry.faces.push(new THREE.Face3(0,1,2));
-            } else if (coordinates.length === 4) {
-                geometry.faces.push(new THREE.Face4(0,1,2,3));
-            } else {
-                geometry.faces.push(new THREE.Face3(0,1,2));
-                for (var i = 2; i < coordinates.length -1; ++i) {
-                    geometry.faces.push(new THREE.Face3(0,i,i+1));
+            var indices = polygons.map(function(polygon, i) {
+                var vertices = polygon.toVertices();
+                var coordinates = vertices.map(function(vertex) {
+                    return vertex.toCoordinate();
+                });
+                var indices = coordinates.map(function(coordinate) {
+                    return geometry.vertices.push(new THREE.Vector3(coordinate.x, coordinate.y, coordinate.z)) - 1;
+                });
+                if (coordinates.length < 3) {
+                    throw Error('invalid polygon');
+                } else if (coordinates.length === 3) {
+                    geometry.faces.push(new THREE.Face3(indices[0],indices[1],indices[2]));
+                } else if (coordinates.length === 4) {
+                    geometry.faces.push(new THREE.Face4(indices[0],indices[1],indices[2],indices[3]));
+                } else {
+                    // Only support cnvex polygons
+                    geometry.faces.push(new THREE.Face3(indices[0],indices[1],indices[2]));
+                    for (var i = 2; i < coordinates.length -1; ++i) {
+                        geometry.faces.push(new THREE.Face3(indices[0], indices[0]+i,indices[0]+i+1));
+                    }
                 }
-            }
+                return indices;
+
+            })
+
             geometry.computeFaceNormals();
-            return geometry;
+            return {geometry: geometry, indices: indices};
         }   
 
          this.addLine2D = function(line, color) {
@@ -163,19 +161,24 @@ define([
         }
 
         this.addPolygon3D = function(polygon, color) {
-            var faceGeometry = polygonToMesh(polygon);
+            this.addPolygons3D([polygon], color);
+        }
+
+        this.addPolygons3D = function(polygons, color) {
+            var toMesh = polygonsToMesh(polygons);
+            var faceGeometry = toMesh.geometry;
             var meshObject = THREE.SceneUtils.createMultiMaterialObject(faceGeometry, [
-                new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide, opacity: 0.5, transparent: true}),
+                new THREE.MeshPhongMaterial({color: color}),
+                // new THREE.MeshLambertMaterial({color: color, opacity: 0.5, transparent: true}),
+                // new THREE.MeshBasicMaterial({color: color, wireframe: true}),
             ]);
             this.scene.add(meshObject);
 
-            var edgeGeometry = new THREE.Geometry();
-            for (var i = 0; i <= faceGeometry.vertices.length; ++i) {
-                edgeGeometry.vertices.push(faceGeometry.vertices[i % faceGeometry.vertices.length]);
-            }
-            var material = new THREE.LineBasicMaterial({color: color & 0x9f9f9f, linewidth: 1 });
-            var edges = new THREE.Line(edgeGeometry, material);
-            this.scene.add(edges);
+            // var edgeGeometry = new THREE.Geometry();
+            // edgeGeometry.vertices = faceGeometry.vertices;
+            // var material = new THREE.LineBasicMaterial({color: color & 0x9f9f9f, linewidth: 1 });
+            // var edges = new THREE.Line(edgeGeometry, material);
+            // this.scene.add(edges);
         }
 
         this.addPlane2D = function(plane, color) {
@@ -260,9 +263,7 @@ define([
         }
 
         this.addBRep3D = function(polygons, color) {
-            polygons.forEach(function(polygon) {
-                that.addPolygon3D(polygon, color);
-            });
+            that.addPolygons3D(polygons, color);
         }
 
 

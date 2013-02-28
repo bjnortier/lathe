@@ -3,9 +3,10 @@
 define([
         'lib/bsp',
         'lib/conv',
+        'lib/line2d',
         'examples/js/viewport',
         'examples/js/trackball',
-    ], function(BSP, Conv, Viewport, Trackball) {
+    ], function(BSP, Conv, Line2D, Viewport, Trackball) {
 
     var Example = function(t1, t2, operation) {
 
@@ -29,10 +30,11 @@ define([
         beforeViewport.addBRep2D(Conv.bspToBrep2D(t1), 0x0000ff);
         beforeViewport.addBRep2D(Conv.bspToBrep2D(t2), 0x00ff00);
 
-        var mergedA = operation(t1, t2);
+        var mergedA = operation(t1, t2, Line2D);
+        mergedA.createSHPs(Line2D);
         bspAViewport.addBRep2D(Conv.bspToBrep2D(mergedA), 0x00ffff);
 
-        var mergedB = operation(t2, t1);
+        var mergedB = operation(t2, t1, Line2D);
         bspBViewport.addBRep2D(Conv.bspToBrep2D(mergedB), 0x00ffff);
 
     }

@@ -11,36 +11,31 @@ requirejs.config({
 requirejs([
         'lib/vector3',
         'lib/plane3d',
-        'lib/region3d',
         'lib/bsp',
         'examples/js/primitivesexample',
     ], 
     function(
         Vector3,
         Plane3D,
-        Region3D,
         BSP2D,
         PrimitivesExample) {
 
     var Node = BSP2D.Node;
     var Cell = BSP2D.Cell;
-    var worldRegion = Region3D.world;
 
-    var createConvexTree = function(planes, region) {
+    var createConvexTree = function(planes) {
         if (planes.length) {
-            var splits = region.splitBy(planes[0]);
-            var frontNode = new Cell('+', false, splits.front);
-            var backNode = createConvexTree(planes.slice(1), splits.back);
-            return new Node(region, planes[0], backNode, frontNode);
+            var frontNode = new Cell(false);
+            var backNode = createConvexTree(planes.slice(1));
+            return new Node(planes[0], backNode, frontNode);
         } else {
-            return new Cell('-', true, region);
+            return new Cell(true);
         }
     }
 
 
     var t2 = createConvexTree(
-        [new Plane3D(0,0,-1,-1), new Plane3D(0,0,1,5), new Plane3D(1,0,0,5), new Plane3D(-1,0,0,5), new Plane3D(0,1,0,5), new Plane3D(0,-1,0,4)],
-        worldRegion);
+        [new Plane3D(0,0,-1,-1), new Plane3D(0,0,1,5), new Plane3D(1,0,0,5), new Plane3D(-1,0,0,5), new Plane3D(0,1,0,5), new Plane3D(0,-1,0,4)]);
 
     var Cube = function(x,y,z,w,l,h) {
        this.bsp = createConvexTree(
@@ -48,67 +43,15 @@ requirejs([
                 new Plane3D(0,0,-1,-z), new Plane3D(0,0,1,z+h), 
                 new Plane3D(1,0,0,x+w), new Plane3D(-1,0,0,-x), 
                 new Plane3D(0,1,0,y+l), new Plane3D(0,-1,0,-y)
-            ], 
-            worldRegion);
-    }
-
-    var Sphere = function(r, order) {
-        var order = order || 0;
-
-        var points = [
-            new Vector3(1,-1/Math.sqrt(3),-1/Math.sqrt(6)).mult(r*Math.sqrt(6)/3),
-            new Vector3(-1,-1/Math.sqrt(3),-1/Math.sqrt(6)).mult(r*Math.sqrt(6)/3),
-            new Vector3(0,2/Math.sqrt(3),-1/Math.sqrt(6)).mult(r*Math.sqrt(6)/3),
-            new Vector3(0,0,3/Math.sqrt(6)).mult(r*Math.sqrt(6)/3),
-        ]
-        var planes = points.map(function(p, i) {
-            var plane = Plane3D.fromPoints(points[i], 
-                points[(i+1)%points.length], 
-                points[(i+2)%points.length])
-            if (i % 2 !== 0) {
-                plane = plane.reverse();
-            }
-            return plane;
-        })
-
-        this.bsp = createConvexTree(planes, worldRegion);
-
-        var expandFront = function(node, i) {
-
-            var points2 = [points[i%4], points[(i+1)%4], points[(i+2)%4]];
-            var center = points2[0].add(points2[1]).add(points2[2]).mult(1/3);
-            var onSphere = center.mult(r/center.length());
-            if (i % 2 === 0) {
-                var planes2 = [
-                    Plane3D.fromPoints(points2[0], points2[1], onSphere),
-                    Plane3D.fromPoints(points2[1], points2[2], onSphere),
-                    Plane3D.fromPoints(points2[2], points2[0], onSphere),
-                ]
-            } else {
-                var planes2 = [
-                    Plane3D.fromPoints(points2[0], onSphere, points2[1]),
-                    Plane3D.fromPoints(points2[1], onSphere, points2[2]),
-                    Plane3D.fromPoints(points2[2], onSphere, points2[0]),
-                ]
-            }
-
-            node.front = createConvexTree(planes2, node.front.region);
-            if (node.back && (i < 3)) {
-                expandFront(node.back, i+1);
-            }
-        }
-        expandFront(this.bsp, 0);
-
+            ]); 
     }
 
     var Sphere2 = function(r) {
 
-        var thetaN = 10;
-        var halfZRes = 6;
+        var thetaN = 20;
+        var halfZRes = 10;
 
-        var region = worldRegion;
-
-        var createTopSlice = function(z, region) {
+        var createTopSlice = function(z) {
 
             var curvePlanes = [];
             var phi = Math.PI/2*z/halfZRes;
@@ -133,18 +76,17 @@ requirejs([
             }
 
             var planeZ = new Plane3D(0,0,1,r*Math.sin(phi1));
-            var splits = region.splitBy(planeZ);
-            var curvedTree = createConvexTree(curvePlanes, splits.back);
+            var curvedTree = createConvexTree(curvePlanes);
             if (z < halfZRes-1) {
-                var front = createTopSlice(z+1, splits.front);
-                return new Node(region, planeZ, curvedTree, front);
+                var front = createTopSlice(z+1);
+                return new Node(planeZ, curvedTree, front);
             } else {
                 return curvedTree;
             }
 
         }
 
-        var createBottomSlice = function(z, region) {
+        var createBottomSlice = function(z) {
 
             var curvePlanes = [];
             var phi = Math.PI/2*z/halfZRes;
@@ -169,11 +111,10 @@ requirejs([
             }
 
             var planeZ = new Plane3D(0,0,-1,r*Math.sin(phi1));
-            var splits = region.splitBy(planeZ);
-            var curvedTree = createConvexTree(curvePlanes, splits.back);
+            var curvedTree = createConvexTree(curvePlanes);
             if (z < halfZRes-1) {
-                var front = createBottomSlice(z+1, splits.front);
-                return new Node(region, planeZ, curvedTree, front);
+                var front = createBottomSlice(z+1);
+                return new Node(planeZ, curvedTree, front);
             } else {
                 return curvedTree;
             }
@@ -181,19 +122,18 @@ requirejs([
         }
 
         var plane0 = new Plane3D(0,0,-1,0);
-        var splits = worldRegion.splitBy(plane0);
         this.bsp = new Node(
-            worldRegion, plane0, 
-            createTopSlice(0, splits.back), createBottomSlice(0, splits.front));
+            plane0, 
+            createTopSlice(0), createBottomSlice(0));
 
     }
 
-    var p1 = new Cube(0.5,0.5,0.5,5,5,5);
+    var p1 = new Cube(0.5,0.5,0.5,15,5,5);
     // var p2 = new Cube(1,2,3,5,5,5);
-    var p2 = new Sphere2(5);
+    var p2 = new Sphere2(10);
 
     // new PrimitivesExample(p1, p2, BSP2D.union);
     new PrimitivesExample(p1, p2, BSP2D.intersection);
-    // new PrimitivesExample(p1, p2, BSP2D.difference);
+    new PrimitivesExample(p1, p2, BSP2D.difference);
 
 });

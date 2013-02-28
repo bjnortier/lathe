@@ -2,9 +2,10 @@
 
 define([
         'lib/conv',
+        'lib/polygon3d',
         'examples/js/viewport',
         'examples/js/trackball',
-    ], function(Conv, Viewport, Trackball) {
+    ], function(Conv, Polygon3D, Viewport, Trackball) {
 
     var Example = function(t1, t2, operation) {
 
@@ -35,10 +36,12 @@ define([
             return r;
         }
 
-        var mergedA = time(function() { return operation(t1, t2) });
+        var mergedA = time(function() { return operation(t1, t2, Polygon3D) });
+        mergedA.createSHPs(Polygon3D);
         bspAViewport.addBRep3D(Conv.bspToBrep3D(mergedA), 0x00ffff);
 
-        var mergedB = time(function() { return operation(t2, t1) });
+        var mergedB = time(function() { return operation(t2, t1, Polygon3D) });
+        mergedB.createSHPs(Polygon3D);
         bspBViewport.addBRep3D(Conv.bspToBrep3D(mergedB), 0x00ffff);
 
     }
