@@ -116,6 +116,18 @@ define(['lib/world3d', 'lib/polygon3D',  'lib/plane2d', 'lib/vertex2d', 'lib/bsp
             return geometry;
         }   
 
+         this.addLine2D = function(line, color) {
+            var edgeGeometry = new THREE.Geometry();
+            edgeGeometry.vertices = line.toVertices().map(function(v) {
+                var coordinate = v.toCoordinate();
+                return new THREE.Vector3(coordinate.x, coordinate.y, coordinate.z)
+            })
+
+            var material = new THREE.LineBasicMaterial({color: color & 0x9f9f9f, linewidth: 1 });
+            var edges = new THREE.Line(edgeGeometry, material);
+            this.scene.add(edges);
+        }
+
         this.addPolygon2D = function(polygon, color, z) {
             var faceGeometry = polygonToMesh(polygon);
             var meshObject = THREE.SceneUtils.createMultiMaterialObject(faceGeometry, [

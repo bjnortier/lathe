@@ -33,22 +33,35 @@ define([
         // beforeViewport.addPolygon3D(t1.back.back.shp, 0x00ff00);
         // beforeViewport.addPolygon3D(t1.back.back.back.shp, 0x00ffff);
 
-        var brep = Conv.bsp3DtoBrep(t1).forEach(function(polygon, i) {
-            var color = Math.random()*0xffffff;
-            bspAViewport.addPolygon3D(polygon, color);
-        })
+        
 
 
         // beforeViewport.addBoundary(t2, 0x00ffff);
 
-        // var time = function(fn) {
-        //     var t1 = new Date().getTime();
-        //     var r = fn();
-        //     console.log(new Date().getTime()-t1);
-        //     return r;
-        // }
+        var brep = Conv.bsp3DtoBrep(t1).forEach(function(polygon, i) {
+            var color = Math.random()*0xffffff;
+            beforeViewport.addPolygon3D(polygon, color);
+        })
+
+        var brep = Conv.bsp3DtoBrep(t2).forEach(function(polygon, i) {
+            var color = Math.random()*0xffffff;
+            bspAViewport.addPolygon3D(polygon, color);
+        })
+
+        var time = function(fn) {
+            var t1 = new Date().getTime();
+            var r = fn();
+            console.log(new Date().getTime()-t1);
+            return r;
+        }
+
+        var merged = time(function() { return operation(t1, t2) });
+
+        var brep = Conv.bsp3DtoBrep(merged).forEach(function(polygon, i) {
+            var color = Math.random()*0xffffff;
+            bspBViewport.addPolygon3D(polygon, color);
+        })
         
-        // var merged = time(function() { return operation(t1, t2) });
         // bspAViewport.addBSPTree3D(merged, 0x00ff00);
 
         // var merged = time(function() { return operation(t2, t1) });
