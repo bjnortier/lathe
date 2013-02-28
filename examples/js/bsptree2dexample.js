@@ -26,14 +26,14 @@ define([
         var bspBViewport  = new Viewport(bspBContainer);
         new Trackball([beforeViewport, bspAViewport, bspBViewport]);
 
-        beforeViewport.addBRep2D(Conv.bsp2DtoBrep(t1), 0x0000ff);
-        beforeViewport.addBRep2D(Conv.bsp2DtoBrep(t2), 0x00ff00);
+        beforeViewport.addBRep2D(Conv.bspToBrep2D(t1), 0x0000ff);
+        beforeViewport.addBRep2D(Conv.bspToBrep2D(t2), 0x00ff00);
 
         var mergedA = operation(t1, t2);
-        bspAViewport.addBRep2D(Conv.bsp2DtoBrep(mergedA), 0x00ffff);
+        bspAViewport.addBRep2D(Conv.bspToBrep2D(mergedA), 0x00ffff);
 
         var mergedB = operation(t2, t1);
-        bspBViewport.addBRep2D(Conv.bsp2DtoBrep(mergedB), 0x00ffff);
+        bspBViewport.addBRep2D(Conv.bspToBrep2D(mergedB), 0x00ffff);
 
     }
 

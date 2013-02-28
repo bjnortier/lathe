@@ -31,7 +31,7 @@ requirejs([
             var splits = region.splitBy(planes[0]);
             var frontNode = new Cell('+', false, splits.front);
             var backNode = createConvexTree(planes.slice(1), splits.back);
-            return new Node(undefined, region, planes[0], backNode, frontNode);
+            return new Node(region, planes[0], backNode, frontNode);
         } else {
             return new Cell('-', true, region);
         }
@@ -103,8 +103,8 @@ requirejs([
 
     var Sphere2 = function(r) {
 
-        var thetaN = 6;
-        var halfZRes = 4;
+        var thetaN = 10;
+        var halfZRes = 6;
 
         var region = worldRegion;
 
@@ -137,7 +137,7 @@ requirejs([
             var curvedTree = createConvexTree(curvePlanes, splits.back);
             if (z < halfZRes-1) {
                 var front = createTopSlice(z+1, splits.front);
-                return new Node(undefined, region, planeZ, curvedTree, front);
+                return new Node(region, planeZ, curvedTree, front);
             } else {
                 return curvedTree;
             }
@@ -173,7 +173,7 @@ requirejs([
             var curvedTree = createConvexTree(curvePlanes, splits.back);
             if (z < halfZRes-1) {
                 var front = createBottomSlice(z+1, splits.front);
-                return new Node(undefined, region, planeZ, curvedTree, front);
+                return new Node(region, planeZ, curvedTree, front);
             } else {
                 return curvedTree;
             }
@@ -183,7 +183,7 @@ requirejs([
         var plane0 = new Plane3D(0,0,-1,0);
         var splits = worldRegion.splitBy(plane0);
         this.bsp = new Node(
-            undefined, worldRegion, plane0, 
+            worldRegion, plane0, 
             createTopSlice(0, splits.back), createBottomSlice(0, splits.front));
 
     }

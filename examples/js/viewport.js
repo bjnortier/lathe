@@ -1,8 +1,16 @@
-define(['lib/world3d', 'lib/polygon3D',  'lib/plane2d', 'lib/vertex2d', 'lib/bsp'], 
-    function(world, Polygon3D, Plane2D, Vertex2D, BSP2D) {
+define([
+        'lib/world3d', 
+        'lib/polygon3D',  
+        'lib/plane2d', 
+        'lib/vertex2d', 
+        'lib/conv',
+    ], function(
+        world,
+        Polygon3D,
+        Plane2D,
+        Vertex2D,
+        Conv) {
 
-    var Node = BSP2D.Node;
-    var Cell = BSP2D.Cell; 
 
     var Viewport = function(container) {
 
@@ -225,19 +233,19 @@ define(['lib/world3d', 'lib/polygon3D',  'lib/plane2d', 'lib/vertex2d', 'lib/bsp
 
         }
 
-        this.addBSPTree2D = function(t, color) {
-            findRegions(t).forEach(function(region) {
-                that.addPolygon2D(region, color);
-            });
-        }
+        // this.addBSPTree2D = function(t, color) {
+        //     findRegions(t).forEach(function(region) {
+        //         that.addPolygon2D(region, color);
+        //     });
+        // }
 
-        this.addBSPTree3D = function(t, color) {
-            findRegions(t).forEach(function(region) {
-                region.polygons.forEach(function(polygon) {
-                    that.addPolygon3D(polygon, color);
-                });
-            });
-        }
+        // this.addBSPTree3D = function(t, color) {
+        //     findRegions(t).forEach(function(region) {
+        //         region.polygons.forEach(function(polygon) {
+        //             that.addPolygon3D(polygon, color);
+        //         });
+        //     });
+        // }
 
         this.addBoundary = function(t, color) {
             findBoundaries(t).forEach(function(polygon) {
@@ -248,12 +256,6 @@ define(['lib/world3d', 'lib/polygon3D',  'lib/plane2d', 'lib/vertex2d', 'lib/bsp
         this.addBRep2D = function(lines, color) {
             lines.forEach(function(line) {
                 that.addLine2D(line, color);
-            });
-        }
-
-        this.addBRep3D = function(polygons, color) {
-            polygons.forEach(function(polygon) {
-                that.addLine2D(polygon, color);
             });
         }
 

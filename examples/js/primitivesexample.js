@@ -1,10 +1,10 @@
 'use strict';
 
 define([
-        'lib/bsp',
+        'lib/conv',
         'examples/js/viewport',
         'examples/js/trackball',
-    ], function(BSP2D, Viewport, Trackball) {
+    ], function(Conv, Viewport, Trackball) {
 
     var Example = function(t1, t2, operation) {
 
@@ -25,8 +25,8 @@ define([
         var bspBViewport  = new Viewport(bspBContainer);
         new Trackball([beforeViewport, bspAViewport, bspBViewport]);
 
-        beforeViewport.addBSPTree3D(t1.bsp, 0x00ff00);
-        beforeViewport.addBSPTree3D(t2.bsp, 0x0000ff);
+        beforeViewport.addBRep3D(Conv.bspToBrep3D(t1.bsp), 0x00ff00);
+        beforeViewport.addBRep3D(Conv.bspToBrep3D(t2.bsp), 0x0000ff);
 
         var time = function(fn) {
             var t1 = new Date().getTime();
@@ -34,24 +34,12 @@ define([
             console.log(new Date().getTime()-t1);
             return r;
         }
-        
-        // beforeViewport.addRegion3D(t2.bsp.back.back.back.region, 0x00ffff);
-        // bspAViewport.addRegion3D(t2.bsp.back.back.back.back.region, 0x00ffff);
 
-        // console.log(t2.bsp.back.back.back.region.toEval());
-        // console.log(t2.bsp.back.back.back.plane.toEval());
-
-
-        // console.log(t2.bsp.back.front.back.back.region.toEval());
-        // console.log(t2.bsp.back.front.back.back.plane.toEval());
-
-        // bspBViewport.addRegion3D(t2.bsp.back.front.back.back.back.region, 0x00ffff);
-
-        // var merged = time(function() { return operation(t1.bsp, t2.bsp) });
-        // bspAViewport.addBSPTree3D(merged, 0x00ffff);
+        var merged = time(function() { return operation(t1.bsp, t2.bsp) });
+        bspAViewport.addBRep3D(Conv.bspToBrep3D(merged), 0x00ffff);
 
         var merged = time(function() { return operation(t2.bsp, t1.bsp) });
-        bspBViewport.addBSPTree3D(merged, 0x00ffff);
+        bspBViewport.addBRep3D(Conv.bspToBrep3D(merged), 0x00ffff);
 
     }
 
