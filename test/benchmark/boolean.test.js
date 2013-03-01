@@ -33,7 +33,7 @@ define([
             console.log('\nsphere & cube:')
 
             var sphere = time(function() { 
-                return new Sphere(5);
+                return new Sphere(0,0,0,5);
             }, 'create sphere:\t');
      
             var cube = time(function() { 
