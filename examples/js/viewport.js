@@ -164,8 +164,8 @@ define([
             var toMesh = polygonsToMesh(polygons);
             var faceGeometry = toMesh.geometry;
             var meshObject = THREE.SceneUtils.createMultiMaterialObject(faceGeometry, [
-                new THREE.MeshPhongMaterial({color: color}),
-                // new THREE.MeshLambertMaterial({color: color}),
+                // new THREE.MeshPhongMaterial({color: color}),
+                new THREE.MeshLambertMaterial({color: color, transparent: true, opacity: 0.5}),
                 new THREE.MeshBasicMaterial({color: color&0x8f8f8f, wireframe: true, linewidth: 5}),
             ]);
             this.scene.add(meshObject);

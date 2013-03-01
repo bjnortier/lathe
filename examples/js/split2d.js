@@ -38,14 +38,18 @@ requirejs([
     //     new Polygon2D([new Plane2D(0,1,1), new Plane2D(1,1,10), new Plane2D(1,0,1)]),
     //     new Plane2D(-1,-1,-10));
 
+    // new Split2DExample(
+    //     new Line2D(new Plane2D(1,1,12),[new Plane2D(0,-1,-2),new Plane2D(-1,0,-3)]),
+    //     new Plane2D(0,-1,-1));
+
+
+    // new Split2DExample(
+    //     new Line2D(new Plane2D(0,-1,-1),[new Plane2D(1,0,1000000),new Plane2D(-1,0,1000000)]),
+    //     new Plane2D(1,1,12));
+
     new Split2DExample(
-        new Line2D(new Plane2D(1,1,12),[new Plane2D(0,-1,-2),new Plane2D(-1,0,-3)]),
+        new Line2D(new Plane2D(-1,0,-3),[new Plane2D(0,1,1000000),new Plane2D(0,-1,1000000)]),
         new Plane2D(0,-1,-1));
-
-
-    new Split2DExample(
-        new Line2D(new Plane2D(0,-1,-1),[new Plane2D(1,0,1000000),new Plane2D(-1,0,1000000)]),
-        new Plane2D(1,1,12));
 
 
 });

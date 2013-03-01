@@ -20,13 +20,13 @@ define([
         var splitViewport  = new Viewport(splitContainer);
         new Trackball([beforeViewport, splitViewport]);
 
-        beforeViewport.addLine2D(l1, 0x00ffff);
-        beforeViewport.addPlane2D(h, 0xff0000);
+        beforeViewport.addLine2D(l1, 0xff00ff);
+        beforeViewport.addPlane2D(h, 0x00ff00);
 
         var splits = l1.splitBy(h); 
-        splits.front && splitViewport.addLine2D(splits.front, 0x0000ff);
-        splits.back && splitViewport.addLine2D(splits.back, 0x00ff00);
-        splitViewport.addPlane2D(h, 0xff0000);
+        splits.front && splitViewport.addLine2D(splits.front, 0xff0000);
+        splits.back && splitViewport.addLine2D(splits.back, 0x0000ff);
+        splitViewport.addPlane2D(h, 0x00ff00);
 
     }
 
