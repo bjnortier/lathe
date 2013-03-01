@@ -10,20 +10,14 @@ requirejs.config({
 
 requirejs([
         'lib/bench',
-        'lib/vector3',
-        'lib/polygon3d',
         'lib/plane3d',
-        'lib/bsp',
         'lib/primitives/sphere',
         'lib/primitives/cube',
         'examples/js/primitivesexample',
     ], 
     function(
         Bench,
-        Vector3,
-        Polygon3D,
         Plane3D,
-        BSP2D,
         Sphere,
         Cube,
         PrimitivesExample) {
@@ -33,6 +27,6 @@ requirejs([
 
     // new PrimitivesExample(p1, p2, BSP2D.union);
     // new PrimitivesExample(p1, p2, BSP2D.intersection);
-    new PrimitivesExample(p1, p2, BSP2D.difference);
+    new PrimitivesExample(p1, p2);
 
 });

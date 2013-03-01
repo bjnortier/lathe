@@ -61,6 +61,8 @@ define([
             that.scene.add(new THREE.Line(xGeom, xMaterial));
             that.scene.add(new THREE.Line(yGeom, yMaterial));
             that.scene.add(new THREE.Line(zGeom, zMaterial));
+            that.exampleObj = new THREE.Object3D();
+            that.scene.add(that.exampleObj);
 
             renderer = new THREE.WebGLRenderer({antialias: true});
             renderer.sortObjects = false;
@@ -85,6 +87,24 @@ define([
         function render() {
             light.position = camera.position;
             renderer.render(that.scene, camera);
+        }
+
+        this.clear = function() {
+
+            var clearObj = function(obj) {
+                if (obj.geometry) {
+
+                }
+                if (obj.children) {
+                    obj.children.map(clearObj);
+                }
+            }
+            clearObj(this.exampleObj);
+
+            this.scene.remove(this.exampleObj);
+            this.exampleObj = new THREE.Object3D();
+            this.scene.add(this.exampleObj);
+            render();
         }
 
         var polygonsToMesh = function(polygons) {
@@ -118,7 +138,7 @@ define([
             return {geometry: geometry, indices: indices};
         }   
 
-         this.addLine2D = function(line, color) {
+        this.addLine2D = function(line, color) {
             var edgeGeometry = new THREE.Geometry();
             edgeGeometry.vertices = line.toVertices().map(function(v) {
                 var coordinate = v.toCoordinate();
@@ -127,7 +147,7 @@ define([
 
             var material = new THREE.LineBasicMaterial({color: color & 0x9f9f9f, linewidth: 1 });
             var edges = new THREE.Line(edgeGeometry, material);
-            this.scene.add(edges);
+            this.exampleObj.add(edges);
         }
 
         this.addPolygon2D = function(polygon, color, z) {
@@ -135,7 +155,7 @@ define([
             var meshObject = THREE.SceneUtils.createMultiMaterialObject(faceGeometry, [
                 new THREE.MeshLambertMaterial({color: color, side: THREE.DoubleSide, opacity: 0.5, transparent: true}),
             ]);
-            this.scene.add(meshObject);
+            this.exampleObj.add(meshObject);
 
             var edgeGeometry = new THREE.Geometry();
             for (var i = 0; i <= faceGeometry.vertices.length; ++i) {
@@ -153,7 +173,7 @@ define([
 
             var material = new THREE.LineBasicMaterial({color: color & 0x9f9f9f, linewidth: 1 });
             var edges = new THREE.Line(edgeGeometry, material);
-            this.scene.add(edges);
+            this.exampleObj.add(edges);
         }
 
         this.addPolygon3D = function(polygon, color) {
@@ -168,13 +188,13 @@ define([
                 new THREE.MeshLambertMaterial({color: color, transparent: true, opacity: 0.5}),
                 new THREE.MeshBasicMaterial({color: color&0x8f8f8f, wireframe: true, linewidth: 5}),
             ]);
-            this.scene.add(meshObject);
+            this.exampleObj.add(meshObject);
 
             // var edgeGeometry = new THREE.Geometry();
             // edgeGeometry.vertices = faceGeometry.vertices;
             // var material = new THREE.LineBasicMaterial({color: color & 0x9f9f9f, linewidth: 1 });
             // var edges = new THREE.Line(edgeGeometry, material);
-            // this.scene.add(edges);
+            // this.exampleObj.add(edges);
         }
 
         this.addPlane2D = function(plane, color) {
@@ -197,59 +217,12 @@ define([
             })
             var material = new THREE.LineBasicMaterial({color: color & 0x9f9f9f, linewidth: 1});
             var edges = new THREE.Line(geometry, material);
-            this.scene.add(edges);
+            this.exampleObj.add(edges);
         }
 
         this.addPlane3D = function(plane, color) {
             var polygon = Polygon3D.fromPlane(plane);
             this.addPolygon3D(polygon, color);
-        }
-
-        var findRegions = function(node) {
-            if (node instanceof Cell) {
-                if (node.inside) {
-                    return [node.region];
-                } else {
-                    return [];
-                }
-            } else {
-                var backRegions = findRegions(node.back);
-                var frontRegions = findRegions(node.front);
-                var regions = [];
-                backRegions && (regions = regions.concat(backRegions));
-                frontRegions && (regions = regions.concat(frontRegions));
-                return regions;
-            }
-
-        }
-
-        var findBoundaries = function(node) {
-            if (node instanceof Cell) {
-                return [];
-            } else {
-                return [node.boundary].concat(findBoundaries(node.back));
-            }
-
-        }
-
-        // this.addBSPTree2D = function(t, color) {
-        //     findRegions(t).forEach(function(region) {
-        //         that.addPolygon2D(region, color);
-        //     });
-        // }
-
-        // this.addBSPTree3D = function(t, color) {
-        //     findRegions(t).forEach(function(region) {
-        //         region.polygons.forEach(function(polygon) {
-        //             that.addPolygon3D(polygon, color);
-        //         });
-        //     });
-        // }
-
-        this.addBoundary = function(t, color) {
-            findBoundaries(t).forEach(function(polygon) {
-                that.addPolygon3D(polygon, color);
-            });
         }
 
         this.addBRep2D = function(lines, color) {
