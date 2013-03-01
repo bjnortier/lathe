@@ -36,7 +36,7 @@ define([
             camera.lookAt(new THREE.Vector3(0,0,0));
 
             that.scene = new THREE.Scene();
-            that.scene.add( new THREE.AmbientLight(0x505050) );
+            that.scene.add( new THREE.AmbientLight(0x101010) );
 
             light = new THREE.PointLight( 0xffffff, 1.5 );
             light.position.set(0, 0, 2000);
@@ -184,7 +184,7 @@ define([
             var toMesh = polygonsToMesh(polygons);
             var faceGeometry = toMesh.geometry;
             var meshObject = THREE.SceneUtils.createMultiMaterialObject(faceGeometry, [
-                // new THREE.MeshPhongMaterial({color: color}),
+                new THREE.MeshPhongMaterial({color: color}),
                 new THREE.MeshLambertMaterial({color: color, transparent: true, opacity: 0.5}),
                 new THREE.MeshBasicMaterial({color: color&0x8f8f8f, wireframe: true, linewidth: 5}),
             ]);
