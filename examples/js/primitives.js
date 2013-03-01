@@ -23,7 +23,7 @@ requirejs([
         PrimitivesExample) {
 
     var p1 = Bench.time(function() { return new Cube(-8,-8,-8,10,10,10); }, 'cube');
-    var p2 = Bench.time(function() { return new Sphere(0,0,0,5); }, 'sphere');
+    var p2 = Bench.time(function() { return new Sphere(0,0,0,5,40); }, 'sphere');
 
     // new PrimitivesExample(p1, p2, BSP2D.union);
     // new PrimitivesExample(p1, p2, BSP2D.intersection);

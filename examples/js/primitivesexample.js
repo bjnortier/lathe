@@ -34,6 +34,7 @@ define([
         }
 
         var calculate = function(booleanFn) {
+            // Polygon3D.record = {};
             bspAViewport.clear();
             var merged = time(function() { 
                 return booleanFn();
