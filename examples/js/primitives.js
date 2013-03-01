@@ -10,12 +10,14 @@ requirejs.config({
 
 requirejs([
         'lib/vector3',
+        'lib/polygon3d',
         'lib/plane3d',
         'lib/bsp',
         'examples/js/primitivesexample',
     ], 
     function(
         Vector3,
+        Polygon3D,
         Plane3D,
         BSP2D,
         PrimitivesExample) {
@@ -135,8 +137,13 @@ requirejs([
         return r;
     }
     var p1 = time(function() { return new Cube(-8,-8,-8,10,10,10); }, 'cube');
-    // var p2 = new Cube(1,2,3,5,5,5);
+    p1.bsp.createSHPs(Polygon3D);
+    
     var p2 = time(function() { return new Sphere2(5); }, 'sphere');
+    p2.bsp.createSHPs(Polygon3D);
+
+    // var p2 = new Cube(-5,-5,-5,10,10,10);
+    // p2.bsp.createSHPs(Polygon3D);
 
     // new PrimitivesExample(p1, p2, BSP2D.union);
     // new PrimitivesExample(p1, p2, BSP2D.intersection);

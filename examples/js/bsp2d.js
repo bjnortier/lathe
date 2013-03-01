@@ -8,12 +8,14 @@ requirejs.config({
 
 requirejs([
         'lib/plane2d',
+        'lib/line2d',
         'lib/polygon2d',
         'lib/bsp',
         'examples/js/bsptree2dexample',
     ], 
     function(
         Plane2D,
+        Line2D,
         Polygon2D,
         BSP2D,
         BSPTree2DExample) {
@@ -39,22 +41,24 @@ requirejs([
             createConvexTree([new Plane2D(1,1,10), new Plane2D(-1,0,-1)]),
             createConvexTree([new Plane2D(1,-1,10), new Plane2D(-1,0,-1)]));
 
-    t1 = createConvexTree([new Plane2D(0,-1,-1), new Plane2D(1,1,10), new Plane2D(-1,0,-1)]);
+    // t1 = createConvexTree([new Plane2D(0,-1,-1), new Plane2D(1,1,10), new Plane2D(-1,0,-1)]);
+    t1.createSHPs(Line2D);
     // t1 = createConvexTree([new Plane2D(-1,0,-5)]);
 
-    // var plane1 = new Plane2D(-1,0,-3);
-    // var t2 = 
-    //     new Node(
-    //         plane1,
-    //         createConvexTree([new Plane2D(0,-1,-2), new Plane2D(1,1,12)]),
-    //         createConvexTree([new Plane2D(0,-1,1), new Plane2D(-1,1,5)]));
+    var plane1 = new Plane2D(-1,0,-3);
+    var t2 = 
+        new Node(
+            plane1,
+            createConvexTree([new Plane2D(0,-1,-2), new Plane2D(1,1,12)]),
+            createConvexTree([new Plane2D(0,-1,1), new Plane2D(-1,1,5)]));
 
-    t2 = createConvexTree([new Plane2D(-1,0,-3), new Plane2D(0,-1,-2), new Plane2D(1,1,12)]);
+    // t2 = createConvexTree([new Plane2D(-1,0,-3),  new Plane2D(0,-1,-2), new Plane2D(1,1,12)]);
+    t2.createSHPs(Line2D);
 
 
-    new BSPTree2DExample(t1, t2, BSP2D.intersection);
+    // new BSPTree2DExample(t1, t2, BSP2D.intersection);
     new BSPTree2DExample(t1, t2, BSP2D.union);
-    new BSPTree2DExample(t2, t1, BSP2D.difference);
+    // new BSPTree2DExample(t2, t1, BSP2D.difference);
     // new BSPTree2DExample(t1, t2, BSP2D.symmetricDifference);
 
     // var t3 = createConvexTree(

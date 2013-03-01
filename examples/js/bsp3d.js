@@ -8,11 +8,13 @@ requirejs.config({
 
 requirejs([
         'lib/plane3d',
+        'lib/polygon3d',
         'lib/bsp',
         'examples/js/bsptree3dexample',
     ], 
     function(
         Plane3D,
+        Polygon3D,
         BSP2D,
         BSPTree3DExample) {
 
@@ -36,12 +38,13 @@ requirejs([
     var t2 = createConvexTree(
         [new Plane3D(0,0,-1,-1), new Plane3D(0,-1,0,-1), new Plane3D(-1,0,0,-1), new Plane3D(1,1,1,12)]);
     
-
+    t1.createSHPs(Polygon3D);
+    t2.createSHPs(Polygon3D);
     // var t2 = createConvexTree(
     //     [new Plane3D(0,0,-1,-1), new Plane3D(0,0,1,5), new Plane3D(1,0,0,5), new Plane3D(-1,0,0,5), new Plane3D(0,1,0,5), new Plane3D(0,-1,0,4)]);
 
     new BSPTree3DExample(t1, t2, BSP2D.intersection);
-    new BSPTree3DExample(t1, t2, BSP2D.union);
+    // new BSPTree3DExample(t1, t2, BSP2D.union);
     new BSPTree3DExample(t1, t2, BSP2D.difference);
 
     // var t3 = createConvexTree(
