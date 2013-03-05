@@ -46,17 +46,15 @@ define([
             var yMaterial = new THREE.LineBasicMaterial({color: 0x0000ff, opacity: 0.5});
             var zMaterial = new THREE.LineBasicMaterial({color: 0xff0000, opacity: 0.5});
 
-            // Axes have a slight angle to eliminate z-fighting
-            // http://en.wikipedia.org/wiki/Z-fighting
             var xGeom = new THREE.Geometry();
             xGeom.vertices.push(new THREE.Vector3(0, 0, 0));
-            xGeom.vertices.push(new THREE.Vector3(1000, 1, 1));
+            xGeom.vertices.push(new THREE.Vector3(1000, 0, 0));
             var yGeom = new THREE.Geometry();
             yGeom.vertices.push(new THREE.Vector3(0,0, 0));
-            yGeom.vertices.push(new THREE.Vector3(1, 1000, 1));
+            yGeom.vertices.push(new THREE.Vector3(0, 1000, 0));
             var zGeom = new THREE.Geometry();
             zGeom.vertices.push(new THREE.Vector3(0, 0, 0));
-            zGeom.vertices.push(new THREE.Vector3(1, 1, 1000));
+            zGeom.vertices.push(new THREE.Vector3(0, 0, 1000));
 
             that.scene.add(new THREE.Line(xGeom, xMaterial));
             that.scene.add(new THREE.Line(yGeom, yMaterial));
@@ -144,13 +142,13 @@ define([
                 var coordinate = v.toCoordinate();
                 return new THREE.Vector3(coordinate.x, coordinate.y, coordinate.z)
             })
-            // var center = new THREE.Vector3().addVectors(
-            //     edgeGeometry.vertices[0], edgeGeometry.vertices[1]).multiplyScalar(0.5);
-            // var normal = new THREE.Vector3(line.s.a, line.s.b, 0);
-            // edgeGeometry.vertices.push(
-            //     center,
-            //     normal.normalize().multiplyScalar(0.5).add(center));
-            // edgeGeometry.vertices.push(center);
+            var center = new THREE.Vector3().addVectors(
+                edgeGeometry.vertices[0], edgeGeometry.vertices[1]).multiplyScalar(0.5);
+            var normal = new THREE.Vector3(line.s.a, line.s.b, 0);
+            edgeGeometry.vertices.push(
+                center,
+                normal.normalize().multiplyScalar(0.5).add(center));
+            edgeGeometry.vertices.push(center);
 
             var material = new THREE.LineBasicMaterial({color: color & 0x9f9f9f, linewidth: 1 });
             var edges = new THREE.Line(edgeGeometry, material);
