@@ -10,13 +10,13 @@ requirejs([
         'lib/plane3d',
         'lib/polygon3d',
         'lib/bsp',
-        'examples/js/primitivesexample',
+        'examples/js/booleanexample',
     ], 
     function(
         Plane3D,
         Polygon3D,
         BSP,
-        PrimitivesExample) {
+        BooleanExample) {
 
     var Node = BSP.Node;
     var Cell = BSP.Cell;
@@ -40,7 +40,7 @@ requirejs([
     t1.createSHPs(Polygon3D);
     t2.createSHPs(Polygon3D);
 
-    new PrimitivesExample(t1, t2, Polygon3D);
+    new BooleanExample(t1, t2, Polygon3D);
 
     // This example is to check the correct normal orientation when merging
     // objects with oppositely oriented hyperplanes
@@ -62,7 +62,7 @@ requirejs([
     ]);
     t3.createSHPs(Polygon3D);
     t4.createSHPs(Polygon3D);
-    new PrimitivesExample(t3, t4, Polygon3D);
+    new BooleanExample(t3, t4, Polygon3D);
     
 
 });

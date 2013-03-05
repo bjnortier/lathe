@@ -11,14 +11,14 @@ requirejs([
         'lib/line2d',
         'lib/polygon2d',
         'lib/bsp',
-        'examples/js/primitivesexample',
+        'examples/js/booleanexample',
     ], 
     function(
         Plane2D,
         Line2D,
         Polygon2D,
         BSP,
-        PrimitivesExample) {
+        BooleanExample) {
 
     var Node = BSP.Node;
     var Cell = BSP.Cell;
@@ -50,7 +50,7 @@ requirejs([
 
     t2.createSHPs(Line2D);
 
-    new PrimitivesExample(t1, t2, Line2D);
+    new BooleanExample(t1, t2, Line2D);
 
 
     var t3 = createConvexTree([
@@ -69,5 +69,5 @@ requirejs([
     t4.createSHPs(Line2D);
 
     // Example for the oppositely coincident SHPs, similar to the 3D case
-    new PrimitivesExample(t3, t4, Line2D);
+    new BooleanExample(t3, t4, Line2D);
 });
