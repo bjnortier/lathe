@@ -10,13 +10,13 @@ requirejs([
         'lib/plane3d',
         'lib/polygon3d',
         'lib/bsp',
-        'examples/js/bsptree3dexample',
+        'examples/js/primitivesexample',
     ], 
     function(
         Plane3D,
         Polygon3D,
         BSP,
-        BSPTree3DExample) {
+        PrimitivesExample) {
 
     var Node = BSP.Node;
     var Cell = BSP.Cell;
@@ -37,14 +37,13 @@ requirejs([
         [new Plane3D(0,0,-1,0), new Plane3D(0,-1,0,0), new Plane3D(-1,0,0,0), new Plane3D(1,1,1,10)]);
     var t2 = createConvexTree(
         [new Plane3D(0,0,-1,-1), new Plane3D(0,-1,0,-1), new Plane3D(-1,0,0,-1), new Plane3D(1,1,1,12)]);
-    
     t1.createSHPs(Polygon3D);
     t2.createSHPs(Polygon3D);
 
-    new BSPTree3DExample(t1, t2, BSP.intersection);
-    new BSPTree3DExample(t1, t2, BSP.union);
-    new BSPTree3DExample(t1, t2, BSP.difference);
+    new PrimitivesExample(t1, t2, Polygon3D);
 
+    // This example is to check the correct normal orientation when merging
+    // objects with oppositely oriented hyperplanes
     var t3 = createConvexTree(
         [
             new Plane3D(0,0,-1,0),
@@ -63,9 +62,7 @@ requirejs([
     ]);
     t3.createSHPs(Polygon3D);
     t4.createSHPs(Polygon3D);
+    new PrimitivesExample(t3, t4, Polygon3D);
     
-    // This example is to check the correct normal orientation when merging
-    // objects with oppositely oriented hyperplanes
-    new BSPTree3DExample(t3, t4, BSP.union);
 
 });

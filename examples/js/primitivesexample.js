@@ -2,13 +2,12 @@
 
 define([
         'lib/conv',
-        'lib/polygon3D',
         'lib/bsp',
         'examples/js/viewport',
         'examples/js/trackball',
-    ], function(Conv, Polygon3D, BSP, Viewport, Trackball) {
+    ], function(Conv, BSP, Viewport, Trackball) {
 
-    var Example = function(t1, t2, operation) {
+    var Example = function(t1, t2, shpClass) {
 
         var exampleContainer = document.createElement('div');
         exampleContainer.classList.add('example');
@@ -23,8 +22,8 @@ define([
         var bspAViewport  = new Viewport(bspAContainer);
         new Trackball([beforeViewport, bspAViewport]);
 
-        beforeViewport.addBRep3D(Conv.bspToBrep3D(t1.bsp), 0x00ff00);
-        beforeViewport.addBRep3D(Conv.bspToBrep3D(t2.bsp), 0x0000ff);
+        beforeViewport.addBRep(Conv.bspToBrep(t1), 0x00ff00);
+        beforeViewport.addBRep(Conv.bspToBrep(t2), 0x0000ff);
 
         var time = function(fn, msg) {
             var t1 = new Date().getTime();
@@ -34,50 +33,66 @@ define([
         }
 
         var calculate = function(booleanFn) {
-            // Polygon3D.record = {};
             bspAViewport.clear();
             var merged = time(function() { 
                 return booleanFn();
             }, 'boolean');
             var brep = time(function() { 
-                return Conv.bspToBrep3D(merged); 
+                return Conv.bspToBrep(merged); 
             }, 'brep');
-            bspAViewport.addBRep3D(brep, 0x00ffff);
+            bspAViewport.addBRep(brep, 0x00ffff);
         }
 
         var controls = $('<div class="controls"></div>')
-        var union = $('<input type="button" value="A &cup; B">');
-        var intersect = $('<input type="button" value="A &cap; B">');
+        var unionAB = $('<input type="button" value="A &cup; B">');
+        var unionBA = $('<input type="button" value="B &cup; A">');
+        var intersectAB = $('<input type="button" value="A &cap; B">');
+        var intersectBA = $('<input type="button" value="B &cap; A">');
         var diffAB = $('<input type="button" value="A - B">');
         var diffBA = $('<input type="button" value="B - A">');
         $(bspAContainer).append(controls);
-        $(controls).append(union);
-        $(controls).append(intersect);
+        $(controls).append(unionAB);
+        $(controls).append(unionBA);
+        $(controls).append(intersectAB);
+        $(controls).append(intersectBA);
         $(controls).append(diffAB);
         $(controls).append(diffBA);
 
-        union.click(function() {
+        unionAB.click(function() {
             calculate(function() {
-                return BSP.union(t1.bsp, t2.bsp, Polygon3D);
-            });
-        });
-        intersect.click(function() {
-            calculate(function() {
-                return BSP.intersection(t1.bsp, t2.bsp, Polygon3D);
-            });
-        });
-        diffAB.click(function() {
-            calculate(function() {
-                return BSP.difference(t1.bsp, t2.bsp, Polygon3D);
-            });
-        });
-        diffBA.click(function() {
-            calculate(function() {
-                return BSP.difference(t2.bsp, t1.bsp, Polygon3D);
+                return BSP.union(t1, t2, shpClass);
             });
         });
 
-        union.click();
+        unionBA.click(function() {
+            calculate(function() {
+                return BSP.union(t2, t1, shpClass);
+            });
+        });
+
+        intersectAB.click(function() {
+            calculate(function() {
+                return BSP.intersection(t1, t2, shpClass);
+            });
+        });
+
+        intersectBA.click(function() {
+            calculate(function() {
+                return BSP.intersection(t2, t1, shpClass);
+            });
+        });
+
+        diffAB.click(function() {
+            calculate(function() {
+                return BSP.difference(t1, t2, shpClass);
+            });
+        });
+        
+        diffBA.click(function() {
+            calculate(function() {
+                return BSP.difference(t2, t1, shpClass);
+            });
+        });
 
     }
 

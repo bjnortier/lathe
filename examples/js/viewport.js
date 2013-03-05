@@ -1,6 +1,6 @@
 define([
         'lib/world3d', 
-        'lib/polygon3D',  
+        'lib/polygon3d',  
         'lib/plane2d', 
         'lib/vertex2d', 
         'lib/conv',
@@ -91,7 +91,10 @@ define([
 
             var clearObj = function(obj) {
                 if (obj.geometry) {
-
+                    obj.geometry.dispose();
+                }
+                if (obj.material) {
+                    obj.material.dispose();
                 }
                 if (obj.children) {
                     obj.children.map(clearObj);
@@ -239,14 +242,14 @@ define([
             this.addPolygon3D(polygon.reverse(), color);
         }
 
-        this.addBRep2D = function(lines, color) {
-            lines.forEach(function(line) {
-                that.addLine2D(line, color);
-            });
-        }
-
-        this.addBRep3D = function(polygons, color) {
-            that.addPolygons3D(polygons, color);
+        this.addBRep = function(breps, color) {
+            if (breps[0] instanceof Polygon3D) {
+                that.addPolygons3D(breps, color);
+            } else {
+                breps.forEach(function(line) {
+                    that.addLine2D(line, color);
+                });
+            }
         }
 
 

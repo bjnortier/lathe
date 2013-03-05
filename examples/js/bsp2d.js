@@ -11,14 +11,14 @@ requirejs([
         'lib/line2d',
         'lib/polygon2d',
         'lib/bsp',
-        'examples/js/bsptree2dexample',
+        'examples/js/primitivesexample',
     ], 
     function(
         Plane2D,
         Line2D,
         Polygon2D,
         BSP,
-        BSPTree2DExample) {
+        PrimitivesExample) {
 
     var Node = BSP.Node;
     var Cell = BSP.Cell;
@@ -50,10 +50,7 @@ requirejs([
 
     t2.createSHPs(Line2D);
 
-    // new BSPTree2DExample(t1, t2, BSP.intersection);
-    new BSPTree2DExample(t1, t2, BSP.union);
-    // new BSPTree2DExample(t2, t1, BSP.difference);
-    // new BSPTree2DExample(t1, t2, BSP.symmetricDifference);
+    new PrimitivesExample(t1, t2, Line2D);
 
 
     var t3 = createConvexTree([
@@ -72,5 +69,5 @@ requirejs([
     t4.createSHPs(Line2D);
 
     // Example for the oppositely coincident SHPs, similar to the 3D case
-    new BSPTree2DExample(t3, t4, BSP.union);
+    new PrimitivesExample(t3, t4, Line2D);
 });
