@@ -40,18 +40,6 @@ define([
         var brepA = time(function() { return Conv.bspToBrep3D(mergedA); }, 'brep');
         bspAViewport.addBRep3D(brepA, 0x00ffff);
 
-        // bspBViewport.addPolygon3D(mergedA.shp, 0x00ff00)
-        // bspBViewport.addPolygon3D(mergedA.back.shp, 0xff0000)
-        // bspBViewport.addPolygon3D(mergedA.back.back.shp, 0x00ff00)
-        // bspBViewport.addPolygon3D(mergedA.back.back.back.shp, 0x0000ff)
-
-        // bspBViewport.addPolygon3D(mergedA.back.back.back.back.shp, 0x0000ff)
-
-        // bspBViewport.addPolygon3D(mergedA.back.back.back.back.back.shp, 0x0000ff)
-        // bspBViewport.addPolygon3D(mergedA.back.back.back.back.back.back.shp, 0x0000ff)
-        // bspBViewport.addPolygon3D(mergedA.back.back.back.back.back.back.back.shp, 0x0000ff)
-
-
         var mergedB = time(function() { return operation(t2, t1, Polygon3D) }, 'boolean');
         var brepB = time(function() { return Conv.bspToBrep3D(mergedB); }, 'brep');
         bspBViewport.addBRep3D(brepB, 0x00ffff);

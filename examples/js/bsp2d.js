@@ -51,7 +51,7 @@ requirejs([
     t2.createSHPs(Line2D);
 
     // new BSPTree2DExample(t1, t2, BSP.intersection);
-    // // new BSPTree2DExample(t1, t2, BSP.union);
+    new BSPTree2DExample(t1, t2, BSP.union);
     // new BSPTree2DExample(t2, t1, BSP.difference);
     // new BSPTree2DExample(t1, t2, BSP.symmetricDifference);
 
@@ -66,10 +66,11 @@ requirejs([
 
     var t4 = createConvexTree([
         new Plane2D(0,-1,-1), 
-        new Plane2D(1,1,10), 
+        new Plane2D(1,1,12), 
         new Plane2D(-1,0,-1)
     ])
     t4.createSHPs(Line2D);
 
+    // Example for the oppositely coincident SHPs, similar to the 3D case
     new BSPTree2DExample(t3, t4, BSP.union);
 });

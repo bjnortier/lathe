@@ -54,18 +54,18 @@ requirejs([
         ]); 
     var t4 = createConvexTree(
         [
+        new Plane3D(0,0,1,0),
         new Plane3D(0,0,-1,1),
-        new Plane3D(0,0,1,5),
         new Plane3D(1,0,0,5),
         new Plane3D(-1,0,0,5),
         new Plane3D(0,1,0,5),
-        new Plane3D(0,-1,0,5)
+        new Plane3D(0,-1,0,5),
     ]);
     t3.createSHPs(Polygon3D);
     t4.createSHPs(Polygon3D);
     
-    // new BSPTree3DExample(t3, t4, BSP.intersection);
-    // new BSPTree3DExample(t3, t4, BSP.difference);
+    // This example is to check the correct normal orientation when merging
+    // objects with oppositely oriented hyperplanes
     new BSPTree3DExample(t3, t4, BSP.union);
 
 });

@@ -144,10 +144,18 @@ define([
                 var coordinate = v.toCoordinate();
                 return new THREE.Vector3(coordinate.x, coordinate.y, coordinate.z)
             })
+            // var center = new THREE.Vector3().addVectors(
+            //     edgeGeometry.vertices[0], edgeGeometry.vertices[1]).multiplyScalar(0.5);
+            // var normal = new THREE.Vector3(line.s.a, line.s.b, 0);
+            // edgeGeometry.vertices.push(
+            //     center,
+            //     normal.normalize().multiplyScalar(0.5).add(center));
+            // edgeGeometry.vertices.push(center);
 
             var material = new THREE.LineBasicMaterial({color: color & 0x9f9f9f, linewidth: 1 });
             var edges = new THREE.Line(edgeGeometry, material);
             this.exampleObj.add(edges);
+
         }
 
         this.addPolygon2D = function(polygon, color, z) {
@@ -186,15 +194,22 @@ define([
             var meshObject = THREE.SceneUtils.createMultiMaterialObject(faceGeometry, [
                 // new THREE.MeshPhongMaterial({color: color}),
                 new THREE.MeshLambertMaterial({color: color, transparent: true, opacity: 0.5}),
-                new THREE.MeshBasicMaterial({color: color&0x8f8f8f, wireframe: true, linewidth: 5}),
+                // new THREE.MeshBasicMaterial({color: color&0x8f8f8f, wireframe: true, linewidth: 5}),
             ]);
             this.exampleObj.add(meshObject);
 
-            // var edgeGeometry = new THREE.Geometry();
-            // edgeGeometry.vertices = faceGeometry.vertices;
-            // var material = new THREE.LineBasicMaterial({color: color & 0x9f9f9f, linewidth: 1 });
-            // var edges = new THREE.Line(edgeGeometry, material);
-            // this.exampleObj.add(edges);
+            var that = this;
+            toMesh.indices.forEach(function(polyIndices) {
+                var edgeGeometry = new THREE.Geometry();
+                polyIndices.forEach(function(i) {
+                    edgeGeometry.vertices.push(faceGeometry.vertices[i]);
+                });
+                edgeGeometry.vertices.push(faceGeometry.vertices[polyIndices[0]]);
+
+                var material = new THREE.LineBasicMaterial({color: color & 0x9f9f9f, linewidth: 1 });
+                var edges = new THREE.Line(edgeGeometry, material);
+                that.exampleObj.add(edges);
+            });
         }
 
         this.addPlane2D = function(plane, color) {
