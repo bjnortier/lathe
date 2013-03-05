@@ -8,7 +8,7 @@ requirejs.config({
 
 chai.Assertion.includeStack = true;
 
-requirejs(['test/specs'], function(specs) {
+requirejs(['test/spec/specs'], function(specs) {
 
     assert = chai.assert;
 

@@ -1,11 +1,12 @@
 'use strict';
 
 define([
+        'lib/bench',
         'lib/conv',
         'lib/bsp',
         'examples/js/viewport',
         'examples/js/trackball',
-    ], function(Conv, BSP, Viewport, Trackball) {
+    ], function(Bench, Conv, BSP, Viewport, Trackball) {
 
     var Example = function(t1, t2, shpClass) {
 
@@ -25,19 +26,12 @@ define([
         beforeViewport.addBRep(Conv.bspToBrep(t1), 0x00ff00);
         beforeViewport.addBRep(Conv.bspToBrep(t2), 0x0000ff);
 
-        var time = function(fn, msg) {
-            var t1 = new Date().getTime();
-            var r = fn();
-            console.log(msg, new Date().getTime()-t1);
-            return r;
-        }
-
         var calculate = function(booleanFn) {
             bspAViewport.clear();
-            var merged = time(function() { 
+            var merged = Bench.time(function() { 
                 return booleanFn();
             }, 'boolean');
-            var brep = time(function() { 
+            var brep = Bench.time(function() { 
                 return Conv.bspToBrep(merged); 
             }, 'brep');
             bspAViewport.addBRep(brep, 0x00ffff);

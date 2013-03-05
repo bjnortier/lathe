@@ -96,11 +96,15 @@ define(['lib/world3d', 'lib/plane3d', 'lib/polygon3d'], function(world3D, Plane3
             var result3 = polygon.splitBy(new Plane3D(1,0,0,0));
 
             // Coincident and same orientation
-            assert.deepEqual(result1.front, polygon);
+            assert.deepEqual(result1.coincident, polygon);
             assert.isUndefined(result1.back);
+            assert.isUndefined(result1.front);
+
             // Coincident and different orientation
             assert.isUndefined(result2.front);
-            assert.deepEqual(result2.back, polygon);
+            assert.isUndefined(result2.back);
+            assert.deepEqual(result2.coincident, polygon);
+
             // Square split by ZY plane
             assert.deepEqual(result3.front, {
                 s: {a: 0, b: 0, c: 1, d: 0},

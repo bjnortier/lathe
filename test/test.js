@@ -10,9 +10,7 @@ var chai = requirejs('chai');
 
 chai.Assertion.includeStack = true;
 
-requirejs('./spec/plane2d.test.js');
-requirejs('./spec/plane3d.test.js');
-requirejs('./spec/vertex2d.test.js');
-requirejs('./spec/vertex3d.test.js');
-requirejs('./spec/polygon2d.test.js');
-requirejs('./spec/polygon3d.test.js');
+var specs = requirejs('test/spec/specs');
+specs.forEach(function(spec) {
+    requirejs(spec);
+});

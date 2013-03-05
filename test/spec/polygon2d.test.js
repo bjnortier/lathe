@@ -43,7 +43,6 @@ define(['lib/plane2d', 'lib/polygon2d'], function(Plane2D, Polygon2D) {
             assert.isUndefined(result1.back);
 
             // Coincident and different orientation
-            console.log(result2);
             assert.isUndefined(result2.front);
             assert.deepEqual(result2.back, polygon);
 
