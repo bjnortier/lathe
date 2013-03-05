@@ -184,7 +184,7 @@ define([
             var toMesh = polygonsToMesh(polygons);
             var faceGeometry = toMesh.geometry;
             var meshObject = THREE.SceneUtils.createMultiMaterialObject(faceGeometry, [
-                new THREE.MeshPhongMaterial({color: color}),
+                // new THREE.MeshPhongMaterial({color: color}),
                 new THREE.MeshLambertMaterial({color: color, transparent: true, opacity: 0.5}),
                 new THREE.MeshBasicMaterial({color: color&0x8f8f8f, wireframe: true, linewidth: 5}),
             ]);
@@ -223,6 +223,7 @@ define([
         this.addPlane3D = function(plane, color) {
             var polygon = Polygon3D.fromPlane(plane);
             this.addPolygon3D(polygon, color);
+            this.addPolygon3D(polygon.reverse(), color);
         }
 
         this.addBRep2D = function(lines, color) {

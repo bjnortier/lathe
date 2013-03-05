@@ -77,7 +77,7 @@ define([
             });
         });
 
-        diffAB.click();
+        union.click();
 
     }
 
