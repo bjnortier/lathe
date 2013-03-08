@@ -70,4 +70,20 @@ requirejs([
 
     // Example for the oppositely coincident SHPs, similar to the 3D case
     new BooleanExample(t3, t4, Line2D);
+
+    // Example of non-overlapping
+    var t5 = createConvexTree([
+        new Plane2D(0,1,0), 
+        new Plane2D(-1,-1,12), 
+        new Plane2D(1,0,-1)
+    ])
+    t5.createSHPs(Line2D); 
+
+    var t6 = createConvexTree([
+        new Plane2D(0,-1,-1), 
+        new Plane2D(1,1,12), 
+        new Plane2D(-1,0,-1)
+    ])
+    t6.createSHPs(Line2D);
+    new BooleanExample(t5, t6, Line2D);
 });
