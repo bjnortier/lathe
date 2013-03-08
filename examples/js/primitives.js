@@ -25,11 +25,14 @@ requirejs([
     var p1 = Bench.time(function() { return new Cube(-10,-10,-10,10,10,10); }, 'cube');
     var p2 = Bench.time(function() { return new Cube(-2,-2,-2,10,10,10); }, 'cube');
     new BooleanExample(p1.bsp, p2.bsp);
-
-    var p3 = Bench.time(function() { return new Sphere(0,0,0,5,20); }, 'sphere');
-    new BooleanExample(p1.bsp, p3.bsp);
+    
+    // Robustness example
+    var p5 = Bench.time(function() { return new Cube(0,0,0,20,20,10); }, 'cube');
+    var p6 = Bench.time(function() { return new HalfSphere(0,0,0,20,12); }, 'halfsphere');
+    new BooleanExample(p5.bsp, p6.bsp);
 
     var p4 = Bench.time(function() { return new HalfSphere(0,0,0,5,3); }, 'halfsphere');
     new BooleanExample(p1.bsp, p4.bsp);
+
 
 });

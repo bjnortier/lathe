@@ -46,7 +46,7 @@ define([
                 }, op + ' bool:\t', 5);
 
                 time(function() { 
-                    return Conv.bspToBrep3D(diff);
+                    return Conv.bspToBrep(diff);
                 }, op + ' brep:\t', 5);
             });
 
