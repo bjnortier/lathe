@@ -7,7 +7,7 @@ define([
     ], function(Polygon3D, BSP, Conv, Cube, Sphere) {
 
     var time = function(fn, msg, n) {
-        var n = n || 3;
+        var n = n || 5;
         var times = [];
         var result;
         var sum = 0;
@@ -18,10 +18,13 @@ define([
             sum += times[i];
         }
         var mean = sum/n;
+        var min = Infinity, max = -Infinity;
         var sigma = Math.sqrt(times.reduce(function(acc, t) {
+            min = Math.min(min, t);
+            max = Math.max(max, t);
             return acc + (mean-t)*(mean-t)
         }, 0)/n);
-        console.log(msg, 'mean: ' + mean.toFixed(2) + ' ± ' + sigma.toFixed(2));
+        console.log(msg, 'mean:', mean.toFixed(2), '±', sigma.toFixed(2), '\tmin:', min.toFixed(2), '\tmax:', max.toFixed(2));
         return result;
 
     }
@@ -43,11 +46,11 @@ define([
             ['union', 'intersection', 'difference'].forEach(function(op) {
                 var diff = time(function() { 
                     return BSP[op](cube.bsp, sphere.bsp, Polygon3D)
-                }, op + ' bool:\t', 5);
+                }, op.slice(0,5) + ' bool:\t', 5);
 
                 time(function() { 
                     return Conv.bspToBrep(diff);
-                }, op + ' brep:\t', 5);
+                }, op.slice(0,5) + ' brep:\t', 5);
             });
 
 
