@@ -2,12 +2,14 @@ define([
         'lib/world3d', 
         'lib/polygon3d',  
         'lib/plane2d', 
+        'lib/line2d', 
         'lib/vertex2d', 
         'lib/conv',
     ], function(
         world,
         Polygon3D,
         Plane2D,
+        Line2D,
         Vertex2D,
         Conv) {
 
@@ -214,32 +216,13 @@ define([
         }
 
         this.addPlane2D = function(plane, color) {
-            var vertices = [];
-            try {
-                vertices = [
-                    new Vertex2D(plane, new Plane2D(1,0,-1000)),
-                    new Vertex2D(plane, new Plane2D(1,0,1000)),
-                ]
-            } catch(e) {
-                vertices = [
-                    new Vertex2D(plane, new Plane2D(0,1,-1000)),
-                    new Vertex2D(plane, new Plane2D(0,1,1000)),
-                ]
-            }
-            var geometry = new THREE.Geometry();
-            vertices.forEach(function(v) {
-                var coordinate = v.toCoordinate();
-                geometry.vertices.push(new THREE.Vector3(coordinate.x, coordinate.y, coordinate.z));
-            })
-            var material = new THREE.LineBasicMaterial({color: color & 0x9f9f9f, linewidth: 1});
-            var edges = new THREE.Line(geometry, material);
-            this.exampleObj.add(edges);
+            this.addLine2D(Line2D.fromPlane(plane), color);
         }
 
         this.addPlane3D = function(plane, color) {
             var polygon = Polygon3D.fromPlane(plane);
             this.addPolygon3D(polygon, color);
-            this.addPolygon3D(polygon.reverse(), color);
+            this.addPolygon3D(polygon.reverse(), color & 0x0f0f0f);
         }
 
         this.addBRep = function(breps, color) {
