@@ -1,0 +1,15 @@
+
+  
+sphere & cube:
+create sphere:	 mean: 33.60 ± 23.85 	min: 18.00 	max: 81.00
+create cube:	 mean: 0.60 ± 0.49 	min: 0.00 	max: 1.00
+union bool:	 mean: 22.60 ± 20.30 	min: 9.00 	max: 63.00
+union brep:	 mean: 62.40 ± 52.37 	min: 32.00 	max: 167.00
+inter bool:	 mean: 9.20 ± 0.40 	min: 9.00 	max: 10.00
+inter brep:	 mean: 18.20 ± 10.38 	min: 8.00 	max: 36.00
+diffe bool:	 mean: 15.40 ± 1.20 	min: 14.00 	max: 17.00
+diffe brep:	 mean: 12.20 ± 4.35 	min: 9.00 	max: 20.00
+․
+
+  1 test complete (877 ms)
+
