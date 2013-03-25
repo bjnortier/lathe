@@ -10,4 +10,7 @@ var chai = requirejs('chai');
 
 chai.Assertion.includeStack = true;
 
-var specs = requirejs('benchmark/boolean.test.js');
+var specs = requirejs('bench/spec/specs');
+specs.forEach(function(spec) {
+    requirejs(spec);
+});
