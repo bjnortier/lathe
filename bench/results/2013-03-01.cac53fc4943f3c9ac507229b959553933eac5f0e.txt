@@ -1,0 +1,15 @@
+
+  
+sphere & cube:
+create sphere:	 142
+create cube:	 0
+union bool:	 40
+union brep:	 376
+intersection bool:	 29
+intersection brep:	 176
+difference bool:	 31
+difference brep:	 181
+․
+
+  1 test complete (979 ms)
+

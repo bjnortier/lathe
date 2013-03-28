@@ -1,0 +1,15 @@
+
+  
+sphere & cube:
+create sphere:	 mean: 35.00 ± 6.98
+create cube:	 mean: 0.33 ± 0.47
+union bool:	 mean: 28.00 ± 5.02
+union brep:	 mean: 168.20 ± 6.52
+intersection bool:	 mean: 23.20 ± 5.95
+intersection brep:	 mean: 47.40 ± 3.07
+difference bool:	 mean: 22.00 ± 2.61
+difference brep:	 mean: 49.80 ± 3.97
+․
+
+  1 test complete (2 seconds)
+
