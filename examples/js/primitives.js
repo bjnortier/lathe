@@ -14,6 +14,7 @@ requirejs([
         'lib/primitives/halfsphere',
         'lib/primitives/cube',
         'lib/primitives/cylinder',
+        'lib/primitives/cone',
         'examples/js/primitiveexample',
     ], 
     function(
@@ -22,13 +23,8 @@ requirejs([
         HalfSphere,
         Cube,
         Cylinder,
+        Cone,
         PrimitiveExample) {
-
-    var p4 = Bench.time(function() { return new Cylinder({
-        x: 0, y: 0, z: 0, r: 5, h: 5,
-    }, 20); }, 'cylinder');
-    new PrimitiveExample(p4.bsp);
-
 
     var p1 = Bench.time(function() { return new Cube({
         x: 0, y: 0, z: 0, w: 5, d: 5, h: 5
@@ -44,6 +40,17 @@ requirejs([
         x: 0, y: 0, z: 0, r: 5
     }); }, 'sphere');
     new PrimitiveExample(p3.bsp);
+
+    var p4 = Bench.time(function() { return new Cylinder({
+        x: 0, y: 0, z: 0, r: 5, h: 5,
+    }, 20); }, 'cylinder');
+    new PrimitiveExample(p4.bsp);
+
+    var p5 = Bench.time(function() { return new Cone({
+        x: 0, y: 0, z: 0, r: 5, h: 10,
+    }, 20); }, 'cone');
+    new PrimitiveExample(p5.bsp);
+
 
 
 });

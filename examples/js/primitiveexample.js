@@ -19,10 +19,8 @@ define([
         var primitiveViewport = new Viewport(primitiveContainer);
         new Trackball([primitiveViewport]);
 
-        primitiveViewport.addBRep(Conv.bspToBrep(t1), 0x00ff00);
-
-
-
+        var polygons = Conv.bspToBrep(t1);
+        primitiveViewport.addBRep(polygons, 0x00ff00);
     }
 
     return Example;
