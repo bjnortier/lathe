@@ -1,7 +1,7 @@
 { 
     "name" : "lathe",
     "description" : "A discrete solid modeller using BSPs",
-    "version" : "0.1.0",
+    "version" : "0.2.0",
     "dependencies": {
         "requirejs": ">= 2.1.2"
     },  
