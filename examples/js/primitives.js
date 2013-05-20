@@ -13,31 +13,44 @@ requirejs([
         'lib/primitives/sphere',
         'lib/primitives/halfsphere',
         'lib/primitives/cube',
-        'examples/js/booleanexample',
+        'lib/primitives/cylinder',
+        'lib/primitives/cone',
+        'examples/js/primitiveexample',
     ], 
     function(
         Bench,
         Sphere,
         HalfSphere,
         Cube,
-        BooleanExample) {
+        Cylinder,
+        Cone,
+        PrimitiveExample) {
 
     var p1 = Bench.time(function() { return new Cube({
-        x: -10, y: -10, z: -10, w: 10, d: 10, h: 10
+        x: 0, y: 0, z: 0, w: 5, d: 5, h: 5
     }); }, 'cube');
-    var p2 = Bench.time(function() { return new Cube({
-         x: -2, y: -2, z: -2, w: 10, d: 10, h: 10
-    }); }, 'cube');
-    new BooleanExample(p1.bsp, p2.bsp);
+    new PrimitiveExample(p1.bsp);
     
-    var p3 = Bench.time(function() { return new HalfSphere({
+    var p2 = Bench.time(function() { return new HalfSphere({
         x: 0, y: 0, z: 0, r: 5,
-    }, 3); }, 'halfsphere');
-    new BooleanExample(p1.bsp, p3.bsp);
+    }); }, 'halfsphere');
+    new PrimitiveExample(p2.bsp);
 
-    var p4 = Bench.time(function() { return new Sphere({
+    var p3 = Bench.time(function() { return new Sphere({
         x: 0, y: 0, z: 0, r: 5
     }); }, 'sphere');
-    new BooleanExample(p1.bsp, p4.bsp);
+    new PrimitiveExample(p3.bsp);
+
+    var p4 = Bench.time(function() { return new Cylinder({
+        x: 0, y: 0, z: 0, r: 5, h: 5,
+    }, 20); }, 'cylinder');
+    new PrimitiveExample(p4.bsp);
+
+    var p5 = Bench.time(function() { return new Cone({
+        x: 0, y: 0, z: 0, r: 5, h: 10,
+    }, 20); }, 'cone');
+    new PrimitiveExample(p5.bsp);
+
+
 
 });
