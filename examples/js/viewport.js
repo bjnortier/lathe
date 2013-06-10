@@ -114,14 +114,26 @@ define([
             var geometry = new THREE.Geometry();
             var indices = polygons.map(function(polygon, i) {
                 var vertices = polygon.toVertices();
-                var coordinates = vertices.map(function(vertex) {
-                    return vertex.toCoordinate();
+                var _coordinates = vertices.map(function(vertex) {
+                    var c = vertex.toCoordinate();
+                    return new THREE.Vector3(c.x, c.y, c.z)
                 });
+
+                var coordinates = _coordinates.reduce(function(acc, c, i) {
+                  if (i === 0) {
+                    return acc.concat(c);
+                  } else if (new THREE.Vector3().subVectors(c,acc[acc.length-1]).length() > 0.000000001) {
+                    return acc.concat(c);
+                  } else {
+                    return acc;
+                  }
+                }, []);
+
                 var indices = coordinates.map(function(coordinate) {
                     return geometry.vertices.push(new THREE.Vector3(coordinate.x, coordinate.y, coordinate.z)) - 1;
                 });
                 if (coordinates.length < 3) {
-                    throw Error('invalid polygon');
+                  console.warn('invalid polygon');
                 } else if (coordinates.length === 3) {
                     geometry.faces.push(new THREE.Face3(indices[0],indices[1],indices[2]));
                 } else if (coordinates.length === 4) {

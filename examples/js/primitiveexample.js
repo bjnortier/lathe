@@ -21,6 +21,7 @@ define([
 
         var polygons = Conv.bspToBrep(t1);
         primitiveViewport.addBRep(polygons, 0x00ff00);
+
     }
 
     return Example;
