@@ -25,20 +25,20 @@ requirejs([
     Cone,
     PrimitiveExample) {
 
-  var p1 = Bench.time(function() { return new Cube({
-    x: 5, y: -5, z: -2.5, w: 5, d: 5, h: 5
-  }); }, 'cube');
-  new PrimitiveExample(p1.bsp);
+  // var p1 = Bench.time(function() { return new Cube({
+  //   x: 5, y: -5, z: -2.5, w: 5, d: 5, h: 5
+  // }); }, 'cube');
+  // new PrimitiveExample(p1.bsp);
   
   // var p2 = Bench.time(function() { return new HalfSphere({
   //   x: 0, y: 0, z: 0, r: 5,
   // }); }, 'halfsphere');
   // new PrimitiveExample(p2.bsp);
 
-  // var p3 = Bench.time(function() { return new Sphere({
-  //   x: 0, y: 0, z: 0, r: 5
-  // }); }, 'sphere');
-  // new PrimitiveExample(p3.bsp);
+  var p3 = Bench.time(function() { return new Sphere({
+    x: 0, y: 0, z: 0, r: 5
+  }); }, 'sphere');
+  new PrimitiveExample(p3.bsp);
 
   // var p4 = Bench.time(function() { return new Cylinder({
   //   x: 0, y: 0, z: 0, r: 5, h: 5,
