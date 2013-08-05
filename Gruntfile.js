@@ -25,12 +25,34 @@ module.exports = function(grunt) {
         src: 'Gruntfile.js'
       },
       lib: {
-        src: ['lib/**/*.js']
+        src: ['lib/**/*.v2.js'],
+        options: {
+          globals: {
+            define: false,
+            ArrayBuffer: false,
+            Float32Array: false,
+          },
+        },
       },
       unit: {
         src: ['test/**/*.js'],
         options: {
           globals: {
+            describe: false, 
+            before: false, 
+            beforeEach: false, 
+            after: false,
+            afterEach: false,
+            it: false,
+          },
+        },
+      },
+      unitv2: {
+        src: ['test/**/*.v2.test.js'],
+        options: {
+          globals: {
+            define: false,
+            assert: false,
             describe: false, 
             before: false, 
             beforeEach: false, 
@@ -67,7 +89,7 @@ module.exports = function(grunt) {
       },
       unit: {
         files: '<%= jshint.unit.src %>',
-        tasks: ['unit']
+        tasks: ['jshint:unitv2', 'unit']
       },
     },
 
