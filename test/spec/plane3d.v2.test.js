@@ -1,12 +1,12 @@
-define(['lib/planes3d.v2', 'lib/plane3d.v2'], function(Planes3D) {
+define(['lib/plane3dcreator.v2'], function(Plane3DCreator) {
 
   describe('3D Planes', function() {
 
     it('can be created', function() {
 
-      var planes = new Planes3D();
-      var planeIndex = planes.add(1,2,3,4);
-      var plane = planes.get(planeIndex);
+      var planeCreator = new Plane3DCreator();
+      var planeIndex = planeCreator.create(1,2,3,4);
+      var plane = planeCreator.get(planeIndex);
 
       assert.equal(plane.a, 1);
       assert.equal(plane.b, 2);
@@ -17,9 +17,9 @@ define(['lib/planes3d.v2', 'lib/plane3d.v2'], function(Planes3D) {
     
     it('are immutable', function() {
 
-      var planes = new Planes3D();
-      var planeIndex = planes.add(1,2,3,4);
-      var plane = planes.get(planeIndex);
+      var planeCreator = new Plane3DCreator();
+      var planeIndex = planeCreator.create(1,2,3,4);
+      var plane = planeCreator.get(planeIndex);
 
       plane[0] = 5;
       plane[1] = 6;
@@ -35,16 +35,16 @@ define(['lib/planes3d.v2', 'lib/plane3d.v2'], function(Planes3D) {
 
     it('can grow in size', function() {
 
-      var planes = new Planes3D();
+      var planeCreator = new Plane3DCreator();
       var indices = [];
       var i, n = 65;
 
       for (i = 0; i < n; ++i) {
-        indices.push(planes.add(i,i*2,i*3,i*4));
+        indices.push(planeCreator.create(i,i*2,i*3,i*4));
       }
 
       for (i = 0; i < n; ++i) {
-        var plane = planes.get(indices[i]);
+        var plane = planeCreator.get(indices[i]);
         assert.equal(plane.a, i);
         assert.equal(plane.b, i*2);
         assert.equal(plane.c, i*3);

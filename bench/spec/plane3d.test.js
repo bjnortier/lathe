@@ -1,10 +1,10 @@
 define([
     'lib/plane3d', 
-    'lib/planes3d.v2',
+    'lib/plane3dcreator.v2',
     './time'
-  ], function(Plane3D, Planes3D, time) {
+  ], function(Plane3D, Plane3DCreator, time) {
 
-  describe('Benchmark 3D Planes', function() {
+  describe.only('Benchmark 3D Planes', function() {
 
     it('creation', function() {
 
@@ -17,17 +17,22 @@ define([
         for (var i = 0; i < n; ++i) {
           planes.push(new Plane3D(i,i*2,i*3,i*4));
         }
-        return planes;
+        var acc = 0;
+        for (var i = 0; i < n; ++i) {
+          acc += planes[i].a;
+        }
       }, '3D planes v1\t');
 
       time(function() {
-        var planes = new Planes3D();
+        var planeCreator = new Plane3DCreator();
         for (var i = 0; i < n; ++i) {
-          planes.add(i,i*2,i*3,i*4);
+          planeCreator.create(i,i*2,i*3,i*4);
         }
-        return planes;
+        var acc = 0;
+        for (var i = 0; i < n; ++i) {
+          acc += planeCreator.get(i).a;
+        }
       }, '3D planes v2\t');
-
 
     });
 
