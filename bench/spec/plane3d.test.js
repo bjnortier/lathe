@@ -4,7 +4,7 @@ define([
     './time'
   ], function(Plane3D, Plane3DCreator, time) {
 
-  describe.only('Benchmark 3D Planes', function() {
+  describe('Benchmark 3D Planes', function() {
 
     it('creation', function() {
 
