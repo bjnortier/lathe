@@ -25,7 +25,7 @@ module.exports = function(grunt) {
         src: 'Gruntfile.js'
       },
       lib: {
-        src: ['lib/**/*.v2.js'],
+        src: ['lib/**/*.v2.js', 'lib/plane3d.js', 'lib/vertex3d.js', 'lib/vector3.js'],
         options: {
           globals: {
             define: false,

@@ -12,7 +12,7 @@ define(['lib/plane3d'], function(Plane3D) {
 
     });
 
-    it('are immutable', function() {
+    it.skip('are immutable', function() {
 
       var plane1 = new Plane3D(1,2,3,4);
       plane1.a = 5;
