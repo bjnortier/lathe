@@ -107,7 +107,7 @@ module.exports = function(grunt) {
       },
       lib: {
         files: '<%= jshint.lib.src %>',
-        tasks: ['jshint:lib', 'unit', 'bench']
+        tasks: ['jshint:lib', 'unit']
       },
       unit: {
         files: '<%= jshint.unit.src %>',
