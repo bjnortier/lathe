@@ -113,21 +113,35 @@ define([
     var polygonsToMesh = function(polygons) {
       var geometry = new THREE.Geometry();
       var indices = polygons.map(function(polygon, i) {
+
         var vertices = polygon.toVertices();
         var _coordinates = vertices.map(function(vertex) {
           var c = vertex.toCoordinate();
           return new THREE.Vector3(c.x, c.y, c.z)
         });
 
+        // console.log(_coordinates.map(function(c) {
+        //   return JSON.stringify([c.x, c.y, c.z]);
+        // }).join('\n'));
+
+        // Remove degenrates verteices that are too close to each other
+        // Most likelily as a result of robustness problems
+        var eps = 0.000001;
         var coordinates = _coordinates.reduce(function(acc, c, i) {
           if (i === 0) {
-          return acc.concat(c);
-          } else if (new THREE.Vector3().subVectors(c,acc[acc.length-1]).length() > 0.000000001) {
-          return acc.concat(c);
+            return acc.concat(c);
+          } else if (new THREE.Vector3().subVectors(c,acc[acc.length-1]).length() > eps) {
+            return acc.concat(c);
           } else {
-          return acc;
+            return acc;
           }
         }, []);
+        if (new THREE.Vector3().subVectors(
+            coordinates[0],
+            coordinates[coordinates.length-1]).length()
+             <= eps) {
+          coordinates = coordinates.slice(1);
+        }
 
         var indices = coordinates.map(function(coordinate) {
           return geometry.vertices.push(new THREE.Vector3(coordinate.x, coordinate.y, coordinate.z)) - 1;
@@ -209,22 +223,9 @@ define([
       var meshObject = THREE.SceneUtils.createMultiMaterialObject(faceGeometry, [
         new THREE.MeshPhongMaterial({color: color}),
         // new THREE.MeshLambertMaterial({color: color, transparent: true, opacity: 0.5}),
-        // new THREE.MeshBasicMaterial({color: color&0x8f8f8f, wireframe: true, linewidth: 5}),
+        new THREE.MeshBasicMaterial({color: color&0x8f8f8f, wireframe: true, linewidth: 5}),
       ]);
       this.exampleObj.add(meshObject);
-
-      var that = this;
-      toMesh.indices.forEach(function(polyIndices) {
-        var edgeGeometry = new THREE.Geometry();
-        polyIndices.forEach(function(i) {
-          edgeGeometry.vertices.push(faceGeometry.vertices[i]);
-        });
-        edgeGeometry.vertices.push(faceGeometry.vertices[polyIndices[0]]);
-
-        var material = new THREE.LineBasicMaterial({color: color & 0x9f9f9f, linewidth: 1 });
-        var edges = new THREE.Line(edgeGeometry, material);
-        that.exampleObj.add(edges);
-      });
     }
 
     this.addPlane2D = function(plane, color) {
