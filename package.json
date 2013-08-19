@@ -1,7 +1,7 @@
 {
   "name": "lathe",
   "description": "A discrete solid modeller using BSPs",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "dependencies": {
     "requirejs": ">= 2.1.2",
     "gl-matrix": "https://github.com/toji/gl-matrix/tarball/v2.2.0"

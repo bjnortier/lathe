@@ -1,7 +1,7 @@
-lathe.js
+Lathe
 #
 
-Lathe.js is an experimental Javascript mesh boolean library based on binary 
+Lathe is an experimental Javascript mesh boolean library based on binary 
 space partitioning (BSP) trees. It has been developed as a replacement for 
 the solid modelling in Shapesmith.
 
