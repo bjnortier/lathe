@@ -1,5 +1,5 @@
 requirejs.config({
-  baseUrl:'..',
+  baseUrl:'.',
   paths: {
     'gl-matrix' : 'node_modules/gl-matrix/dist/gl-matrix'
   },
