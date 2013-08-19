@@ -1,8 +1,8 @@
 
 define([], function() {
 
-    return [
-        './spec/boolean.test.js',
-    ];
+  return [
+    'bench/spec/boolean.test.js',
+  ];
 
 });

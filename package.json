@@ -1,12 +1,17 @@
-{ 
-    "name" : "lathe",
-    "description" : "A discrete solid modeller using BSPs",
-    "version" : "0.1.0",
-    "dependencies": {
-        "requirejs": ">= 2.1.2"
-    },  
-    "devDependencies": {
-        "mocha": ">= 1.7.4",
-        "chai": ">= 1.4.2"
-    }
+{
+  "name": "lathe",
+  "description": "A discrete solid modeller using BSPs",
+  "version": "0.3.0",
+  "dependencies": {
+    "requirejs": ">= 2.1.2",
+    "gl-matrix": "https://github.com/toji/gl-matrix/tarball/v2.2.0"
+  },
+  "devDependencies": {
+    "mocha": ">= 1.7.4",
+    "chai": ">= 1.4.2",
+    "grunt-simple-mocha": "~0.4.0",
+    "grunt-contrib-watch": "~0.5.1",
+    "grunt": "~0.4.1",
+    "grunt-contrib-jshint": "~0.6.2"
+  }
 }
