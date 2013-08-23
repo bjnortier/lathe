@@ -126,7 +126,7 @@ define([
 
         // Remove degenrates verteices that are too close to each other
         // Most likelily as a result of robustness problems
-        var eps = 0.000001;
+        var eps = 0.001;
         var coordinates = _coordinates.reduce(function(acc, c, i) {
           if (i === 0) {
             return acc.concat(c);
@@ -153,7 +153,7 @@ define([
         } else if (coordinates.length === 4) {
           geometry.faces.push(new THREE.Face4(indices[0],indices[1],indices[2],indices[3]));
         } else {
-          // Only support cnvex polygons
+          // Only support convex polygons
           geometry.faces.push(new THREE.Face3(indices[0],indices[1],indices[2]));
           for (var i = 2; i < coordinates.length -1; ++i) {
             geometry.faces.push(new THREE.Face3(indices[0], indices[0]+i,indices[0]+i+1));
