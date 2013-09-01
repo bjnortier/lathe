@@ -25,7 +25,7 @@ module.exports = function(grunt) {
         src: 'Gruntfile.js'
       },
       lib: {
-        src: ['lib/**/*.v2.js', 'lib/plane3d.js', 'lib/vertex3d.js', 'lib/vector3.js'],
+        src: ['lib/plane3d.js', 'lib/vertex3d.js', 'lib/vector3.js'],
         options: {
           globals: {
             define: false,
@@ -46,21 +46,6 @@ module.exports = function(grunt) {
             it: false,
           },
         },
-      },
-      unitv2: {
-        src: ['test/**/*.v2.test.js'],
-        options: {
-          globals: {
-            define: false,
-            assert: false,
-            describe: false, 
-            before: false, 
-            beforeEach: false, 
-            after: false,
-            afterEach: false,
-            it: false,
-          },
-        }
       },
       bench: {
         src: ['bench/**/*.test.js'],
@@ -111,7 +96,7 @@ module.exports = function(grunt) {
       },
       unit: {
         files: '<%= jshint.unit.src %>',
-        tasks: ['jshint:unitv2', 'unit']
+        tasks: ['unit']
       },
       bench: {
         files: '<%= jshint.bench.src %>',
