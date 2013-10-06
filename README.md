@@ -4,7 +4,7 @@
 
 Lathe is an experimental Javascript mesh boolean library based on binary 
 space partitioning (BSP) trees. It has been developed as a replacement for 
-the solid modelling in Shapesmith.
+the solid modelling in [Shapesmith](http://github.com/bjnortier/shapesmith).
 
 ## Current state: 
 
