@@ -1,5 +1,6 @@
-# Lathe
+[![Build Status](https://travis-ci.org/bjnortier/lathe.png?branch=master)](https://travis-ci.org/bjnortier/lathe)
 
+# Lathe
 
 Lathe is an experimental Javascript mesh boolean library based on binary 
 space partitioning (BSP) trees. It has been developed as a replacement for 
