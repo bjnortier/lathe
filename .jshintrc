@@ -1,0 +1,23 @@
+{
+  "curly": true,
+  "eqeqeq": true,
+  "immed": true,
+  "latedef": true,
+  "newcap": true,
+  "noarg": true,
+  "sub": true,
+  "undef": true,
+  "unused": true,
+  "boss": true,
+  "eqnull": true,
+  "node": true,
+  "loopfunc": true,
+  "indent": 2,
+  "globals": {
+    "define": false,
+    "define": false,
+    "assert": false,
+    "it": false,
+    "describe": false
+  }
+}

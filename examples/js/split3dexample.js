@@ -23,7 +23,6 @@ define([
     beforeViewport.addPolygon3D(p1, 0x00ffff);
     beforeViewport.addPolygon3D(p1.reverse(), 0x00ffff);
     beforeViewport.addPlane3D(h, 0xff0000);
-    beforeViewport.addPlane3D(h, 0xff0000);
 
     var splits = p1.splitBy(h); 
     splits.front && splitViewport.addPolygon3D(splits.front, 0x0000ff);

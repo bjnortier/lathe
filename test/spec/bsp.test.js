@@ -9,14 +9,14 @@ define(['lib/bsp'], function(bsp) {
           return {
             front: new bsp.Node('xa+', undefined, undefined),
             back: new bsp.Node('xa-', node.front, node.back)
-            }
+          };
         } else if (partition === 'b') {
           return {
             front: node,
             back: undefined,
-            }
+          };
         } 
-        throw Error('invalid partition? node:', node.partition, 'partition', partition);
+        throw new Error('invalid partition? node:', node.partition, 'partition', partition);
       };
 
       var mergeTreeWithCell = function(t1, t2) {

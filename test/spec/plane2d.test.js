@@ -39,6 +39,6 @@ define(['lib/plane2d'], function(Plane) {
 
     });
 
-  })
+  });
 
 });

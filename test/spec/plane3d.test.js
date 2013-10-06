@@ -42,6 +42,6 @@ define(['lib/plane3d'], function(Plane3D) {
 
     });
 
-  })
+  });
 
 });
