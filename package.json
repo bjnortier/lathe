@@ -2,10 +2,16 @@
   "name": "lathe",
   "description": "A discrete solid modeller using BSPs",
   "version": "0.4.0",
-  "keywords": ["solid modelling", "bsp"],
+  "keywords": [
+    "solid modelling",
+    "bsp"
+  ],
   "homepage": "http://bjnortier.com/lathe/",
   "author": "Ben Nortier <bjnortier@gmail.com>",
-  "repository"    : {"type": "git", "url": "git://github.com/jashkenas/underscore.git"},
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jashkenas/underscore.git"
+  },
   "scripts": {
     "test": "grunt test"
   },
@@ -19,6 +25,7 @@
     "grunt-simple-mocha": "~0.4.0",
     "grunt-contrib-watch": "~0.5.1",
     "grunt": "~0.4.1",
-    "grunt-contrib-jshint": "~0.6.2"
+    "grunt-contrib-jshint": "~0.6.2",
+    "grunt-cli": "~0.1.9"
   }
 }
