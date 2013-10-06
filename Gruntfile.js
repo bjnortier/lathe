@@ -20,6 +20,7 @@ module.exports = function(grunt) {
         eqnull: true,
         node: true,
         loopfunc: true,
+        indent: 2,
       },
       gruntfile: {
         src: 'Gruntfile.js'
@@ -38,12 +39,17 @@ module.exports = function(grunt) {
         src: ['test/**/*.js'],
         options: {
           globals: {
+            define: false, 
+            requirejs: true,
+            assert: true, 
             describe: false, 
             before: false, 
             beforeEach: false, 
             after: false,
             afterEach: false,
             it: false,
+            chai: true,
+            mocha: false,
           },
         },
       },

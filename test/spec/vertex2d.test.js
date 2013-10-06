@@ -4,7 +4,7 @@ define(['lib/plane2d', 'lib/vertex2d'], function(Plane2D, Vertex3D) {
 
     it('can be created', function() {
 
-      var p = new Vertex3D(new Plane2D(1,0,0), new Plane2D(0,1,0));
+      new Vertex3D(new Plane2D(1,0,0), new Plane2D(0,1,0));
 
       assert.throws(function() {
         new Vertex3D(1,2);
@@ -31,7 +31,7 @@ define(['lib/plane2d', 'lib/vertex2d'], function(Plane2D, Vertex3D) {
       assert.equal(vertex11.orientationToPlane(new Plane2D(1,0,1)), '0');
       assert.equal(vertex11.orientationToPlane(new Plane2D(1,1,2)), '0');
 
-    })
+    });
 
     it('can generate coordinates', function() {
 
@@ -55,9 +55,9 @@ define(['lib/plane2d', 'lib/vertex2d'], function(Plane2D, Vertex3D) {
         new Vertex3D(new Plane2D(1,2,4), new Plane2D(3, -5, 1)).toCoordinate(), 
         {x:2, y:0.9999999999999999});
 
-    })
+    });
     
 
-  })
+  });
 
 });
