@@ -10,7 +10,7 @@
   "author": "Ben Nortier <bjnortier@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "git://github.com/jashkenas/underscore.git"
+    "url": "git://github.com/bjnortier/lathe.git"
   },
   "scripts": {
     "test": "grunt test"
