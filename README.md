@@ -19,7 +19,10 @@ both 2D and 3D discrete geometry are working, with the following caveats:
  * Improving performance
  * Addressing numerical robustness issues properly.
  * Creating more 2D and 3D primitives types (3d cones, 2d circles, etc. etc).
- * Replace use of requirejs with browserify?
+
+## LICENSE
+
+MIT
 
 
 
