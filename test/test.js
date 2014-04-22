@@ -8,7 +8,7 @@ requirejs.config({
 var chai = requirejs('chai');
 assert = chai.assert;
 
-chai.Assertion.includeStack = true;
+chai.config.includeStack = true;
 
 var specs = requirejs('test/spec/specs');
 specs.forEach(function(spec) {

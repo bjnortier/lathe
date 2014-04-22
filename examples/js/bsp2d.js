@@ -51,8 +51,7 @@ requirejs([
 
   t2.createSHPs(Line2D);
 
-  new BooleanExample(t1, t2, Line2D);
-
+  // new BooleanExample(t1, t2, Line2D);
 
   var t3 = createConvexTree([
     new Plane2D(1,0,5),
@@ -86,5 +85,5 @@ requirejs([
     new Plane2D(-1,0,-1)
   ])
   t6.createSHPs(Line2D);
-  new BooleanExample(t5, t6, Line2D);
+  // new BooleanExample(t5, t6, Line2D);
 });

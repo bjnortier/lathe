@@ -5,7 +5,7 @@ requirejs.config({
   },
 });
 
-chai.Assertion.includeStack = true;
+chai.config.includeStack = true;
 
 requirejs(['test/spec/specs'], function(specs) {
 

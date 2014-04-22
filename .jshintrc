@@ -18,6 +18,8 @@
     "define": false,
     "assert": false,
     "it": false,
-    "describe": false
+    "describe": false,
+    "requirejs": false,
+    "document": false
   }
 }

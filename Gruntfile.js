@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 
     jshint: {
       options: {
-        curly: true,
+        curly: true,  
         eqeqeq: true,
         immed: true,
         latedef: true,
@@ -26,7 +26,7 @@ module.exports = function(grunt) {
         src: 'Gruntfile.js'
       },
       lib: {
-        src: ['lib/plane3d.js', 'lib/vertex3d.js', 'lib/vector3.js'],
+        src: ['lib/plane3d.js', 'lib/vertex3d.js', 'lib/vector3.js', 'lib/bspimport.js'],
         options: {
           globals: {
             define: false,

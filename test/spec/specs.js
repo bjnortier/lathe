@@ -7,6 +7,7 @@ define([], function() {
     'test/spec/vertex3d.test.js',
     'test/spec/polygon2d.test.js',
     'test/spec/polygon3d.test.js',
+    'test/spec/bspimport.test.js',
   ];
 
 });
