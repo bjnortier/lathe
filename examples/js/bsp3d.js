@@ -63,7 +63,7 @@ requirejs([
   ]);
   t3.createSHPs(Polygon3D);
   t4.createSHPs(Polygon3D);
-  new BooleanExample(t3, t4, Polygon3D);
+  // new BooleanExample(t3, t4, Polygon3D);
   
 
 });
