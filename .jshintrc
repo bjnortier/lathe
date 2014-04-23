@@ -20,6 +20,7 @@
     "it": false,
     "describe": false,
     "requirejs": false,
-    "document": false
+    "document": false,
+    "XMLHttpRequest": false
   }
 }

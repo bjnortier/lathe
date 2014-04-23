@@ -120,10 +120,6 @@ define([
           return new THREE.Vector3(c.x, c.y, c.z)
         });
 
-        // console.log(_coordinates.map(function(c) {
-        //   return JSON.stringify([c.x, c.y, c.z]);
-        // }).join('\n'));
-
         // Remove degenrates vertices that are too close to each other
         // Most likelily as a result of robustness problems
         var eps = 0.001;
@@ -143,9 +139,9 @@ define([
           coordinates = coordinates.slice(1);
         }
 
-        console.log(polygon.s.toEval() + coordinates.map(function(c) {
-          return JSON.stringify([c.x, c.y, c.z]);
-        }).join(','));
+        // console.log(polygon.s.toEval() + coordinates.map(function(c) {
+        //   return JSON.stringify([c.x, c.y, c.z]);
+        // }).join(','));
 
         var indices = coordinates.map(function(coordinate) {
           return geometry.vertices.push(new THREE.Vector3(coordinate.x, coordinate.y, coordinate.z)) - 1;
