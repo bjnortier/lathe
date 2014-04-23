@@ -14,6 +14,7 @@ requirejs([
     ImportSTLExample) {
 
     new ImportSTLExample('./stls/cube.stl');
+    new ImportSTLExample('./stls/cylinder.stl');
     new ImportSTLExample('./stls/boolean.stl');
 
   });
